@@ -545,7 +545,7 @@ class PerplexityProvider implements LLMProvider {
       const data = await response.json();
       const rawContent = data.choices[0]?.message?.content || "";
       
-      // Enhanced cleaning for ZHI 4 to fix text corruption
+      // Enhanced cleaning for ZHI 4 to fix text corruption and formatting
       const cleaned = rawContent
         .replace(/\*\*([^*]*)\*\*/g, '$1')     // Remove bold markers
         .replace(/\*([^*]*)\*/g, '$1')        // Remove italic markers  
@@ -558,6 +558,9 @@ class PerplexityProvider implements LLMProvider {
         .replace(/([a-z])(\d+)/g, '$1 $2')    // Fix missing spaces before numbers
         .replace(/(\d+)([a-z])/g, '$1 $2')    // Fix missing spaces after numbers
         .replace(/([.!?])([A-Z])/g, '$1 $2')  // Fix missing spaces after punctuation
+        .replace(/QUESTION\s*(\d+):/g, '\n\nQUESTION $1:')  // Add line breaks before questions
+        .replace(/--\s*/g, '\n\n--\n\n')      // Add proper spacing around separators
+        .replace(/FINAL SCORE:/g, '\n\nFINAL SCORE:')  // Add line break before final score
         .replace(/\s+/g, ' ')                 // Normalize multiple spaces
         .replace(/\n\s*\n\s*\n/g, '\n\n');   // Normalize newlines
       
@@ -618,7 +621,7 @@ class PerplexityProvider implements LLMProvider {
               const parsed = JSON.parse(data);
               const content = parsed.choices[0]?.delta?.content || '';
               if (content) {
-                // Enhanced cleaning for ZHI 4 to fix text corruption
+                // Enhanced cleaning for ZHI 4 to fix text corruption and formatting
                 const cleaned = content
                   .replace(/\*\*([^*]*)\*\*/g, '$1')     // Remove bold markers
                   .replace(/\*([^*]*)\*/g, '$1')        // Remove italic markers  
@@ -631,6 +634,9 @@ class PerplexityProvider implements LLMProvider {
                   .replace(/([a-z])(\d+)/g, '$1 $2')    // Fix missing spaces before numbers
                   .replace(/(\d+)([a-z])/g, '$1 $2')    // Fix missing spaces after numbers
                   .replace(/([.!?])([A-Z])/g, '$1 $2')  // Fix missing spaces after punctuation
+                  .replace(/QUESTION\s*(\d+):/g, '\n\nQUESTION $1:')  // Add line breaks before questions
+                  .replace(/--\s*/g, '\n\n--\n\n')      // Add proper spacing around separators
+                  .replace(/FINAL SCORE:/g, '\n\nFINAL SCORE:')  // Add line break before final score
                   .replace(/\s+/g, ' ')                 // Normalize multiple spaces
                   .replace(/\n\s*\n\s*\n/g, '\n\n');   // Normalize newlines
                 yield cleaned;
