@@ -524,8 +524,13 @@ class PerplexityProvider implements LLMProvider {
             { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
           ],
           temperature: 0.2,
-          max_tokens: 4000,
-          stream: false
+          top_p: 0.9,
+          return_images: false,
+          return_related_questions: false,
+          top_k: 0,
+          stream: false,
+          presence_penalty: 0,
+          frequency_penalty: 1
         })
       });
 
@@ -555,8 +560,13 @@ class PerplexityProvider implements LLMProvider {
             { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
           ],
           temperature: 0.2,
-          max_tokens: 4000,
-          stream: true
+          top_p: 0.9,
+          return_images: false,
+          return_related_questions: false,
+          top_k: 0,
+          stream: true,
+          presence_penalty: 0,
+          frequency_penalty: 1
         })
       });
 
