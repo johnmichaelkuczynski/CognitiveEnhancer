@@ -546,7 +546,20 @@ class PerplexityProvider implements LLMProvider {
       }
 
       const data = await response.json();
-      return data.choices[0]?.message?.content || "";
+      const rawContent = data.choices[0]?.message?.content || "";
+      
+      // Clean markdown formatting for ZHI 4
+      const cleaned = rawContent
+        .replace(/\*\*([^*]+)\*\*/g, '$1')  // Remove bold markers but keep content
+        .replace(/\*([^*]+)\*/g, '$1')     // Remove italic markers but keep content
+        .replace(/`([^`]+)`/g, '$1')       // Remove code markers but keep content
+        .replace(/^#{1,6}\s*/gm, '')       // Remove header markers
+        .replace(/^\s*[-*+]\s*/gm, '')     // Remove bullet point markers
+        .replace(/^\s*\d+\.\s*/gm, '')     // Remove numbered list markers
+        .replace(/---+/g, '')              // Remove horizontal rules
+        .replace(/\n\s*\n\s*\n/g, '\n\n'); // Normalize multiple newlines
+      
+      return cleaned;
     } catch (error) {
       console.error('Perplexity API Error:', error);
       throw new Error(`ZHI 4 failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -608,7 +621,19 @@ class PerplexityProvider implements LLMProvider {
             try {
               const parsed = JSON.parse(data);
               const content = parsed.choices[0]?.delta?.content || '';
-              if (content) yield content;
+              if (content) {
+                // Clean markdown formatting in real-time for ZHI 4
+                const cleaned = content
+                  .replace(/\*\*([^*]+)\*\*/g, '$1')  // Remove bold markers but keep content
+                  .replace(/\*([^*]+)\*/g, '$1')     // Remove italic markers but keep content
+                  .replace(/`([^`]+)`/g, '$1')       // Remove code markers but keep content
+                  .replace(/^#{1,6}\s*/gm, '')       // Remove header markers
+                  .replace(/^\s*[-*+]\s*/gm, '')     // Remove bullet point markers
+                  .replace(/^\s*\d+\.\s*/gm, '')     // Remove numbered list markers
+                  .replace(/---+/g, '')              // Remove horizontal rules
+                  .replace(/\n\s*\n\s*\n/g, '\n\n'); // Normalize multiple newlines
+                yield cleaned;
+              }
             } catch (e) {
               // Skip invalid JSON
             }
