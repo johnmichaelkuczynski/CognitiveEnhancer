@@ -26,7 +26,7 @@ class OpenAIProvider implements LLMProvider {
   
   constructor() {
     this.client = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY_ENV_VAR || ""
+      apiKey: process.env.OPENAI_API_KEY || ""
     });
   }
 
@@ -160,36 +160,46 @@ Important: This analysis is for educational/research purposes only and cannot su
   }
 
   async analyzeText(text: string, mode: string): Promise<string> {
-    const response = await this.client.chat.completions.create({
-      model: DEFAULT_OPENAI_MODEL,
-      messages: [
-        { role: "system", content: this.getSystemPrompt(mode) },
-        { role: "user", content: text }
-      ],
-      temperature: 0.7,
-      max_tokens: 4000
-    });
+    try {
+      const response = await this.client.chat.completions.create({
+        model: DEFAULT_OPENAI_MODEL,
+        messages: [
+          { role: "system", content: this.getSystemPrompt(mode) },
+          { role: "user", content: text }
+        ],
+        temperature: 0.7,
+        max_tokens: 4000
+      });
 
-    return response.choices[0].message.content || "";
+      return response.choices[0].message.content || "";
+    } catch (error) {
+      console.error('OpenAI API Error:', error);
+      throw new Error(`OpenAI analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   }
 
   async *streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown> {
-    const stream = await this.client.chat.completions.create({
-      model: DEFAULT_OPENAI_MODEL,
-      messages: [
-        { role: "system", content: this.getSystemPrompt(mode) },
-        { role: "user", content: text }
-      ],
-      temperature: 0.7,
-      max_tokens: 4000,
-      stream: true
-    });
+    try {
+      const stream = await this.client.chat.completions.create({
+        model: DEFAULT_OPENAI_MODEL,
+        messages: [
+          { role: "system", content: this.getSystemPrompt(mode) },
+          { role: "user", content: text }
+        ],
+        temperature: 0.7,
+        max_tokens: 4000,
+        stream: true
+      });
 
-    for await (const chunk of stream) {
-      const content = chunk.choices[0]?.delta?.content || '';
-      if (content) {
-        yield content;
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content || '';
+        if (content) {
+          yield content;
+        }
       }
+    } catch (error) {
+      console.error('OpenAI Stream Error:', error);
+      yield `OpenAI streaming failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   }
 }
@@ -199,7 +209,7 @@ class AnthropicProvider implements LLMProvider {
   
   constructor() {
     this.client = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_API_KEY_ENV_VAR || ""
+      apiKey: process.env.ANTHROPIC_API_KEY || ""
     });
   }
 
@@ -208,30 +218,64 @@ class AnthropicProvider implements LLMProvider {
     return new OpenAIProvider()['getSystemPrompt'](mode);
   }
 
-  async analyzeText(text: string, mode: string): Promise<string> {
-    const response = await this.client.messages.create({
-      model: DEFAULT_ANTHROPIC_MODEL,
-      max_tokens: 4000,
-      system: this.getSystemPrompt(mode),
-      messages: [{ role: "user", content: text }]
-    });
+  private cleanMarkdown(text: string): string {
+    // Remove common markdown formatting for cleaner output
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '$1')  // Remove bold
+      .replace(/\*(.*?)\*/g, '$1')      // Remove italic
+      .replace(/#{1,6}\s/g, '')        // Remove headers
+      .replace(/```[\s\S]*?```/g, '')  // Remove code blocks
+      .replace(/`([^`]+)`/g, '$1')     // Remove inline code
+      .replace(/^\s*[-\*\+]\s+/gm, '• ') // Convert bullet points
+      .trim();
+  }
 
-    return response.content[0].type === 'text' ? response.content[0].text : "";
+  async analyzeText(text: string, mode: string): Promise<string> {
+    try {
+      const response = await this.client.messages.create({
+        model: DEFAULT_ANTHROPIC_MODEL,
+        max_tokens: 4000,
+        system: this.getSystemPrompt(mode),
+        messages: [{ role: "user", content: text }]
+      });
+
+      const rawText = response.content[0].type === 'text' ? response.content[0].text : "";
+      return this.cleanMarkdown(rawText);
+    } catch (error) {
+      console.error('Anthropic API Error:', error);
+      throw new Error(`Anthropic analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   }
 
   async *streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown> {
-    const stream = await this.client.messages.create({
-      model: DEFAULT_ANTHROPIC_MODEL,
-      max_tokens: 4000,
-      system: this.getSystemPrompt(mode),
-      messages: [{ role: "user", content: text }],
-      stream: true
-    });
+    try {
+      const stream = await this.client.messages.create({
+        model: DEFAULT_ANTHROPIC_MODEL,
+        max_tokens: 4000,
+        system: this.getSystemPrompt(mode),
+        messages: [{ role: "user", content: text }],
+        stream: true
+      });
 
-    for await (const chunk of stream) {
-      if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
-        yield chunk.delta.text;
+      let buffer = '';
+      for await (const chunk of stream) {
+        if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
+          buffer += chunk.delta.text;
+          // Clean markdown as we stream, but only yield complete sentences/lines
+          if (buffer.includes('\n') || buffer.includes('.')) {
+            const cleanedText = this.cleanMarkdown(buffer);
+            yield cleanedText;
+            buffer = '';
+          }
+        }
       }
+      // Yield any remaining content
+      if (buffer) {
+        yield this.cleanMarkdown(buffer);
+      }
+    } catch (error) {
+      console.error('Anthropic Stream Error:', error);
+      yield `Anthropic streaming failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   }
 }
@@ -241,7 +285,7 @@ class DeepSeekProvider implements LLMProvider {
   private apiKey: string;
 
   constructor() {
-    this.apiKey = process.env.DEEPSEEK_API_KEY || process.env.DEEPSEEK_API_KEY_ENV_VAR || "";
+    this.apiKey = process.env.DEEPSEEK_API_KEY || "";
   }
 
   private getSystemPrompt(mode: string): string {
@@ -249,72 +293,90 @@ class DeepSeekProvider implements LLMProvider {
   }
 
   async analyzeText(text: string, mode: string): Promise<string> {
-    const response = await fetch(`${this.baseURL}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: "system", content: this.getSystemPrompt(mode) },
-          { role: "user", content: text }
-        ],
-        temperature: 0.7,
-        max_tokens: 4000
-      })
-    });
+    try {
+      const response = await fetch(`${this.baseURL}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: [
+            { role: "system", content: this.getSystemPrompt(mode) },
+            { role: "user", content: text }
+          ],
+          temperature: 0.7,
+          max_tokens: 4000
+        })
+      });
 
-    const data = await response.json();
-    return data.choices[0].message.content || "";
+      if (!response.ok) {
+        throw new Error(`DeepSeek API returned ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return data.choices[0]?.message?.content || "";
+    } catch (error) {
+      console.error('DeepSeek API Error:', error);
+      throw new Error(`DeepSeek analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   }
 
   async *streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown> {
-    const response = await fetch(`${this.baseURL}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: "system", content: this.getSystemPrompt(mode) },
-          { role: "user", content: text }
-        ],
-        temperature: 0.7,
-        max_tokens: 4000,
-        stream: true
-      })
-    });
+    try {
+      const response = await fetch(`${this.baseURL}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: [
+            { role: "system", content: this.getSystemPrompt(mode) },
+            { role: "user", content: text }
+          ],
+          temperature: 0.7,
+          max_tokens: 4000,
+          stream: true
+        })
+      });
 
-    const reader = response.body?.getReader();
-    if (!reader) return;
+      if (!response.ok) {
+        throw new Error(`DeepSeek API returned ${response.status}: ${response.statusText}`);
+      }
 
-    const decoder = new TextDecoder();
-    
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+      const reader = response.body?.getReader();
+      if (!reader) return;
 
-      const chunk = decoder.decode(value);
-      const lines = chunk.split('\n');
+      const decoder = new TextDecoder();
       
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          const data = line.slice(6);
-          if (data === '[DONE]') return;
-          
-          try {
-            const parsed = JSON.parse(data);
-            const content = parsed.choices[0]?.delta?.content || '';
-            if (content) yield content;
-          } catch (e) {
-            // Skip invalid JSON
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+        
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') return;
+            
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices[0]?.delta?.content || '';
+              if (content) yield content;
+            } catch (e) {
+              // Skip invalid JSON
+            }
           }
         }
       }
+    } catch (error) {
+      console.error('DeepSeek Stream Error:', error);
+      yield `DeepSeek streaming failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   }
 }
@@ -324,7 +386,7 @@ class PerplexityProvider implements LLMProvider {
   private apiKey: string;
 
   constructor() {
-    this.apiKey = process.env.PERPLEXITY_API_KEY || process.env.PERPLEXITY_API_KEY_ENV_VAR || "";
+    this.apiKey = process.env.PERPLEXITY_API_KEY || "";
   }
 
   private getSystemPrompt(mode: string): string {
@@ -332,73 +394,91 @@ class PerplexityProvider implements LLMProvider {
   }
 
   async analyzeText(text: string, mode: string): Promise<string> {
-    const response = await fetch(`${this.baseURL}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'llama-3.1-sonar-small-128k-online',
-        messages: [
-          { role: "system", content: this.getSystemPrompt(mode) },
-          { role: "user", content: text }
-        ],
-        temperature: 0.7,
-        max_tokens: 4000,
-        stream: false
-      })
-    });
+    try {
+      const response = await fetch(`${this.baseURL}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'llama-3.1-sonar-small-128k-online',
+          messages: [
+            { role: "system", content: this.getSystemPrompt(mode) },
+            { role: "user", content: text }
+          ],
+          temperature: 0.7,
+          max_tokens: 4000,
+          stream: false
+        })
+      });
 
-    const data = await response.json();
-    return data.choices[0].message.content || "";
+      if (!response.ok) {
+        throw new Error(`Perplexity API returned ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return data.choices[0]?.message?.content || "";
+    } catch (error) {
+      console.error('Perplexity API Error:', error);
+      throw new Error(`Perplexity analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   }
 
   async *streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown> {
-    const response = await fetch(`${this.baseURL}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${this.apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'llama-3.1-sonar-small-128k-online',
-        messages: [
-          { role: "system", content: this.getSystemPrompt(mode) },
-          { role: "user", content: text }
-        ],
-        temperature: 0.7,
-        max_tokens: 4000,
-        stream: true
-      })
-    });
+    try {
+      const response = await fetch(`${this.baseURL}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'llama-3.1-sonar-small-128k-online',
+          messages: [
+            { role: "system", content: this.getSystemPrompt(mode) },
+            { role: "user", content: text }
+          ],
+          temperature: 0.7,
+          max_tokens: 4000,
+          stream: true
+        })
+      });
 
-    const reader = response.body?.getReader();
-    if (!reader) return;
+      if (!response.ok) {
+        throw new Error(`Perplexity API returned ${response.status}: ${response.statusText}`);
+      }
 
-    const decoder = new TextDecoder();
-    
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+      const reader = response.body?.getReader();
+      if (!reader) return;
 
-      const chunk = decoder.decode(value);
-      const lines = chunk.split('\n');
+      const decoder = new TextDecoder();
       
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          const data = line.slice(6);
-          if (data === '[DONE]') return;
-          
-          try {
-            const parsed = JSON.parse(data);
-            const content = parsed.choices[0]?.delta?.content || '';
-            if (content) yield content;
-          } catch (e) {
-            // Skip invalid JSON
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+        
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') return;
+            
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices[0]?.delta?.content || '';
+              if (content) yield content;
+            } catch (e) {
+              // Skip invalid JSON
+            }
           }
         }
       }
+    } catch (error) {
+      console.error('Perplexity Stream Error:', error);
+      yield `Perplexity streaming failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   }
 }

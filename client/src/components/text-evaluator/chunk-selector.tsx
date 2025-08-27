@@ -37,7 +37,9 @@ export default function ChunkSelector({
 
   return (
     <Dialog open={true} onOpenChange={() => onCancel()}>
-      <DialogContent className="max-w-2xl max-h-[80vh]" data-testid="chunk-modal" aria-describedby="chunk-modal-description">
+      <DialogContent className="max-w-2xl max-h-[80vh]" data-testid="chunk-modal" aria-describedby="chunk-modal-description"
+        onEscapeKeyDown={() => onCancel()}
+        onPointerDownOutside={() => onCancel()}>
         <DialogHeader>
           <DialogTitle>Select Text Chunks for Analysis</DialogTitle>
           <p id="chunk-modal-description" className="text-sm text-muted-foreground mt-1">
