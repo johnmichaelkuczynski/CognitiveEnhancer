@@ -1,8 +1,8 @@
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
 
-// the newest OpenAI model is "gpt-5" which was released August 7, 2025. do not change this unless explicitly requested by the user
-const DEFAULT_OPENAI_MODEL = "gpt-5";
+// Using GPT-4 as requested by user due to temperature compatibility issues with GPT-5
+const DEFAULT_OPENAI_MODEL = "gpt-4";
 
 /*
 <important_code_snippet_instructions>
@@ -214,7 +214,6 @@ Important: This analysis is for educational/research purposes only and cannot su
           { role: "system", content: this.getSystemPrompt(mode) },
           { role: "user", content: text }
         ],
-        temperature: 0.7,
         max_completion_tokens: 4000
       });
 
@@ -233,7 +232,6 @@ Important: This analysis is for educational/research purposes only and cannot su
           { role: "system", content: this.getSystemPrompt(mode) },
           { role: "user", content: text }
         ],
-        temperature: 0.7,
         max_completion_tokens: 4000,
         stream: true
       });
