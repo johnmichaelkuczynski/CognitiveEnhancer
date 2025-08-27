@@ -44,7 +44,9 @@ export function useTextAnalysis() {
           if (line.startsWith('data: ')) {
             try {
               const data: AnalysisResponse = JSON.parse(line.slice(6));
-              if (data.status === 'streaming' || data.status === 'completed') {
+              if (data.status === 'streaming') {
+                setResult(prev => prev + data.content);
+              } else if (data.status === 'completed') {
                 setResult(data.content);
               }
               if (data.status === 'error') {

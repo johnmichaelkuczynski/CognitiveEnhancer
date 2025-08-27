@@ -425,7 +425,15 @@ class DeepSeekProvider implements LLMProvider {
             try {
               const parsed = JSON.parse(data);
               const content = parsed.choices[0]?.delta?.content || '';
-              if (content) yield content;
+              if (content) {
+                // Clean markdown formatting in real-time for ZHI 3
+                const cleaned = content
+                  .replace(/\*\*/g, '')  // Remove bold markers
+                  .replace(/\*/g, '')    // Remove italic markers  
+                  .replace(/`/g, '')     // Remove code markers
+                  .replace(/#{1,6}/g, ''); // Remove header markers
+                yield cleaned;
+              }
             } catch (e) {
               // Skip invalid JSON
             }
@@ -465,7 +473,7 @@ class PerplexityProvider implements LLMProvider {
             { role: "system", content: this.getSystemPrompt(mode) },
             { role: "user", content: text }
           ],
-          temperature: 0.7,
+          temperature: 0.2,
           max_tokens: 4000,
           stream: false
         })
@@ -497,7 +505,7 @@ class PerplexityProvider implements LLMProvider {
             { role: "system", content: this.getSystemPrompt(mode) },
             { role: "user", content: text }
           ],
-          temperature: 0.7,
+          temperature: 0.2,
           max_tokens: 4000,
           stream: true
         })
