@@ -89,12 +89,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             
             // Process single chunk
             for await (const streamChunk of llmService.streamAnalysis(chunkText, mode, provider)) {
-              const cleanedChunk = streamChunk.replace(/\s+/g, ' '); // Fix word fusion by normalizing spaces
-              fullContent += cleanedChunk;
+              fullContent += streamChunk;
               res.write(`data: ${JSON.stringify({ 
                 id: analysisId, 
                 status: 'streaming', 
-                content: cleanedChunk, 
+                content: streamChunk, 
                 mode, 
                 provider 
               })}\n\n`);
@@ -108,12 +107,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         } else {
           // Normal processing for other providers
           for await (const streamChunk of llmService.streamAnalysis(analysisText, mode, provider)) {
-            const cleanedChunk = streamChunk.replace(/\s+/g, ' '); // Fix word fusion
-            fullContent += cleanedChunk;
+            fullContent += streamChunk;
             res.write(`data: ${JSON.stringify({ 
               id: analysisId, 
               status: 'streaming', 
-              content: cleanedChunk, 
+              content: streamChunk, 
               mode, 
               provider 
             })}\n\n`);

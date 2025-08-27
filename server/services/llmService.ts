@@ -63,6 +63,19 @@ THINK VERY VERY VERY HARD ABOUT YOUR ANSWERS; DO NOT DEFAULT TO COOKBOOK, MIDWIT
 
 DO NOT GIVE CREDIT MERELY FOR USE OF JARGON OR FOR REFERENCING AUTHORITIES. FOCUS ON SUBSTANCE. ONLY GIVE POINTS FOR SCHOLARLY REFERENCES/JARGON IF THEY UNAMBIGUOUSLY INCREASE SUBSTANCE.
 
+FORMATTING INSTRUCTIONS:
+Format your response as questions followed by detailed answers, with blank lines between sections:
+
+QUESTION 1: [Your question here]
+[Your detailed answer here with specific examples]
+
+QUESTION 2: [Your question here] 
+[Your detailed answer here with specific examples]
+
+[Continue this Q&A format for all analysis points]
+
+FINAL SCORE: [Score]/100
+
 METAPOINTS:
 1. THIS IS NOT A GRADING APP. YOU ASSESS THE INTELLIGENCE OF WHAT YOU ARE GIVEN. IF YOU ARE GIVEN A BRILLIANT FRAGMENT, YOU GIVE IT A HIGH SCORE. YOU ARE NOT GRADING ESSAYS. YOU ARE NOT LOOKING FOR COMPLETENESS. YOUR JOB IS TO ANSWER THE QUESTIONS, PERIOD, MAKING ZERO ASSUMPTIONS ABOUT WHETHER IT IS COMPLETE OR INCOMPLETE.
 2. DO NOT OVERVALUE TURNS OF PHRASE. AN AUTHOR SPEAKING CONFIDENTLY IS NOT NECESSARILY "SHUTTING DOWN MODES OF INQUIRY". BY PUTTING A CLEAR STAKE IN THE GROUND, HE IS PROBABLY OPENING THEM. CASUAL SPEECH DOES NOT MEAN DISORGANIZED THOUGHTS. DON'T JUDGE A BOOK BY ITS COVER.
@@ -71,7 +84,7 @@ METAPOINTS:
 5. DO NOT PENALIZE BOLDNESS. DO NOT TAKE POINTS AWAY FOR INSIGHTS THAT, IF CORRECT, STAND ON THEIR OWN. WHAT MAKES SOMETHING SMART IS THAT IT IS SMART (INSIGHTFUL). PERIOD.
 6. A SCORE OF N/100 MEANS THAT (100 MINUS N)/100 ARE SMARTER (E.G. 83/100 MEANS THAT 170/1000 PEOPLE ARE RUNNING RINGS AROUND THE AUTHOR).
 
-Also give a score out of 100.`,
+Use the Q&A formatting above. Score out of 100 at the end.`,
       
       'cognitive-long': `COMPREHENSIVE COGNITIVE ASSESSMENT - PHASE 1 OF 4 PHASES:
 
@@ -106,6 +119,19 @@ THINK VERY VERY VERY HARD ABOUT YOUR ANSWERS; DO NOT DEFAULT TO COOKBOOK, MIDWIT
 
 DO NOT GIVE CREDIT MERELY FOR USE OF JARGON OR FOR REFERENCING AUTHORITIES. FOCUS ON SUBSTANCE. ONLY GIVE POINTS FOR SCHOLARLY REFERENCES/JARGON IF THEY UNAMBIGUOUSLY INCREASE SUBSTANCE.
 
+FORMATTING INSTRUCTIONS:
+Format your response as questions followed by detailed answers, with blank lines between sections:
+
+QUESTION 1: [Your question here]
+[Your detailed answer here with specific examples]
+
+QUESTION 2: [Your question here]
+[Your detailed answer here with specific examples]
+
+[Continue this Q&A format for all analysis points]
+
+FINAL SCORE: [Score]/100
+
 METAPOINTS (same as above):
 1. THIS IS NOT A GRADING APP. ASSESS THE INTELLIGENCE OF WHAT YOU ARE GIVEN.
 2. DO NOT OVERVALUE TURNS OF PHRASE. CONFIDENT SPEECH OFTEN OPENS INQUIRY RATHER THAN SHUTTING IT DOWN.
@@ -114,16 +140,26 @@ METAPOINTS (same as above):
 5. DO NOT PENALIZE BOLDNESS. INSIGHTS THAT ARE CORRECT STAND ON THEIR OWN.
 6. A SCORE OF N/100 MEANS THAT (100 MINUS N)/100 ARE SMARTER.
 
-Also give a score out of 100.`,
+Use the Q&A formatting above. Score out of 100 at the end.`,
 
-      'psychological-short': `You are an expert psychological analyst. Provide a concise psychological profile based on the text, focusing on:
-- Personality traits and behavioral patterns
-- Emotional intelligence and regulation
-- Social cognition and interpersonal style
-- Motivational patterns and values
-- Psychological well-being indicators
+      'psychological-short': `You are an expert psychological analyst. Provide a psychological profile using this Q&A format:
 
-Include specific textual evidence and psychological insights.`,
+PERSONALITY TRAITS ASSESSMENT: What personality traits and behavioral patterns are evident?
+[Your detailed answer with specific textual evidence]
+
+EMOTIONAL INTELLIGENCE EVALUATION: How does the author demonstrate emotional intelligence and regulation?
+[Your detailed answer with specific textual evidence]
+
+SOCIAL COGNITION ANALYSIS: What interpersonal style and social awareness is shown?
+[Your detailed answer with specific textual evidence]
+
+MOTIVATIONAL PATTERNS ASSESSMENT: What motivational patterns and values are evident?
+[Your detailed answer with specific textual evidence]
+
+PSYCHOLOGICAL WELL-BEING INDICATORS: What indicators of psychological health are present?
+[Your detailed answer with specific textual evidence]
+
+Use this exact Q&A format with blank lines between sections.`,
 
       'psychological-long': `You are an expert psychological analyst. Provide a comprehensive psychological assessment covering:
 
@@ -199,6 +235,15 @@ Note: This is for educational/research purposes only, not clinical diagnosis. Hi
 - Suicide or self-harm risk factors
 - Social support and resilience markers
 - Coping strategies and resources
+
+FORMATTING INSTRUCTIONS:
+Use this Q&A format with blank lines between sections:
+
+QUESTION: [Assessment area]
+[Detailed analysis with specific textual evidence]
+
+QUESTION: [Next assessment area]
+[Detailed analysis with specific textual evidence]
 
 Important: This analysis is for educational/research purposes only and cannot substitute for professional clinical assessment. Highlight both areas of concern and psychological strengths.`
     };
@@ -476,8 +521,7 @@ class PerplexityProvider implements LLMProvider {
         body: JSON.stringify({
           model: 'llama-3.1-sonar-small-128k-online',
           messages: [
-            { role: "system", content: this.getSystemPrompt(mode) },
-            { role: "user", content: text }
+            { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
           ],
           temperature: 0.2,
           max_tokens: 4000,
@@ -508,8 +552,7 @@ class PerplexityProvider implements LLMProvider {
         body: JSON.stringify({
           model: 'llama-3.1-sonar-small-128k-online',
           messages: [
-            { role: "system", content: this.getSystemPrompt(mode) },
-            { role: "user", content: text }
+            { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
           ],
           temperature: 0.2,
           max_tokens: 4000,
