@@ -512,29 +512,35 @@ class PerplexityProvider implements LLMProvider {
 
   async analyzeText(text: string, mode: string): Promise<string> {
     try {
+      const requestBody = {
+        model: 'llama-3.1-sonar-small-128k-online',
+        messages: [
+          { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
+        ],
+        max_tokens: 4000,
+        temperature: 0.2,
+        top_p: 0.9,
+        return_images: false,
+        return_related_questions: false,
+        stream: false,
+        presence_penalty: 0,
+        frequency_penalty: 1
+      };
+
+      console.log('Perplexity Request Body:', JSON.stringify(requestBody, null, 2));
+
       const response = await fetch(`${this.baseURL}/chat/completions`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          model: 'llama-3.1-sonar-small-128k-online',
-          messages: [
-            { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
-          ],
-          temperature: 0.2,
-          top_p: 0.9,
-          return_images: false,
-          return_related_questions: false,
-          top_k: 0,
-          stream: false,
-          presence_penalty: 0,
-          frequency_penalty: 1
-        })
+        body: JSON.stringify(requestBody)
       });
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.log('Perplexity Error Response:', errorText);
         throw new Error(`Perplexity API returned ${response.status}: ${response.statusText}`);
       }
 
@@ -548,29 +554,35 @@ class PerplexityProvider implements LLMProvider {
 
   async *streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown> {
     try {
+      const requestBody = {
+        model: 'llama-3.1-sonar-small-128k-online',
+        messages: [
+          { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
+        ],
+        max_tokens: 4000,
+        temperature: 0.2,
+        top_p: 0.9,
+        return_images: false,
+        return_related_questions: false,
+        stream: true,
+        presence_penalty: 0,
+        frequency_penalty: 1
+      };
+
+      console.log('Perplexity Request Body:', JSON.stringify(requestBody, null, 2));
+
       const response = await fetch(`${this.baseURL}/chat/completions`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${this.apiKey}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          model: 'llama-3.1-sonar-small-128k-online',
-          messages: [
-            { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
-          ],
-          temperature: 0.2,
-          top_p: 0.9,
-          return_images: false,
-          return_related_questions: false,
-          top_k: 0,
-          stream: true,
-          presence_penalty: 0,
-          frequency_penalty: 1
-        })
+        body: JSON.stringify(requestBody)
       });
 
       if (!response.ok) {
+        const errorText = await response.text();
+        console.log('Perplexity Error Response:', errorText);
         throw new Error(`Perplexity API returned ${response.status}: ${response.statusText}`);
       }
 
