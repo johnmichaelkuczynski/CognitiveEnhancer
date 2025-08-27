@@ -37,11 +37,11 @@ export default function ChunkSelector({
 
   return (
     <Dialog open={true} onOpenChange={() => onCancel()}>
-      <DialogContent className="max-w-2xl max-h-[80vh]" data-testid="chunk-modal">
+      <DialogContent className="max-w-2xl max-h-[80vh]" data-testid="chunk-modal" aria-describedby="chunk-modal-description">
         <DialogHeader>
           <DialogTitle>Select Text Chunks for Analysis</DialogTitle>
-          <p className="text-sm text-muted-foreground mt-1">
-            Your text is longer than 1000 words. Select which chunks to analyze:
+          <p id="chunk-modal-description" className="text-sm text-muted-foreground mt-1">
+            Your text is longer than 1000 words. Select which chunks to analyze. The analysis will start automatically after you click "Start Analysis".
           </p>
         </DialogHeader>
         
@@ -100,8 +100,9 @@ export default function ChunkSelector({
               onClick={onAnalyze}
               disabled={selectedChunks.length === 0}
               data-testid="button-analyze-chunks"
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
             >
-              Analyze Selected
+              Start Analysis
             </Button>
           </div>
         </div>

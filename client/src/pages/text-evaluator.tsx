@@ -33,6 +33,10 @@ export default function TextEvaluator() {
     if (file.chunks && file.chunks.length > 0) {
       setSelectedChunks(file.chunks.map(chunk => chunk.id));
       setShowChunkModal(true);
+    } else {
+      // For files under 1000 words, clear chunk state
+      setSelectedChunks([]);
+      setCurrentFile(null);
     }
   };
 
@@ -174,9 +178,78 @@ export default function TextEvaluator() {
     setSelectedChunks(selectedIds);
   };
 
-  const handleAnalyzeChunks = () => {
+  const handleAnalyzeChunks = async () => {
     setShowChunkModal(false);
-    handleAnalyze();
+    
+    // Start analysis immediately with selected chunks
+    if (!text.trim() || !currentFile?.chunks || selectedChunks.length === 0) return;
+    
+    setIsAnalyzing(true);
+    setAnalysisResult("");
+    
+    try {
+      // Get selected chunk contents
+      const selectedChunkContents = currentFile.chunks
+        .filter(chunk => selectedChunks.includes(chunk.id))
+        .map(chunk => chunk.content);
+
+      const requestBody: AnalysisRequest = {
+        text: text,
+        mode: analysisMode,
+        provider: llmProvider,
+        chunks: selectedChunkContents
+      };
+
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Analysis failed');
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('Failed to get response stream');
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              if (data.status === 'streaming' || data.status === 'completed') {
+                setAnalysisResult(data.content);
+              }
+              if (data.status === 'error') {
+                throw new Error(data.content);
+              }
+            } catch (e) {
+              // Skip malformed JSON
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Analysis error:', error);
+      setAnalysisResult(`Analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   return (
