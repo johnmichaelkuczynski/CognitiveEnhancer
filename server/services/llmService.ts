@@ -513,8 +513,9 @@ class PerplexityProvider implements LLMProvider {
   async analyzeText(text: string, mode: string): Promise<string> {
     try {
       const requestBody = {
-        model: 'llama-3.1-sonar-small-128k-online',
+        model: 'sonar-pro',
         messages: [
+          { role: "system", content: "Be precise and concise." },
           { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
         ],
         max_tokens: 4000,
@@ -555,8 +556,9 @@ class PerplexityProvider implements LLMProvider {
   async *streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown> {
     try {
       const requestBody = {
-        model: 'llama-3.1-sonar-small-128k-online',
+        model: 'sonar-pro',
         messages: [
+          { role: "system", content: "Be precise and concise." },
           { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
         ],
         max_tokens: 4000,
