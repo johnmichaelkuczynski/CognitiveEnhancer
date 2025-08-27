@@ -501,135 +501,7 @@ class DeepSeekProvider implements LLMProvider {
   }
 }
 
-class PerplexityProvider implements LLMProvider {
-  private baseURL = 'https://api.perplexity.ai';
-  private apiKey: string;
 
-  constructor() {
-    this.apiKey = process.env.PERPLEXITY_API_KEY || "";
-  }
-
-  private getSystemPrompt(mode: string): string {
-    return new OpenAIProvider()['getSystemPrompt'](mode);
-  }
-
-  async analyzeText(text: string, mode: string): Promise<string> {
-    try {
-      const requestBody = {
-        model: 'llama-3.1-sonar-small-128k-online',
-        messages: [
-          { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
-        ],
-        max_tokens: 1500,
-        temperature: 0.2
-      };
-
-      console.log('Perplexity Request Body:', JSON.stringify(requestBody, null, 2));
-
-      const response = await fetch(`${this.baseURL}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody)
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.log('Perplexity Error Response:', errorText);
-        throw new Error(`Perplexity API returned ${response.status}: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      const rawContent = data.choices[0]?.message?.content || "";
-      
-      // Minimal cleaning for ZHI 4 to preserve content integrity
-      const cleaned = rawContent
-        .replace(/\*\*([^*]*)\*\*/g, '$1')    // Remove bold markers
-        .replace(/\*([^*]*)\*/g, '$1')       // Remove italic markers
-        .replace(/QUESTION\s*(\d+):/g, '\n\nQUESTION $1:')  // Format questions
-        .replace(/--$/gm, '\n\n--\n\n')      // Format separators
-        .replace(/FINAL SCORE:/g, '\n\nFINAL SCORE:');  // Format final score
-      
-      return cleaned;
-    } catch (error) {
-      console.error('Perplexity API Error:', error);
-      throw new Error(`ZHI 4 failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-    }
-  }
-
-  async *streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown> {
-    try {
-      const requestBody = {
-        model: 'llama-3.1-sonar-small-128k-online',
-        messages: [
-          { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
-        ],
-        max_tokens: 1500,
-        temperature: 0.2,
-        stream: true
-      };
-
-      console.log('Perplexity Request Body:', JSON.stringify(requestBody, null, 2));
-
-      const response = await fetch(`${this.baseURL}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody)
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.log('Perplexity Error Response:', errorText);
-        throw new Error(`Perplexity API returned ${response.status}: ${response.statusText}`);
-      }
-
-      const reader = response.body?.getReader();
-      if (!reader) return;
-
-      const decoder = new TextDecoder();
-      
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n');
-        
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6);
-            if (data === '[DONE]') return;
-            
-            try {
-              const parsed = JSON.parse(data);
-              const content = parsed.choices[0]?.delta?.content || '';
-              if (content) {
-                // Minimal cleaning for ZHI 4 to preserve content integrity
-                const cleaned = content
-                  .replace(/\*\*([^*]*)\*\*/g, '$1')    // Remove bold markers
-                  .replace(/\*([^*]*)\*/g, '$1')       // Remove italic markers
-                  .replace(/QUESTION\s*(\d+):/g, '\n\nQUESTION $1:')  // Format questions
-                  .replace(/--$/gm, '\n\n--\n\n')      // Format separators
-                  .replace(/FINAL SCORE:/g, '\n\nFINAL SCORE:');  // Format final score
-                yield cleaned;
-              }
-            } catch (e) {
-              // Skip invalid JSON
-            }
-          }
-        }
-      }
-    } catch (error) {
-      console.error('Perplexity Stream Error:', error);
-      yield `ZHI 4 failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
-    }
-  }
-}
 
 export class LLMService {
   private providers: Map<string, LLMProvider>;
@@ -639,7 +511,6 @@ export class LLMService {
     this.providers.set('zhi1', new OpenAIProvider());
     this.providers.set('zhi2', new AnthropicProvider());
     this.providers.set('zhi3', new DeepSeekProvider());
-    this.providers.set('zhi4', new PerplexityProvider());
   }
 
   async analyzeText(text: string, mode: string, provider: string): Promise<string> {
