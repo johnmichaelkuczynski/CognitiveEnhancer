@@ -516,7 +516,7 @@ class PerplexityProvider implements LLMProvider {
   async analyzeText(text: string, mode: string): Promise<string> {
     try {
       const requestBody = {
-        model: 'llama-3.1-70b-instruct',
+        model: 'sonar-pro',
         messages: [
           { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
         ],
@@ -571,7 +571,7 @@ class PerplexityProvider implements LLMProvider {
   async *streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown> {
     try {
       const requestBody = {
-        model: 'llama-3.1-70b-instruct',
+        model: 'sonar-pro',
         messages: [
           { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
         ],
