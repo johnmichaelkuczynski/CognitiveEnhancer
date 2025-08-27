@@ -43,8 +43,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const validatedData = analysisRequestSchema.parse(req.body);
       const { text, mode, provider, chunks } = validatedData;
 
-      // Use chunks if provided, otherwise use full text
-      const analysisText = chunks && chunks.length > 0 ? chunks.join('\n\n') : text;
+      // For OpenAI (ZHI 1), process chunks sequentially with delays
+      // For other providers, join chunks as before  
+      const useSequentialProcessing = provider === 'zhi1' && chunks && chunks.length > 0;
+      const analysisText = chunks && chunks.length > 0 && !useSequentialProcessing ? chunks.join('\n\n') : text;
 
       // Set up SSE
       res.writeHead(200, {
@@ -69,15 +71,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
       try {
         let fullContent = '';
         
-        for await (const chunk of llmService.streamAnalysis(analysisText, mode, provider)) {
-          fullContent += chunk;
-          res.write(`data: ${JSON.stringify({ 
-            id: analysisId, 
-            status: 'streaming', 
-            content: fullContent, 
-            mode, 
-            provider 
-          })}\n\n`);
+        if (useSequentialProcessing) {
+          // Sequential processing for ZHI 1 (OpenAI)
+          for (let i = 0; i < chunks.length; i++) {
+            const chunkText = chunks[i];
+            
+            // Add chunk header
+            const chunkHeader = `\n\n=== CHUNK ${i + 1} OF ${chunks.length} ===\n\n`;
+            fullContent += chunkHeader;
+            res.write(`data: ${JSON.stringify({ 
+              id: analysisId, 
+              status: 'streaming', 
+              content: chunkHeader, 
+              mode, 
+              provider 
+            })}\n\n`);
+            
+            // Process single chunk
+            for await (const streamChunk of llmService.streamAnalysis(chunkText, mode, provider)) {
+              const cleanedChunk = streamChunk.replace(/\s+/g, ' '); // Fix word fusion by normalizing spaces
+              fullContent += cleanedChunk;
+              res.write(`data: ${JSON.stringify({ 
+                id: analysisId, 
+                status: 'streaming', 
+                content: cleanedChunk, 
+                mode, 
+                provider 
+              })}\n\n`);
+            }
+            
+            // Wait 10 seconds between chunks (except for last chunk)
+            if (i < chunks.length - 1) {
+              await new Promise(resolve => setTimeout(resolve, 10000));
+            }
+          }
+        } else {
+          // Normal processing for other providers
+          for await (const streamChunk of llmService.streamAnalysis(analysisText, mode, provider)) {
+            const cleanedChunk = streamChunk.replace(/\s+/g, ' '); // Fix word fusion
+            fullContent += cleanedChunk;
+            res.write(`data: ${JSON.stringify({ 
+              id: analysisId, 
+              status: 'streaming', 
+              content: cleanedChunk, 
+              mode, 
+              provider 
+            })}\n\n`);
+          }
         }
 
         // Send completion event

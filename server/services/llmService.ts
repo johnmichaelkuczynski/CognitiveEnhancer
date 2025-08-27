@@ -214,7 +214,7 @@ Important: This analysis is for educational/research purposes only and cannot su
           { role: "system", content: this.getSystemPrompt(mode) },
           { role: "user", content: text }
         ],
-        max_completion_tokens: 4000
+        max_completion_tokens: 1500
       });
 
       return response.choices[0].message.content || "";
@@ -232,14 +232,20 @@ Important: This analysis is for educational/research purposes only and cannot su
           { role: "system", content: this.getSystemPrompt(mode) },
           { role: "user", content: text }
         ],
-        max_completion_tokens: 4000,
+        max_completion_tokens: 1500,
         stream: true
       });
 
       for await (const chunk of stream) {
         const content = chunk.choices[0]?.delta?.content || '';
         if (content) {
-          yield content;
+          // Clean markdown for OpenAI output
+          const cleaned = content
+            .replace(/#{1,6}\s*/g, '')  // Remove markdown headers
+            .replace(/\*\*/g, '')       // Remove bold markers
+            .replace(/\*/g, '')         // Remove italic markers
+            .replace(/`/g, '');         // Remove code markers
+          yield cleaned;
         }
       }
     } catch (error) {
