@@ -516,13 +516,12 @@ class PerplexityProvider implements LLMProvider {
   async analyzeText(text: string, mode: string): Promise<string> {
     try {
       const requestBody = {
-        model: 'sonar-pro',
+        model: 'llama-3.1-sonar-small-128k-online',
         messages: [
           { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
         ],
-        max_tokens: 2000,
-        temperature: 0.1,
-        stream: false
+        max_tokens: 1500,
+        temperature: 0.2
       };
 
       console.log('Perplexity Request Body:', JSON.stringify(requestBody, null, 2));
@@ -545,24 +544,13 @@ class PerplexityProvider implements LLMProvider {
       const data = await response.json();
       const rawContent = data.choices[0]?.message?.content || "";
       
-      // Enhanced cleaning for ZHI 4 to fix text corruption and formatting
+      // Minimal cleaning for ZHI 4 to preserve content integrity
       const cleaned = rawContent
-        .replace(/\*\*([^*]*)\*\*/g, '$1')     // Remove bold markers
-        .replace(/\*([^*]*)\*/g, '$1')        // Remove italic markers  
-        .replace(/`([^`]*)`/g, '$1')          // Remove code markers
-        .replace(/^#{1,6}\s*/gm, '')          // Remove header markers
-        .replace(/^\s*[-*+]\s*/gm, '')        // Remove bullet points
-        .replace(/^\s*\d+\.\s*/gm, '')        // Remove numbered lists
-        .replace(/---+/g, '')                 // Remove horizontal rules
-        .replace(/([a-z])([A-Z])/g, '$1 $2')  // Fix missing spaces between words
-        .replace(/([a-z])(\d+)/g, '$1 $2')    // Fix missing spaces before numbers
-        .replace(/(\d+)([a-z])/g, '$1 $2')    // Fix missing spaces after numbers
-        .replace(/([.!?])([A-Z])/g, '$1 $2')  // Fix missing spaces after punctuation
-        .replace(/QUESTION\s*(\d+):/g, '\n\nQUESTION $1:')  // Add line breaks before questions
-        .replace(/--\s*/g, '\n\n--\n\n')      // Add proper spacing around separators
-        .replace(/FINAL SCORE:/g, '\n\nFINAL SCORE:')  // Add line break before final score
-        .replace(/\s+/g, ' ')                 // Normalize multiple spaces
-        .replace(/\n\s*\n\s*\n/g, '\n\n');   // Normalize newlines
+        .replace(/\*\*([^*]*)\*\*/g, '$1')    // Remove bold markers
+        .replace(/\*([^*]*)\*/g, '$1')       // Remove italic markers
+        .replace(/QUESTION\s*(\d+):/g, '\n\nQUESTION $1:')  // Format questions
+        .replace(/--$/gm, '\n\n--\n\n')      // Format separators
+        .replace(/FINAL SCORE:/g, '\n\nFINAL SCORE:');  // Format final score
       
       return cleaned;
     } catch (error) {
@@ -574,12 +562,12 @@ class PerplexityProvider implements LLMProvider {
   async *streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown> {
     try {
       const requestBody = {
-        model: 'sonar-pro',
+        model: 'llama-3.1-sonar-small-128k-online',
         messages: [
           { role: "user", content: `${this.getSystemPrompt(mode)}\n\nAnalyze this text:\n${text}` }
         ],
-        max_tokens: 2000,
-        temperature: 0.1,
+        max_tokens: 1500,
+        temperature: 0.2,
         stream: true
       };
 
@@ -621,24 +609,13 @@ class PerplexityProvider implements LLMProvider {
               const parsed = JSON.parse(data);
               const content = parsed.choices[0]?.delta?.content || '';
               if (content) {
-                // Enhanced cleaning for ZHI 4 to fix text corruption and formatting
+                // Minimal cleaning for ZHI 4 to preserve content integrity
                 const cleaned = content
-                  .replace(/\*\*([^*]*)\*\*/g, '$1')     // Remove bold markers
-                  .replace(/\*([^*]*)\*/g, '$1')        // Remove italic markers  
-                  .replace(/`([^`]*)`/g, '$1')          // Remove code markers
-                  .replace(/^#{1,6}\s*/gm, '')          // Remove header markers
-                  .replace(/^\s*[-*+]\s*/gm, '')        // Remove bullet points
-                  .replace(/^\s*\d+\.\s*/gm, '')        // Remove numbered lists
-                  .replace(/---+/g, '')                 // Remove horizontal rules
-                  .replace(/([a-z])([A-Z])/g, '$1 $2')  // Fix missing spaces between words
-                  .replace(/([a-z])(\d+)/g, '$1 $2')    // Fix missing spaces before numbers
-                  .replace(/(\d+)([a-z])/g, '$1 $2')    // Fix missing spaces after numbers
-                  .replace(/([.!?])([A-Z])/g, '$1 $2')  // Fix missing spaces after punctuation
-                  .replace(/QUESTION\s*(\d+):/g, '\n\nQUESTION $1:')  // Add line breaks before questions
-                  .replace(/--\s*/g, '\n\n--\n\n')      // Add proper spacing around separators
-                  .replace(/FINAL SCORE:/g, '\n\nFINAL SCORE:')  // Add line break before final score
-                  .replace(/\s+/g, ' ')                 // Normalize multiple spaces
-                  .replace(/\n\s*\n\s*\n/g, '\n\n');   // Normalize newlines
+                  .replace(/\*\*([^*]*)\*\*/g, '$1')    // Remove bold markers
+                  .replace(/\*([^*]*)\*/g, '$1')       // Remove italic markers
+                  .replace(/QUESTION\s*(\d+):/g, '\n\nQUESTION $1:')  // Format questions
+                  .replace(/--$/gm, '\n\n--\n\n')      // Format separators
+                  .replace(/FINAL SCORE:/g, '\n\nFINAL SCORE:');  // Format final score
                 yield cleaned;
               }
             } catch (e) {
