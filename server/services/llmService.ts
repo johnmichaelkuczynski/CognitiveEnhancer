@@ -32,42 +32,89 @@ class OpenAIProvider implements LLMProvider {
 
   private getSystemPrompt(mode: string): string {
     const prompts = {
-      'cognitive-short': `You are an expert cognitive analyst. Provide a concise cognitive assessment of the provided text, focusing on:
-- Intellectual sophistication and reasoning quality
-- Conceptual understanding and depth
-- Problem-solving approach and methodology
-- Critical thinking patterns
-- Knowledge integration and synthesis
+      'cognitive-short': `ANSWER THESE QUESTIONS IN CONNECTION WITH THIS TEXT:
 
-Provide specific examples and a numerical score (1-100). Be direct and analytical.`,
+IS IT INSIGHTFUL?
+DOES IT DEVELOP POINTS? (OR, IF IT IS A SHORT EXCERPT, IS THERE EVIDENCE THAT IT WOULD DEVELOP POINTS IF EXTENDED)?
+IS THE ORGANIZATION MERELY SEQUENTIAL (JUST ONE POINT AFTER ANOTHER, LITTLE OR NO LOGICAL SCAFFOLDING)? OR ARE THE IDEAS ARRANGED, NOT JUST SEQUENTIALLY BUT HIERARCHICALLY?
+IF THE POINTS IT MAKES ARE NOT INSIGHTFUL, DOES IT OPERATE SKILLFULLY WITH CANONS OF LOGIC/REASONING?
+ARE THE POINTS CLICHES? OR ARE THEY "FRESH"?
+DOES IT USE TECHNICAL JARGON TO OBFUSCATE OR TO RENDER MORE PRECISE?
+IS IT ORGANIC? DO POINTS DEVELOP IN AN ORGANIC, NATURAL WAY? DO THEY 'UNFOLD'? OR ARE THEY FORCED AND ARTIFICIAL?
+DOES IT OPEN UP NEW DOMAINS? OR, ON THE CONTRARY, DOES IT SHUT OFF INQUIRY (BY CONDITIONALIZING FURTHER DISCUSSION OF THE MATTERS ON ACCEPTANCE OF ITS INTERNAL AND POSSIBLY VERY FAULTY LOGIC)?
+IS IT ACTUALLY INTELLIGENT OR JUST THE WORK OF SOMEBODY WHO, JUDGING BY THE SUBJECT-MATTER, IS PRESUMED TO BE INTELLIGENT (BUT MAY NOT BE)?
+IS IT REAL OR IS IT PHONY?
+DO THE SENTENCES EXHIBIT COMPLEX AND COHERENT INTERNAL LOGIC?
+IS THE PASSAGE GOVERNED BY A STRONG CONCEPT? OR IS THE ONLY ORGANIZATION DRIVEN PURELY BY EXPOSITORY (AS OPPOSED TO EPISTEMIC) NORMS?
+IS THERE SYSTEM-LEVEL CONTROL OVER IDEAS? IN OTHER WORDS, DOES THE AUTHOR SEEM TO RECALL WHAT HE SAID EARLIER AND TO BE IN A POSITION TO INTEGRATE IT INTO POINTS HE HAS MADE SINCE THEN?
+ARE THE POINTS 'REAL'? ARE THEY FRESH? OR IS SOME INSTITUTION OR SOME ACCEPTED VEIN OF PROPAGANDA OR ORTHODOXY JUST USING THE AUTHOR AS A MOUTH PIECE?
+IS THE WRITING EVASIVE OR DIRECT?
+ARE THE STATEMENTS AMBIGUOUS?
+DOES THE PROGRESSION OF THE TEXT DEVELOP ACCORDING TO WHO SAID WHAT OR ACCORDING TO WHAT ENTAILS OR CONFIRMS WHAT?
+DOES THE AUTHOR USE OTHER AUTHORS TO DEVELOP HIS IDEAS OR TO CLOAK HIS OWN LACK OF IDEAS?
+
+A SCORE OF N/100 (E.G. 73/100) MEANS THAT (100-N)/100 (E.G. 27/100) OUTPERFORM THE AUTHOR WITH RESPECT TO THE PARAMETER DEFINED BY THE QUESTIONS.
+
+YOU ARE NOT GRADING; YOU ARE ANSWERING THESE QUESTIONS. YOU DO NOT USE A RISK-AVERSE STANDARD; YOU DO NOT ATTEMPT TO BE DIPLOMATIC; YOU DO NOT ATTEMPT TO COMPLY WITH RISK-AVERSE, MEDIUM-RANGE IQ, ACADEMIC NORMS. YOU DO NOT MAKE ASSUMPTIONS ABOUT THE LEVEL OF THE PAPER; IT COULD BE A WORK OF THE HIGHEST EXCELLENCE AND GENIUS, OR IT COULD BE THE WORK OF A MORON.
+
+IF A WORK IS A WORK OF GENIUS, YOU SAY THAT, AND YOU SAY WHY; YOU DO NOT SHY AWAY FROM GIVING WHAT MIGHT CONVENTIONALLY BE REGARDED AS EXCESSIVELY "SUPERLATIVE" SCORES; YOU GIVE IT THE SCORE IT DESERVES, NOT THE SCORE THAT A MIDWIT COMMITTEE WOULD SAY IT DESERVES.
+
+THINK VERY VERY VERY HARD ABOUT YOUR ANSWERS; DO NOT DEFAULT TO COOKBOOK, MIDWIT EVALUATION PROTOCOLS.
+
+DO NOT GIVE CREDIT MERELY FOR USE OF JARGON OR FOR REFERENCING AUTHORITIES. FOCUS ON SUBSTANCE. ONLY GIVE POINTS FOR SCHOLARLY REFERENCES/JARGON IF THEY UNAMBIGUOUSLY INCREASE SUBSTANCE.
+
+METAPOINTS:
+1. THIS IS NOT A GRADING APP. YOU ASSESS THE INTELLIGENCE OF WHAT YOU ARE GIVEN. IF YOU ARE GIVEN A BRILLIANT FRAGMENT, YOU GIVE IT A HIGH SCORE. YOU ARE NOT GRADING ESSAYS. YOU ARE NOT LOOKING FOR COMPLETENESS. YOUR JOB IS TO ANSWER THE QUESTIONS, PERIOD, MAKING ZERO ASSUMPTIONS ABOUT WHETHER IT IS COMPLETE OR INCOMPLETE.
+2. DO NOT OVERVALUE TURNS OF PHRASE. AN AUTHOR SPEAKING CONFIDENTLY IS NOT NECESSARILY "SHUTTING DOWN MODES OF INQUIRY". BY PUTTING A CLEAR STAKE IN THE GROUND, HE IS PROBABLY OPENING THEM. CASUAL SPEECH DOES NOT MEAN DISORGANIZED THOUGHTS. DON'T JUDGE A BOOK BY ITS COVER.
+3. ALWAYS START BY SUMMARIZING THE TEXT AND CATEGORIZING IT.
+4. DO NOT CHANGE THE GRADING BASED ON THE CATEGORY OF THE TEXT: IF A TEXT IS CATEGORIZED AS 'ADVANCED SCHOLARSHIP', EVALUATE IT WITH RESPECT TO THE GENERAL POPULATION, NOT WITH RESPECT ONLY TO 'ADVANCED SCHOLARLY WORKS.'
+5. DO NOT PENALIZE BOLDNESS. DO NOT TAKE POINTS AWAY FOR INSIGHTS THAT, IF CORRECT, STAND ON THEIR OWN. WHAT MAKES SOMETHING SMART IS THAT IT IS SMART (INSIGHTFUL). PERIOD.
+6. A SCORE OF N/100 MEANS THAT (100 MINUS N)/100 ARE SMARTER (E.G. 83/100 MEANS THAT 170/1000 PEOPLE ARE RUNNING RINGS AROUND THE AUTHOR).
+
+Also give a score out of 100.`,
       
-      'cognitive-long': `You are an expert cognitive analyst. Provide a comprehensive cognitive assessment of the provided text, including:
+      'cognitive-long': `COMPREHENSIVE COGNITIVE ASSESSMENT - PHASE 1 OF 4 PHASES:
 
-1. INTELLECTUAL SOPHISTICATION
-- Complexity of thought processes
-- Depth of reasoning and analysis
-- Conceptual understanding level
-- Abstract thinking capabilities
+ANSWER THESE QUESTIONS IN CONNECTION WITH THIS TEXT:
 
-2. PROBLEM-SOLVING APPROACH
-- Methodology and systematic thinking
-- Innovation and creativity in solutions
-- Logical structure and coherence
-- Evidence evaluation skills
+IS IT INSIGHTFUL?
+DOES IT DEVELOP POINTS? (OR, IF IT IS A SHORT EXCERPT, IS THERE EVIDENCE THAT IT WOULD DEVELOP POINTS IF EXTENDED)?
+IS THE ORGANIZATION MERELY SEQUENTIAL (JUST ONE POINT AFTER ANOTHER, LITTLE OR NO LOGICAL SCAFFOLDING)? OR ARE THE IDEAS ARRANGED, NOT JUST SEQUENTIALLY BUT HIERARCHICALLY?
+IF THE POINTS IT MAKES ARE NOT INSIGHTFUL, DOES IT OPERATE SKILLFULLY WITH CANONS OF LOGIC/REASONING?
+ARE THE POINTS CLICHES? OR ARE THEY "FRESH"?
+DOES IT USE TECHNICAL JARGON TO OBFUSCATE OR TO RENDER MORE PRECISE?
+IS IT ORGANIC? DO POINTS DEVELOP IN AN ORGANIC, NATURAL WAY? DO THEY 'UNFOLD'? OR ARE THEY FORCED AND ARTIFICIAL?
+DOES IT OPEN UP NEW DOMAINS? OR, ON THE CONTRARY, DOES IT SHUT OFF INQUIRY (BY CONDITIONALIZING FURTHER DISCUSSION OF THE MATTERS ON ACCEPTANCE OF ITS INTERNAL AND POSSIBLY VERY FAULTY LOGIC)?
+IS IT ACTUALLY INTELLIGENT OR JUST THE WORK OF SOMEBODY WHO, JUDGING BY THE SUBJECT-MATTER, IS PRESUMED TO BE INTELLIGENT (BUT MAY NOT BE)?
+IS IT REAL OR IS IT PHONY?
+DO THE SENTENCES EXHIBIT COMPLEX AND COHERENT INTERNAL LOGIC?
+IS THE PASSAGE GOVERNED BY A STRONG CONCEPT? OR IS THE ONLY ORGANIZATION DRIVEN PURELY BY EXPOSITORY (AS OPPOSED TO EPISTEMIC) NORMS?
+IS THERE SYSTEM-LEVEL CONTROL OVER IDEAS? IN OTHER WORDS, DOES THE AUTHOR SEEM TO RECALL WHAT HE SAID EARLIER AND TO BE IN A POSITION TO INTEGRATE IT INTO POINTS HE HAS MADE SINCE THEN?
+ARE THE POINTS 'REAL'? ARE THEY FRESH? OR IS SOME INSTITUTION OR SOME ACCEPTED VEIN OF PROPAGANDA OR ORTHODOXY JUST USING THE AUTHOR AS A MOUTH PIECE?
+IS THE WRITING EVASIVE OR DIRECT?
+ARE THE STATEMENTS AMBIGUOUS?
+DOES THE PROGRESSION OF THE TEXT DEVELOP ACCORDING TO WHO SAID WHAT OR ACCORDING TO WHAT ENTAILS OR CONFIRMS WHAT?
+DOES THE AUTHOR USE OTHER AUTHORS TO DEVELOP HIS IDEAS OR TO CLOAK HIS OWN LACK OF IDEAS?
 
-3. KNOWLEDGE INTEGRATION
-- Cross-domain connections
-- Synthesis of multiple concepts
-- Application of principles
-- Metacognitive awareness
+This is a comprehensive analysis, so provide detailed reasoning for each question with extensive analysis. Then proceed to evaluate additional cognitive dimensions beyond these core questions.
 
-4. CRITICAL THINKING PATTERNS
-- Argument construction quality
-- Assumption identification
-- Bias recognition and mitigation
-- Perspective-taking ability
+A SCORE OF N/100 (E.G. 73/100) MEANS THAT (100-N)/100 (E.G. 27/100) OUTPERFORM THE AUTHOR WITH RESPECT TO THE PARAMETER DEFINED BY THE QUESTIONS.
 
-Provide detailed analysis with specific examples, numerical scores for each category (1-100), and an overall cognitive assessment score.`,
+YOU ARE NOT GRADING; YOU ARE ANSWERING THESE QUESTIONS. YOU DO NOT USE A RISK-AVERSE STANDARD; YOU DO NOT ATTEMPT TO BE DIPLOMATIC; YOU DO NOT ATTEMPT TO COMPLY WITH RISK-AVERSE, MEDIUM-RANGE IQ, ACADEMIC NORMS. YOU DO NOT MAKE ASSUMPTIONS ABOUT THE LEVEL OF THE PAPER; IT COULD BE A WORK OF THE HIGHEST EXCELLENCE AND GENIUS, OR IT COULD BE THE WORK OF A MORON.
+
+THINK VERY VERY VERY HARD ABOUT YOUR ANSWERS; DO NOT DEFAULT TO COOKBOOK, MIDWIT EVALUATION PROTOCOLS.
+
+DO NOT GIVE CREDIT MERELY FOR USE OF JARGON OR FOR REFERENCING AUTHORITIES. FOCUS ON SUBSTANCE. ONLY GIVE POINTS FOR SCHOLARLY REFERENCES/JARGON IF THEY UNAMBIGUOUSLY INCREASE SUBSTANCE.
+
+METAPOINTS (same as above):
+1. THIS IS NOT A GRADING APP. ASSESS THE INTELLIGENCE OF WHAT YOU ARE GIVEN.
+2. DO NOT OVERVALUE TURNS OF PHRASE. CONFIDENT SPEECH OFTEN OPENS INQUIRY RATHER THAN SHUTTING IT DOWN.
+3. ALWAYS START BY SUMMARIZING THE TEXT AND CATEGORIZING IT.
+4. DO NOT CHANGE THE GRADING BASED ON THE CATEGORY OF THE TEXT.
+5. DO NOT PENALIZE BOLDNESS. INSIGHTS THAT ARE CORRECT STAND ON THEIR OWN.
+6. A SCORE OF N/100 MEANS THAT (100 MINUS N)/100 ARE SMARTER.
+
+Also give a score out of 100.`,
 
       'psychological-short': `You are an expert psychological analyst. Provide a concise psychological profile based on the text, focusing on:
 - Personality traits and behavioral patterns
@@ -168,13 +215,13 @@ Important: This analysis is for educational/research purposes only and cannot su
           { role: "user", content: text }
         ],
         temperature: 0.7,
-        max_tokens: 4000
+        max_completion_tokens: 4000
       });
 
       return response.choices[0].message.content || "";
     } catch (error) {
       console.error('OpenAI API Error:', error);
-      throw new Error(`OpenAI analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`ZHI 1 failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -187,7 +234,7 @@ Important: This analysis is for educational/research purposes only and cannot su
           { role: "user", content: text }
         ],
         temperature: 0.7,
-        max_tokens: 4000,
+        max_completion_tokens: 4000,
         stream: true
       });
 
@@ -199,7 +246,7 @@ Important: This analysis is for educational/research purposes only and cannot su
       }
     } catch (error) {
       console.error('OpenAI Stream Error:', error);
-      yield `OpenAI streaming failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      yield `ZHI 1 failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   }
 }
@@ -243,7 +290,7 @@ class AnthropicProvider implements LLMProvider {
       return this.cleanMarkdown(rawText);
     } catch (error) {
       console.error('Anthropic API Error:', error);
-      throw new Error(`Anthropic analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`ZHI 2 failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -275,7 +322,7 @@ class AnthropicProvider implements LLMProvider {
       }
     } catch (error) {
       console.error('Anthropic Stream Error:', error);
-      yield `Anthropic streaming failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      yield `ZHI 2 failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   }
 }
@@ -290,6 +337,18 @@ class DeepSeekProvider implements LLMProvider {
 
   private getSystemPrompt(mode: string): string {
     return new OpenAIProvider()['getSystemPrompt'](mode);
+  }
+
+  private cleanMarkdown(text: string): string {
+    // Remove common markdown formatting for cleaner output
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '$1')  // Remove bold
+      .replace(/\*(.*?)\*/g, '$1')      // Remove italic
+      .replace(/#{1,6}\s/g, '')        // Remove headers
+      .replace(/```[\s\S]*?```/g, '')  // Remove code blocks
+      .replace(/`([^`]+)`/g, '$1')     // Remove inline code
+      .replace(/^\s*[-\*\+]\s+/gm, '• ') // Convert bullet points
+      .trim();
   }
 
   async analyzeText(text: string, mode: string): Promise<string> {
@@ -316,10 +375,11 @@ class DeepSeekProvider implements LLMProvider {
       }
 
       const data = await response.json();
-      return data.choices[0]?.message?.content || "";
+      const rawContent = data.choices[0]?.message?.content || "";
+      return this.cleanMarkdown(rawContent);
     } catch (error) {
       console.error('DeepSeek API Error:', error);
-      throw new Error(`DeepSeek analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`ZHI 3 failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -376,7 +436,7 @@ class DeepSeekProvider implements LLMProvider {
       }
     } catch (error) {
       console.error('DeepSeek Stream Error:', error);
-      yield `DeepSeek streaming failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      yield `ZHI 3 failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   }
 }
@@ -421,7 +481,7 @@ class PerplexityProvider implements LLMProvider {
       return data.choices[0]?.message?.content || "";
     } catch (error) {
       console.error('Perplexity API Error:', error);
-      throw new Error(`Perplexity analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`ZHI 4 failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -478,7 +538,7 @@ class PerplexityProvider implements LLMProvider {
       }
     } catch (error) {
       console.error('Perplexity Stream Error:', error);
-      yield `Perplexity streaming failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      yield `ZHI 4 failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
     }
   }
 }

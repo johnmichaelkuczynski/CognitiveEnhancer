@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { TextChunk } from "@shared/schema";
 
@@ -42,9 +42,9 @@ export default function ChunkSelector({
         onPointerDownOutside={() => onCancel()}>
         <DialogHeader>
           <DialogTitle>Select Text Chunks for Analysis</DialogTitle>
-          <p id="chunk-modal-description" className="text-sm text-muted-foreground mt-1">
+          <DialogDescription>
             Your text is longer than 1000 words. Select which chunks to analyze. The analysis will start automatically after you click "Start Analysis".
-          </p>
+          </DialogDescription>
         </DialogHeader>
         
         <div className="flex justify-between items-center mb-4">
