@@ -178,6 +178,14 @@ export default function TextEvaluator() {
     setSelectedChunks(selectedIds);
   };
 
+  const handleNewAnalysis = () => {
+    setText("");
+    setAnalysisResult("");
+    setCurrentFile(null);
+    setSelectedChunks([]);
+    setShowChunkModal(false);
+  };
+
   const handleAnalyzeChunks = async () => {
     setShowChunkModal(false);
     
@@ -261,6 +269,7 @@ export default function TextEvaluator() {
         onLlmProviderChange={setLlmProvider}
         onAnalyze={handleAnalyze}
         onDownload={handleDownload}
+        onNewAnalysis={handleNewAnalysis}
         isAnalyzing={isAnalyzing}
         hasResults={!!analysisResult}
       />

@@ -9,6 +9,7 @@ interface HeaderProps {
   onLlmProviderChange: (provider: AnalysisRequest["provider"]) => void;
   onAnalyze: () => void;
   onDownload: () => void;
+  onNewAnalysis: () => void;
   isAnalyzing: boolean;
   hasResults: boolean;
 }
@@ -35,6 +36,7 @@ export default function Header({
   onLlmProviderChange,
   onAnalyze,
   onDownload,
+  onNewAnalysis,
   isAnalyzing,
   hasResults
 }: HeaderProps) {
@@ -78,6 +80,14 @@ export default function Header({
           className="bg-primary text-primary-foreground hover:bg-primary/90"
         >
           {isAnalyzing ? "Analyzing..." : "Analyze"}
+        </Button>
+        
+        <Button 
+          variant="outline"
+          onClick={onNewAnalysis}
+          data-testid="button-new-analysis"
+        >
+          New Analysis
         </Button>
         
         <Button 
