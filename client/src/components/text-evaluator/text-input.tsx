@@ -16,6 +16,8 @@ interface TextInputProps {
   wordCount: number;
   charCount: number;
   onFileProcessed: (file: ProcessedFile) => void;
+  context: string;
+  setContext: (context: string) => void;
 }
 
 export default function TextInput({
@@ -23,7 +25,9 @@ export default function TextInput({
   setText,
   wordCount,
   charCount,
-  onFileProcessed
+  onFileProcessed,
+  context,
+  setContext
 }: TextInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
@@ -95,6 +99,7 @@ export default function TextInput({
 
   const handleClear = () => {
     setText("");
+    setContext("");
   };
 
   return (
@@ -160,6 +165,25 @@ export default function TextInput({
           onChange={handleFileChange}
           className="hidden"
           data-testid="file-input"
+        />
+      </div>
+      
+      <div className="border-t border-border bg-white p-4">
+        <div className="mb-2">
+          <label className="text-sm font-medium text-foreground" htmlFor="context-input">
+            Context Information (Optional)
+          </label>
+          <p className="text-xs text-muted-foreground mt-1">
+            Provide context about the text to help with analysis (e.g., "This is an abstract of a dissertation from 1975" or "This is part of a comedy routine")
+          </p>
+        </div>
+        <Textarea
+          id="context-input"
+          value={context}
+          onChange={(e) => setContext(e.target.value)}
+          placeholder="E.g., 'This is an abstract of a dissertation written 50 years ago' or 'This is part of a journal article' or 'This is part of a comedy routine'..."
+          className="w-full h-20 resize-none text-sm"
+          data-testid="textarea-context"
         />
       </div>
       

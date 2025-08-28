@@ -17,8 +17,8 @@ const DEFAULT_ANTHROPIC_MODEL = "claude-sonnet-4-20250514";
 // </important_do_not_delete>
 
 interface LLMProvider {
-  analyzeText(text: string, mode: string): Promise<string>;
-  streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown>;
+  analyzeText(text: string, mode: string, context?: string, previousAnalysis?: string, critique?: string): Promise<string>;
+  streamAnalysis(text: string, mode: string, context?: string, previousAnalysis?: string, critique?: string): AsyncGenerator<string, void, unknown>;
 }
 
 class OpenAIProvider implements LLMProvider {
@@ -30,7 +30,7 @@ class OpenAIProvider implements LLMProvider {
     });
   }
 
-  private getSystemPrompt(mode: string): string {
+  public getSystemPrompt(mode: string, context?: string, previousAnalysis?: string, critique?: string): string {
     const prompts = {
       'cognitive-short': `MANDATORY: ANSWER ALL 18 QUESTIONS. DO NOT SKIP ANY. EACH QUESTION MUST BE ADDRESSED.
 
@@ -251,15 +251,23 @@ QUESTION: [Next assessment area]
 Important: This analysis is for educational/research purposes only and cannot substitute for professional clinical assessment. Highlight both areas of concern and psychological strengths.`
     };
     
-    return prompts[mode as keyof typeof prompts] || prompts['cognitive-short'];
+    let systemPrompt = prompts[mode as keyof typeof prompts] || prompts['cognitive-short'];
+    
+    if (previousAnalysis && critique) {
+      systemPrompt = `${systemPrompt}\n\nIMPORTANT: This is a RE-ANALYSIS. The user has provided feedback on a previous analysis.\n\nPREVIOUS ANALYSIS:\n${previousAnalysis}\n\nUSER CRITIQUE/FEEDBACK:\n${critique}\n\nPlease address the user's concerns and provide a revised analysis that takes their feedback into account. Improve upon the previous analysis based on their critique.`;
+    } else if (context) {
+      systemPrompt = `${systemPrompt}\n\nADDITIONAL CONTEXT: The user has provided the following context about the text being analyzed:\n${context}\n\nPlease take this context into account when performing your analysis.`;
+    }
+    
+    return systemPrompt;
   }
 
-  async analyzeText(text: string, mode: string): Promise<string> {
+  async analyzeText(text: string, mode: string, context?: string, previousAnalysis?: string, critique?: string): Promise<string> {
     try {
       const response = await this.client.chat.completions.create({
         model: DEFAULT_OPENAI_MODEL,
         messages: [
-          { role: "system", content: this.getSystemPrompt(mode) },
+          { role: "system", content: this.getSystemPrompt(mode, context, previousAnalysis, critique) },
           { role: "user", content: text }
         ],
         max_completion_tokens: 1500
@@ -272,12 +280,12 @@ Important: This analysis is for educational/research purposes only and cannot su
     }
   }
 
-  async *streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown> {
+  async *streamAnalysis(text: string, mode: string, context?: string, previousAnalysis?: string, critique?: string): AsyncGenerator<string, void, unknown> {
     try {
       const stream = await this.client.chat.completions.create({
         model: DEFAULT_OPENAI_MODEL,
         messages: [
-          { role: "system", content: this.getSystemPrompt(mode) },
+          { role: "system", content: this.getSystemPrompt(mode, context, previousAnalysis, critique) },
           { role: "user", content: text }
         ],
         max_completion_tokens: 1500,
@@ -312,9 +320,9 @@ class AnthropicProvider implements LLMProvider {
     });
   }
 
-  private getSystemPrompt(mode: string): string {
+  private getSystemPrompt(mode: string, context?: string, previousAnalysis?: string, critique?: string): string {
     // Same prompts as OpenAI provider
-    return new OpenAIProvider()['getSystemPrompt'](mode);
+    return new OpenAIProvider().getSystemPrompt(mode, context, previousAnalysis, critique);
   }
 
   private cleanMarkdown(text: string): string {
@@ -329,12 +337,12 @@ class AnthropicProvider implements LLMProvider {
       .trim();
   }
 
-  async analyzeText(text: string, mode: string): Promise<string> {
+  async analyzeText(text: string, mode: string, context?: string, previousAnalysis?: string, critique?: string): Promise<string> {
     try {
       const response = await this.client.messages.create({
         model: DEFAULT_ANTHROPIC_MODEL,
         max_tokens: 4000,
-        system: this.getSystemPrompt(mode),
+        system: this.getSystemPrompt(mode, context, previousAnalysis, critique),
         messages: [{ role: "user", content: text }]
       });
 
@@ -346,12 +354,12 @@ class AnthropicProvider implements LLMProvider {
     }
   }
 
-  async *streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown> {
+  async *streamAnalysis(text: string, mode: string, context?: string, previousAnalysis?: string, critique?: string): AsyncGenerator<string, void, unknown> {
     try {
       const stream = await this.client.messages.create({
         model: DEFAULT_ANTHROPIC_MODEL,
         max_tokens: 4000,
-        system: this.getSystemPrompt(mode),
+        system: this.getSystemPrompt(mode, context, previousAnalysis, critique),
         messages: [{ role: "user", content: text }],
         stream: true
       });
@@ -387,8 +395,8 @@ class DeepSeekProvider implements LLMProvider {
     this.apiKey = process.env.DEEPSEEK_API_KEY || "";
   }
 
-  private getSystemPrompt(mode: string): string {
-    return new OpenAIProvider()['getSystemPrompt'](mode);
+  private getSystemPrompt(mode: string, context?: string, previousAnalysis?: string, critique?: string): string {
+    return new OpenAIProvider().getSystemPrompt(mode, context, previousAnalysis, critique);
   }
 
   private cleanMarkdown(text: string): string {
@@ -403,7 +411,7 @@ class DeepSeekProvider implements LLMProvider {
       .trim();
   }
 
-  async analyzeText(text: string, mode: string): Promise<string> {
+  async analyzeText(text: string, mode: string, context?: string, previousAnalysis?: string, critique?: string): Promise<string> {
     try {
       const response = await fetch(`${this.baseURL}/chat/completions`, {
         method: 'POST',
@@ -414,7 +422,7 @@ class DeepSeekProvider implements LLMProvider {
         body: JSON.stringify({
           model: 'deepseek-chat',
           messages: [
-            { role: "system", content: this.getSystemPrompt(mode) },
+            { role: "system", content: this.getSystemPrompt(mode, context, previousAnalysis, critique) },
             { role: "user", content: text }
           ],
           temperature: 0.7,
@@ -435,7 +443,7 @@ class DeepSeekProvider implements LLMProvider {
     }
   }
 
-  async *streamAnalysis(text: string, mode: string): AsyncGenerator<string, void, unknown> {
+  async *streamAnalysis(text: string, mode: string, context?: string, previousAnalysis?: string, critique?: string): AsyncGenerator<string, void, unknown> {
     try {
       const response = await fetch(`${this.baseURL}/chat/completions`, {
         method: 'POST',
@@ -446,7 +454,7 @@ class DeepSeekProvider implements LLMProvider {
         body: JSON.stringify({
           model: 'deepseek-chat',
           messages: [
-            { role: "system", content: this.getSystemPrompt(mode) },
+            { role: "system", content: this.getSystemPrompt(mode, context, previousAnalysis, critique) },
             { role: "user", content: text }
           ],
           temperature: 0.7,
@@ -513,19 +521,19 @@ export class LLMService {
     this.providers.set('zhi3', new DeepSeekProvider());
   }
 
-  async analyzeText(text: string, mode: string, provider: string): Promise<string> {
+  async analyzeText(text: string, mode: string, provider: string, context?: string, previousAnalysis?: string, critique?: string): Promise<string> {
     const llmProvider = this.providers.get(provider);
     if (!llmProvider) {
       throw new Error(`Unknown provider: ${provider}`);
     }
-    return llmProvider.analyzeText(text, mode);
+    return llmProvider.analyzeText(text, mode, context, previousAnalysis, critique);
   }
 
-  async *streamAnalysis(text: string, mode: string, provider: string): AsyncGenerator<string, void, unknown> {
+  async *streamAnalysis(text: string, mode: string, provider: string, context?: string, previousAnalysis?: string, critique?: string): AsyncGenerator<string, void, unknown> {
     const llmProvider = this.providers.get(provider);
     if (!llmProvider) {
       throw new Error(`Unknown provider: ${provider}`);
     }
-    yield* llmProvider.streamAnalysis(text, mode);
+    yield* llmProvider.streamAnalysis(text, mode, context, previousAnalysis, critique);
   }
 }

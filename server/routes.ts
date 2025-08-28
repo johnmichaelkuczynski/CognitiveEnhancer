@@ -41,7 +41,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/analyze', async (req: Request, res: Response) => {
     try {
       const validatedData = analysisRequestSchema.parse(req.body);
-      const { text, mode, provider, chunks } = validatedData;
+      const { text, mode, provider, chunks, context, previousAnalysis, critique } = validatedData;
 
       // For OpenAI (ZHI 1), process chunks sequentially with delays
       // For other providers, join chunks as before  
@@ -88,7 +88,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             })}\n\n`);
             
             // Process single chunk
-            for await (const streamChunk of llmService.streamAnalysis(chunkText, mode, provider)) {
+            for await (const streamChunk of llmService.streamAnalysis(chunkText, mode, provider, context, previousAnalysis, critique)) {
               fullContent += streamChunk;
               res.write(`data: ${JSON.stringify({ 
                 id: analysisId, 
@@ -106,7 +106,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         } else {
           // Normal processing for other providers
-          for await (const streamChunk of llmService.streamAnalysis(analysisText, mode, provider)) {
+          for await (const streamChunk of llmService.streamAnalysis(analysisText, mode, provider, context, previousAnalysis, critique)) {
             fullContent += streamChunk;
             res.write(`data: ${JSON.stringify({ 
               id: analysisId, 

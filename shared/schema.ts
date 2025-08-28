@@ -11,7 +11,10 @@ export const analysisRequestSchema = z.object({
     "psychopathological-long"
   ]),
   provider: z.enum(["zhi1", "zhi2", "zhi3"]),
-  chunks: z.array(z.string()).optional()
+  chunks: z.array(z.string()).optional(),
+  context: z.string().optional(),
+  previousAnalysis: z.string().optional(),
+  critique: z.string().optional()
 });
 
 export const fileUploadSchema = z.object({

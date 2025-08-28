@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Brain, Copy, FileText } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Brain, Copy, FileText, RefreshCw } from "lucide-react";
 import type { AnalysisRequest } from "@shared/schema";
+import { useState } from "react";
 
 interface AnalysisResultsProps {
   result: string;
@@ -8,6 +10,7 @@ interface AnalysisResultsProps {
   analysisMode: AnalysisRequest["mode"];
   onCopy: () => void;
   onExport: () => void;
+  onReanalyze: (critique: string) => void;
 }
 
 const analysisModeLabels = {
@@ -24,8 +27,11 @@ export default function AnalysisResults({
   isAnalyzing,
   analysisMode,
   onCopy,
-  onExport
+  onExport,
+  onReanalyze
 }: AnalysisResultsProps) {
+  const [critique, setCritique] = useState('');
+  const [isSubmittingCritique, setIsSubmittingCritique] = useState(false);
   const showReadyState = !result && !isAnalyzing;
   const showLoadingState = isAnalyzing && !result;
   const showResults = !!result;
@@ -67,6 +73,43 @@ export default function AnalysisResults({
           </div>
         )}
       </div>
+      
+      {showResults && (
+        <div className="border-t border-border bg-white p-4">
+          <div className="mb-2">
+            <label className="text-sm font-medium text-foreground" htmlFor="critique-input">
+              Critique Analysis & Request Re-analysis (Optional)
+            </label>
+            <p className="text-xs text-muted-foreground mt-1">
+              Provide feedback on the analysis above and request a revised version that addresses your concerns
+            </p>
+          </div>
+          <Textarea
+            id="critique-input"
+            value={critique}
+            onChange={(e) => setCritique(e.target.value)}
+            placeholder="E.g., 'The analysis missed important aspects of the argument structure' or 'Please focus more on the rhetorical techniques used'..."
+            className="w-full h-20 resize-none text-sm mb-3"
+            data-testid="textarea-critique"
+          />
+          <Button
+            onClick={() => {
+              if (critique.trim()) {
+                setIsSubmittingCritique(true);
+                onReanalyze(critique);
+                setCritique('');
+                setTimeout(() => setIsSubmittingCritique(false), 1000);
+              }
+            }}
+            disabled={!critique.trim() || isAnalyzing || isSubmittingCritique}
+            size="sm"
+            data-testid="button-reanalyze"
+          >
+            <RefreshCw className="w-4 h-4 mr-2" />
+            {isSubmittingCritique ? 'Submitting...' : 'Re-analyze'}
+          </Button>
+        </div>
+      )}
       
       <div className="p-3 border-t border-border bg-muted/30 flex justify-between items-center text-sm">
         <span className="text-muted-foreground">

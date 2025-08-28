@@ -14,6 +14,7 @@ interface ProcessedFile {
 
 export default function TextEvaluator() {
   const [text, setText] = useState("");
+  const [context, setContext] = useState("");
   const [analysisMode, setAnalysisMode] = useState<AnalysisRequest["mode"]>("cognitive-short");
   const [llmProvider, setLlmProvider] = useState<AnalysisRequest["provider"]>("zhi1");
   const [analysisResult, setAnalysisResult] = useState("");
@@ -62,7 +63,8 @@ export default function TextEvaluator() {
         text: analysisText,
         mode: analysisMode,
         provider: llmProvider,
-        ...(chunksToAnalyze.length > 0 && { chunks: chunksToAnalyze })
+        ...(chunksToAnalyze.length > 0 && { chunks: chunksToAnalyze }),
+        ...(context.trim() && { context: context.trim() })
       };
 
       const response = await fetch('/api/analyze', {
@@ -180,10 +182,92 @@ export default function TextEvaluator() {
 
   const handleNewAnalysis = () => {
     setText("");
+    setContext("");
     setAnalysisResult("");
     setCurrentFile(null);
     setSelectedChunks([]);
     setShowChunkModal(false);
+  };
+
+  const handleReanalyze = async (critique: string) => {
+    if (!text.trim() || !analysisResult.trim() || !critique.trim()) return;
+    
+    setIsAnalyzing(true);
+    const previousAnalysis = analysisResult;
+    setAnalysisResult("");
+    
+    try {
+      let analysisText = text;
+      let chunksToAnalyze: string[] = [];
+      
+      // If we have a file with chunks and selected chunks
+      if (currentFile?.chunks && selectedChunks.length > 0) {
+        const selectedChunkContents = currentFile.chunks
+          .filter(chunk => selectedChunks.includes(chunk.id))
+          .map(chunk => chunk.content);
+        chunksToAnalyze = selectedChunkContents;
+      }
+
+      const requestBody: AnalysisRequest = {
+        text: analysisText,
+        mode: analysisMode,
+        provider: llmProvider,
+        ...(chunksToAnalyze.length > 0 && { chunks: chunksToAnalyze }),
+        ...(context.trim() && { context: context.trim() }),
+        previousAnalysis,
+        critique: critique.trim()
+      };
+
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Re-analysis failed');
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('Failed to get response stream');
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              if (data.status === 'streaming' || data.status === 'completed') {
+                setAnalysisResult(data.content);
+              }
+              if (data.status === 'error') {
+                throw new Error(data.content);
+              }
+            } catch (e) {
+              // Skip malformed JSON
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Re-analysis error:', error);
+      setAnalysisResult(`Re-analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const handleAnalyzeChunks = async () => {
@@ -205,7 +289,8 @@ export default function TextEvaluator() {
         text: text,
         mode: analysisMode,
         provider: llmProvider,
-        chunks: selectedChunkContents
+        chunks: selectedChunkContents,
+        ...(context.trim() && { context: context.trim() })
       };
 
       const response = await fetch('/api/analyze', {
@@ -281,6 +366,8 @@ export default function TextEvaluator() {
           wordCount={wordCount}
           charCount={charCount}
           onFileProcessed={handleFileProcessed}
+          context={context}
+          setContext={setContext}
         />
         
         <AnalysisResults
@@ -289,6 +376,7 @@ export default function TextEvaluator() {
           analysisMode={analysisMode}
           onCopy={handleCopyResult}
           onExport={handleExportTxt}
+          onReanalyze={handleReanalyze}
         />
       </main>
 
