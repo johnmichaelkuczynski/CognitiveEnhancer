@@ -33,7 +33,8 @@ export default function AnalysisResults({
   const [critique, setCritique] = useState('');
   const [isSubmittingCritique, setIsSubmittingCritique] = useState(false);
   const showReadyState = !result && !isAnalyzing;
-  const showResults = !!result || isAnalyzing;
+  const showLoadingState = isAnalyzing && !result;
+  const showResults = !!result;
 
   return (
     <div className="w-1/2 flex flex-col">
@@ -54,21 +55,20 @@ export default function AnalysisResults({
           </div>
         )}
         
-        {(result || isAnalyzing) && (
+        {showLoadingState && (
+          <div className="h-full flex flex-col items-center justify-center text-center" data-testid="loading-state">
+            <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mb-4"></div>
+            <p className="text-sm text-muted-foreground">Analyzing text...</p>
+          </div>
+        )}
+        
+        {showResults && (
           <div className="p-4" data-testid="analysis-content">
             <div 
-              className="prose prose-sm max-w-none whitespace-pre-wrap font-mono text-sm leading-relaxed"
+              className="prose prose-sm max-w-none whitespace-pre-wrap"
               data-testid="analysis-text"
-              style={{ 
-                wordBreak: 'break-word',
-                overflowWrap: 'break-word',
-                minHeight: '100px'
-              }}
             >
               {result}
-              {isAnalyzing && (
-                <span className="inline-block w-1 h-4 bg-blue-500 animate-pulse ml-1">▎</span>
-              )}
             </div>
           </div>
         )}
@@ -101,7 +101,7 @@ export default function AnalysisResults({
                 setTimeout(() => setIsSubmittingCritique(false), 1000);
               }
             }}
-            disabled={!critique.trim() || isAnalyzing}
+            disabled={!critique.trim() || isAnalyzing || isSubmittingCritique}
             size="sm"
             data-testid="button-reanalyze"
           >

@@ -10,7 +10,7 @@ export const analysisRequestSchema = z.object({
     "psychopathological-short",
     "psychopathological-long"
   ]),
-  provider: z.enum(["zhi1", "zhi2", "zhi3", "zhi4"]),
+  provider: z.enum(["zhi1", "zhi2", "zhi3"]),
   chunks: z.array(z.string()).optional(),
   context: z.string().optional(),
   previousAnalysis: z.string().optional(),

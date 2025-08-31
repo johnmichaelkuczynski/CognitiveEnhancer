@@ -48,35 +48,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const useSequentialProcessing = provider === 'zhi1' && chunks && chunks.length > 0;
       const analysisText = chunks && chunks.length > 0 && !useSequentialProcessing ? chunks.join('\n\n') : text;
 
-      // Set up proper Server-Sent Events headers
+      // Set up SSE
       res.writeHead(200, {
         'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Cache-Control': 'no-cache',
         'Connection': 'keep-alive',
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Cache-Control, Content-Type, Accept',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'X-Accel-Buffering': 'no', // Disable nginx buffering
-        'Content-Security-Policy': "default-src 'self' 'unsafe-inline' 'unsafe-eval'"
+        'Access-Control-Allow-Headers': 'Cache-Control'
       });
-
-      // Send keep-alive ping immediately
-      res.write(': keep-alive\n\n');
 
       const analysisId = randomUUID();
       
-      // Send initial event with flush
-      const startEvent = `data: ${JSON.stringify({ 
+      // Send initial event
+      res.write(`data: ${JSON.stringify({ 
         id: analysisId, 
         status: 'starting', 
         content: '', 
         mode, 
         provider 
-      })}\n\n`;
-      res.write(startEvent);
-      
-      // Force flush to client immediately
-      if ((res as any).flush) (res as any).flush();
+      })}\n\n`);
 
       try {
         let fullContent = '';
@@ -89,32 +79,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
             // Add chunk header
             const chunkHeader = `\n\n=== CHUNK ${i + 1} OF ${chunks.length} ===\n\n`;
             fullContent += chunkHeader;
-            const headerEvent = `data: ${JSON.stringify({ 
+            res.write(`data: ${JSON.stringify({ 
               id: analysisId, 
               status: 'streaming', 
               content: chunkHeader, 
               mode, 
               provider 
-            })}\n\n`;
-            res.write(headerEvent);
-            if ((res as any).flush) (res as any).flush();
+            })}\n\n`);
             
             // Process single chunk
             for await (const streamChunk of llmService.streamAnalysis(chunkText, mode, provider, context, previousAnalysis, critique)) {
               fullContent += streamChunk;
-              const streamEvent = `data: ${JSON.stringify({ 
+              res.write(`data: ${JSON.stringify({ 
                 id: analysisId, 
                 status: 'streaming', 
                 content: streamChunk, 
                 mode, 
                 provider 
-              })}\n\n`;
-              res.write(streamEvent);
-              
-              // Force immediate flush for real-time streaming
-              if ((res as any).flush) (res as any).flush();
-              
-              // Real-time streaming - no delays
+              })}\n\n`);
             }
             
             // Wait 10 seconds between chunks (except for last chunk)
@@ -123,42 +105,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           }
         } else {
-          // Character-by-character streaming for immediate visibility
-          console.log(`🎬 Starting character streaming for ${provider}`);
-          let charCount = 0;
+          // Normal processing for other providers
           for await (const streamChunk of llmService.streamAnalysis(analysisText, mode, provider, context, previousAnalysis, critique)) {
-            charCount++;
             fullContent += streamChunk;
-            const streamEvent = `data: ${JSON.stringify({ 
+            res.write(`data: ${JSON.stringify({ 
               id: analysisId, 
               status: 'streaming', 
               content: streamChunk, 
               mode, 
               provider 
-            })}\n\n`;
-            res.write(streamEvent);
-            
-            // Force immediate flush for real-time streaming
-            if ((res as any).flush) (res as any).flush();
-            
-            if (charCount === 1) {
-              console.log(`✅ FIRST CHARACTER SENT: "${streamChunk}"`);
-            }
-            
-            // Real-time streaming - content appears as LLM generates it
+            })}\n\n`);
           }
         }
 
-        // Send completion event with flush
-        const completionEvent = `data: ${JSON.stringify({ 
+        // Send completion event
+        res.write(`data: ${JSON.stringify({ 
           id: analysisId, 
           status: 'completed', 
           content: fullContent, 
           mode, 
           provider 
-        })}\n\n`;
-        res.write(completionEvent);
-        if ((res as any).flush) (res as any).flush();
+        })}\n\n`);
         
       } catch (error) {
         res.write(`data: ${JSON.stringify({ 
