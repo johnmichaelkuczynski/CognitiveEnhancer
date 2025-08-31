@@ -33,8 +33,7 @@ export default function AnalysisResults({
   const [critique, setCritique] = useState('');
   const [isSubmittingCritique, setIsSubmittingCritique] = useState(false);
   const showReadyState = !result && !isAnalyzing;
-  const showLoadingState = isAnalyzing && !result;
-  const showResults = !!result;
+  const showResults = !!result || isAnalyzing;
 
   return (
     <div className="w-1/2 flex flex-col">
@@ -55,13 +54,6 @@ export default function AnalysisResults({
           </div>
         )}
         
-        {showLoadingState && (
-          <div className="h-full flex flex-col items-center justify-center text-center" data-testid="loading-state">
-            <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mb-4"></div>
-            <p className="text-sm text-muted-foreground">Analyzing text...</p>
-          </div>
-        )}
-        
         {showResults && (
           <div className="p-4" data-testid="analysis-content">
             <div 
@@ -73,14 +65,10 @@ export default function AnalysisResults({
                 overflowWrap: 'break-word',
                 minHeight: '100px'
               }}
-              key={result.length} // Force re-render on content change
             >
               {result}
-              {isAnalyzing && result && (
-                <span className="inline-block w-2 h-5 bg-green-500 animate-pulse ml-1 align-baseline">|</span>
-              )}
-              {isAnalyzing && !result && (
-                <span className="text-gray-500">Streaming analysis...</span>
+              {isAnalyzing && (
+                <span className="inline-block w-2 h-5 bg-blue-500 animate-pulse ml-1">|</span>
               )}
             </div>
           </div>
@@ -114,7 +102,7 @@ export default function AnalysisResults({
                 setTimeout(() => setIsSubmittingCritique(false), 1000);
               }
             }}
-            disabled={!critique.trim() || isAnalyzing || isSubmittingCritique}
+            disabled={!critique.trim() || isAnalyzing}
             size="sm"
             data-testid="button-reanalyze"
           >
