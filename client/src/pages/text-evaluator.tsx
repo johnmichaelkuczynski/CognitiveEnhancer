@@ -43,10 +43,12 @@ export default function TextEvaluator() {
 
   // Utility function to handle streaming analysis
   const handleStreamingAnalysis = async (requestBody: AnalysisRequest) => {
+    console.log('Starting streaming analysis...');
     const response = await fetch('/api/analyze', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
       },
       body: JSON.stringify(requestBody),
     });
@@ -62,6 +64,7 @@ export default function TextEvaluator() {
 
     const decoder = new TextDecoder();
     let buffer = '';
+    let accumulator = '';
 
     while (true) {
       const { done, value } = await reader.read();
@@ -75,22 +78,23 @@ export default function TextEvaluator() {
         if (line.startsWith('data: ')) {
           try {
             const data = JSON.parse(line.slice(6));
+            console.log('Received event:', data.status, 'Content length:', data.content?.length || 0);
+            
             if (data.status === 'starting') {
+              accumulator = '';
               setAnalysisResult('');
             } else if (data.status === 'streaming') {
-              console.log('Streaming chunk:', data.content);
-              setAnalysisResult(prev => {
-                const newResult = prev + data.content;
-                console.log('Updated result length:', newResult.length);
-                return newResult;
-              });
+              accumulator += data.content;
+              setAnalysisResult(accumulator);
+              console.log('Accumulated length:', accumulator.length);
             } else if (data.status === 'completed') {
               setAnalysisResult(data.content);
+              console.log('Analysis completed, final length:', data.content.length);
             } else if (data.status === 'error') {
               throw new Error(data.content);
             }
           } catch (e) {
-            // Skip malformed JSON
+            console.warn('Failed to parse SSE data:', line);
           }
         }
       }
