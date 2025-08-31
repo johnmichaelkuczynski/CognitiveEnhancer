@@ -114,8 +114,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
               // Force immediate flush for real-time streaming
               if ((res as any).flush) (res as any).flush();
               
-              // Minimal delay for visible streaming
-              await new Promise(resolve => setTimeout(resolve, 25));
+              // Character-level streaming delay
+              await new Promise(resolve => setTimeout(resolve, 50));
             }
             
             // Wait 10 seconds between chunks (except for last chunk)
@@ -139,8 +139,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             // Force immediate flush for real-time streaming
             if ((res as any).flush) (res as any).flush();
             
-            // Minimal delay for visible streaming
-            await new Promise(resolve => setTimeout(resolve, 25));
+            // Character-level streaming delay  
+            await new Promise(resolve => setTimeout(resolve, 50));
           }
         }
 

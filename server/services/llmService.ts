@@ -363,7 +363,11 @@ Important: This analysis is for educational/research purposes only and cannot su
             .replace(/\*\*/g, '')       // Remove bold markers
             .replace(/\*/g, '')         // Remove italic markers
             .replace(/`/g, '');         // Remove code markers
-          yield cleaned;
+          
+          // Break into smaller chunks for true character-by-character streaming
+          for (let i = 0; i < cleaned.length; i++) {
+            yield cleaned[i];
+          }
         }
       }
     } catch (error) {
@@ -426,21 +430,16 @@ class AnthropicProvider implements LLMProvider {
         stream: true
       });
 
-      let buffer = '';
       for await (const chunk of stream) {
         if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
-          buffer += chunk.delta.text;
-          // Clean markdown as we stream, but only yield complete sentences/lines
-          if (buffer.includes('\n') || buffer.includes('.')) {
-            const cleanedText = this.cleanMarkdown(buffer);
-            yield cleanedText;
-            buffer = '';
+          const content = chunk.delta.text;
+          const cleanedText = this.cleanMarkdown(content);
+          
+          // Break into individual characters for true streaming
+          for (let i = 0; i < cleanedText.length; i++) {
+            yield cleanedText[i];
           }
         }
-      }
-      // Yield any remaining content
-      if (buffer) {
-        yield this.cleanMarkdown(buffer);
       }
     } catch (error) {
       console.error('Anthropic Stream Error:', error);
@@ -556,7 +555,11 @@ class DeepSeekProvider implements LLMProvider {
                   .replace(/\*/g, '')    // Remove italic markers  
                   .replace(/`/g, '')     // Remove code markers
                   .replace(/#{1,6}/g, ''); // Remove header markers
-                yield cleaned;
+                
+                // Break into individual characters for true streaming
+                for (let i = 0; i < cleaned.length; i++) {
+                  yield cleaned[i];
+                }
               }
             } catch (e) {
               // Skip invalid JSON
