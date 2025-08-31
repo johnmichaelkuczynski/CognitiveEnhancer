@@ -75,7 +75,7 @@ export default function AnalysisResults({
             >
               {result}
               {isAnalyzing && (
-                <span className="inline-block w-2 h-4 bg-blue-500 animate-pulse ml-1">|</span>
+                <span className="inline-block w-2 h-5 bg-blue-600 animate-pulse ml-1 align-baseline">|</span>
               )}
             </div>
           </div>

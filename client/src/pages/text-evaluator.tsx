@@ -60,6 +60,7 @@ export default function TextEvaluator() {
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error('❌ HTTP ERROR:', response.status, errorText);
       throw new Error(`Analysis failed: ${response.status} - ${errorText}`);
     }
 
@@ -80,6 +81,11 @@ export default function TextEvaluator() {
         
         if (done) {
           console.log('✅ STREAMING COMPLETED - Total chunks:', chunkCount);
+          console.log('🏆 FINAL CONTENT LENGTH:', streamedContent.length);
+          if (streamedContent.length === 0) {
+            console.error('❌ NO CONTENT RECEIVED DESPITE COMPLETED STREAM');
+            setAnalysisResult('❌ Error: No analysis content received from server');
+          }
           break;
         }
 
@@ -115,7 +121,16 @@ export default function TextEvaluator() {
               } 
               else if (data.status === 'streaming') {
                 streamedContent += data.content;
-                setAnalysisResult(streamedContent);
+                // Force immediate update with React 18 flushSync for visible streaming
+                import('react-dom').then(ReactDOM => {
+                  if (ReactDOM.flushSync) {
+                    ReactDOM.flushSync(() => {
+                      setAnalysisResult(streamedContent);
+                    });
+                  } else {
+                    setAnalysisResult(streamedContent);
+                  }
+                });
                 console.log(`📝 UPDATED DISPLAY - Total length: ${streamedContent.length}`);
               } 
               else if (data.status === 'completed') {
