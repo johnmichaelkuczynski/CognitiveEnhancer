@@ -114,8 +114,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               // Force immediate flush for real-time streaming
               if ((res as any).flush) (res as any).flush();
               
-              // Fast character streaming - 30ms for immediate visible effect
-              await new Promise(resolve => setTimeout(resolve, 30));
+              // Real-time streaming - no delays
             }
             
             // Wait 10 seconds between chunks (except for last chunk)
@@ -146,8 +145,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               console.log(`✅ FIRST CHARACTER SENT: "${streamChunk}"`);
             }
             
-            // Immediate streaming - no artificial delay
-            // await new Promise(resolve => setTimeout(resolve, 30));
+            // Real-time streaming - content appears as LLM generates it
           }
         }
 
