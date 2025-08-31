@@ -43,7 +43,7 @@ export default function TextEvaluator() {
 
   // Real-time streaming analysis implementation
   const handleStreamingAnalysis = async (requestBody: AnalysisRequest) => {
-    console.log('🚀 STARTING STREAMING ANALYSIS');
+    console.log('🚀 STARTING STREAMING ANALYSIS', requestBody);
     
     const response = await fetch('/api/analyze', {
       method: 'POST',
@@ -54,6 +54,9 @@ export default function TextEvaluator() {
       },
       body: JSON.stringify(requestBody),
     });
+
+    console.log('📡 RESPONSE STATUS:', response.status, response.statusText);
+    console.log('📡 RESPONSE HEADERS:', Object.fromEntries(response.headers.entries()));
 
     if (!response.ok) {
       const errorText = await response.text();
