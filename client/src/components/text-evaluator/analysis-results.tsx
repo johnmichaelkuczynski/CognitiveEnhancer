@@ -70,12 +70,17 @@ export default function AnalysisResults({
               style={{ 
                 animation: isAnalyzing ? 'none' : undefined,
                 wordBreak: 'break-word',
-                overflowWrap: 'break-word'
+                overflowWrap: 'break-word',
+                minHeight: '100px'
               }}
+              key={result.length} // Force re-render on content change
             >
               {result}
-              {isAnalyzing && (
-                <span className="inline-block w-2 h-5 bg-blue-600 animate-pulse ml-1 align-baseline">|</span>
+              {isAnalyzing && result && (
+                <span className="inline-block w-2 h-5 bg-green-500 animate-pulse ml-1 align-baseline">|</span>
+              )}
+              {isAnalyzing && !result && (
+                <span className="text-gray-500">Streaming analysis...</span>
               )}
             </div>
           </div>

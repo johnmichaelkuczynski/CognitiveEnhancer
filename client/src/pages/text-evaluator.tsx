@@ -117,13 +117,21 @@ export default function TextEvaluator() {
               if (data.status === 'starting') {
                 streamedContent = '';
                 setAnalysisResult('');
-                console.log('🔄 RESET CONTENT');
+                console.log('🔄 RESET CONTENT - STREAMING BEGINS');
               } 
               else if (data.status === 'streaming') {
                 streamedContent += data.content;
-                // Immediate React state update for real-time streaming
+                // Immediate state update for visible streaming
                 setAnalysisResult(streamedContent);
-                console.log(`📝 STREAMED: "${data.content}" - Total: ${streamedContent.length}`);
+                console.log(`🔥 LIVE STREAMING: "${data.content}" | Total chars: ${streamedContent.length}`);
+                
+                // Force DOM update if needed
+                setTimeout(() => {
+                  const element = document.querySelector('[data-testid="analysis-text"]');
+                  if (element) {
+                    element.textContent = streamedContent;
+                  }
+                }, 0);
               } 
               else if (data.status === 'completed') {
                 setAnalysisResult(data.content);
