@@ -142,6 +142,7 @@ export default function TextEvaluator() {
     
     if (!text.trim()) {
       console.error('❌ NO TEXT PROVIDED');
+      setAnalysisResult('❌ Error: Please enter some text to analyze before clicking the Analyze button.');
       return;
     }
     
