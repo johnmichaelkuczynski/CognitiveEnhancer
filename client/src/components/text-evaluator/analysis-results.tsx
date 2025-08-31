@@ -65,10 +65,18 @@ export default function AnalysisResults({
         {showResults && (
           <div className="p-4" data-testid="analysis-content">
             <div 
-              className="prose prose-sm max-w-none whitespace-pre-wrap"
+              className="prose prose-sm max-w-none whitespace-pre-wrap font-mono text-sm leading-relaxed"
               data-testid="analysis-text"
+              style={{ 
+                animation: isAnalyzing ? 'none' : undefined,
+                wordBreak: 'break-word',
+                overflowWrap: 'break-word'
+              }}
             >
               {result}
+              {isAnalyzing && (
+                <span className="inline-block w-2 h-4 bg-blue-500 animate-pulse ml-1">|</span>
+              )}
             </div>
           </div>
         )}

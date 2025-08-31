@@ -41,63 +41,96 @@ export default function TextEvaluator() {
     }
   };
 
-  // Utility function to handle streaming analysis
+  // Real-time streaming analysis implementation
   const handleStreamingAnalysis = async (requestBody: AnalysisRequest) => {
-    console.log('Starting streaming analysis...');
+    console.log('🚀 STARTING STREAMING ANALYSIS');
+    
     const response = await fetch('/api/analyze', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'text/event-stream',
         'Cache-Control': 'no-cache',
       },
       body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
-      throw new Error('Analysis failed');
+      const errorText = await response.text();
+      throw new Error(`Analysis failed: ${response.status} - ${errorText}`);
     }
 
-    const reader = response.body?.getReader();
-    if (!reader) {
-      throw new Error('Failed to get response stream');
+    if (!response.body) {
+      throw new Error('No response body for streaming');
     }
 
+    // Use ReadableStream directly for better browser compatibility
+    const reader = response.body.getReader();
     const decoder = new TextDecoder();
     let buffer = '';
-    let accumulator = '';
+    let streamedContent = '';
+    let chunkCount = 0;
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        
+        if (done) {
+          console.log('✅ STREAMING COMPLETED - Total chunks:', chunkCount);
+          break;
+        }
 
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
+        // Decode chunk
+        const chunk = decoder.decode(value, { stream: true });
+        buffer += chunk;
+        
+        // Process complete lines
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // Keep incomplete line in buffer
 
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          try {
-            const data = JSON.parse(line.slice(6));
-            console.log('Received event:', data.status, 'Content length:', data.content?.length || 0);
-            
-            if (data.status === 'starting') {
-              accumulator = '';
-              setAnalysisResult('');
-            } else if (data.status === 'streaming') {
-              accumulator += data.content;
-              setAnalysisResult(accumulator);
-              console.log('Accumulated length:', accumulator.length);
-            } else if (data.status === 'completed') {
-              setAnalysisResult(data.content);
-              console.log('Analysis completed, final length:', data.content.length);
-            } else if (data.status === 'error') {
-              throw new Error(data.content);
+        for (const line of lines) {
+          if (line.trim() === '') continue; // Skip empty lines
+          
+          if (line.startsWith('data: ')) {
+            try {
+              const jsonData = line.slice(6).trim();
+              if (jsonData === '') continue; // Skip empty data
+              
+              const data = JSON.parse(jsonData);
+              chunkCount++;
+              
+              console.log(`📦 CHUNK ${chunkCount}:`, {
+                status: data.status,
+                contentLength: data.content?.length || 0,
+                contentPreview: data.content?.substring(0, 30) || 'empty'
+              });
+
+              if (data.status === 'starting') {
+                streamedContent = '';
+                setAnalysisResult('');
+                console.log('🔄 RESET CONTENT');
+              } 
+              else if (data.status === 'streaming') {
+                streamedContent += data.content;
+                setAnalysisResult(streamedContent);
+                console.log(`📝 UPDATED DISPLAY - Total length: ${streamedContent.length}`);
+              } 
+              else if (data.status === 'completed') {
+                setAnalysisResult(data.content);
+                console.log('🏁 FINAL CONTENT SET - Length:', data.content.length);
+                return; // Exit successfully
+              } 
+              else if (data.status === 'error') {
+                throw new Error(`Analysis error: ${data.content}`);
+              }
+            } catch (parseError) {
+              console.error('❌ JSON Parse Error:', parseError, 'Line:', line);
             }
-          } catch (e) {
-            console.warn('Failed to parse SSE data:', line);
           }
         }
       }
+    } finally {
+      reader.releaseLock();
     }
   };
 

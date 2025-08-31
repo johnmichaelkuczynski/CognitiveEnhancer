@@ -48,25 +48,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const useSequentialProcessing = provider === 'zhi1' && chunks && chunks.length > 0;
       const analysisText = chunks && chunks.length > 0 && !useSequentialProcessing ? chunks.join('\n\n') : text;
 
-      // Set up SSE
+      // Set up proper Server-Sent Events headers
       res.writeHead(200, {
         'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Connection': 'keep-alive',
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Cache-Control'
+        'Access-Control-Allow-Headers': 'Cache-Control, Content-Type, Accept',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'X-Accel-Buffering': 'no', // Disable nginx buffering
+        'Content-Security-Policy': "default-src 'self' 'unsafe-inline' 'unsafe-eval'"
       });
+
+      // Send keep-alive ping immediately
+      res.write(': keep-alive\n\n');
 
       const analysisId = randomUUID();
       
-      // Send initial event
-      res.write(`data: ${JSON.stringify({ 
+      // Send initial event with flush
+      const startEvent = `data: ${JSON.stringify({ 
         id: analysisId, 
         status: 'starting', 
         content: '', 
         mode, 
         provider 
-      })}\n\n`);
+      })}\n\n`;
+      res.write(startEvent);
+      
+      // Force flush to client immediately
+      if ((res as any).flush) (res as any).flush();
 
       try {
         let fullContent = '';
@@ -79,24 +89,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
             // Add chunk header
             const chunkHeader = `\n\n=== CHUNK ${i + 1} OF ${chunks.length} ===\n\n`;
             fullContent += chunkHeader;
-            res.write(`data: ${JSON.stringify({ 
+            const headerEvent = `data: ${JSON.stringify({ 
               id: analysisId, 
               status: 'streaming', 
               content: chunkHeader, 
               mode, 
               provider 
-            })}\n\n`);
+            })}\n\n`;
+            res.write(headerEvent);
+            if ((res as any).flush) (res as any).flush();
             
             // Process single chunk
             for await (const streamChunk of llmService.streamAnalysis(chunkText, mode, provider, context, previousAnalysis, critique)) {
               fullContent += streamChunk;
-              res.write(`data: ${JSON.stringify({ 
+              const streamEvent = `data: ${JSON.stringify({ 
                 id: analysisId, 
                 status: 'streaming', 
                 content: streamChunk, 
                 mode, 
                 provider 
-              })}\n\n`);
+              })}\n\n`;
+              res.write(streamEvent);
+              
+              // Force immediate flush for real-time streaming
+              if ((res as any).flush) (res as any).flush();
+              
+              // Minimal delay for real-time streaming
+              await new Promise(resolve => setTimeout(resolve, 5));
             }
             
             // Wait 10 seconds between chunks (except for last chunk)
@@ -108,24 +127,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Normal processing for other providers
           for await (const streamChunk of llmService.streamAnalysis(analysisText, mode, provider, context, previousAnalysis, critique)) {
             fullContent += streamChunk;
-            res.write(`data: ${JSON.stringify({ 
+            const streamEvent = `data: ${JSON.stringify({ 
               id: analysisId, 
               status: 'streaming', 
               content: streamChunk, 
               mode, 
               provider 
-            })}\n\n`);
+            })}\n\n`;
+            res.write(streamEvent);
+            
+            // Force immediate flush for real-time streaming
+            if ((res as any).flush) (res as any).flush();
+            
+            // Minimal delay for real-time streaming
+            await new Promise(resolve => setTimeout(resolve, 5));
           }
         }
 
-        // Send completion event
-        res.write(`data: ${JSON.stringify({ 
+        // Send completion event with flush
+        const completionEvent = `data: ${JSON.stringify({ 
           id: analysisId, 
           status: 'completed', 
           content: fullContent, 
           mode, 
           provider 
-        })}\n\n`);
+        })}\n\n`;
+        res.write(completionEvent);
+        if ((res as any).flush) (res as any).flush();
         
       } catch (error) {
         res.write(`data: ${JSON.stringify({ 
