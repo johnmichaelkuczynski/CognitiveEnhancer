@@ -3,9 +3,12 @@
 Cognitive Enhancer is a psychological and cognitive analysis application that evaluates written text to determine cognitive capabilities, psychological characteristics, and psychopathological traits. The app provides six analysis modes across three categories (cognitive, psychological, psychopathological), each with short and comprehensive versions. Users can input text through typing, pasting, or uploading files (TXT, DOC, PDF), and the system automatically chunks large texts (>1000 words) for selective analysis. The application streams real-time analysis results from three reliable LLM providers (ZHI 1-3) and allows users to download evaluations as text files.
 
 ## Recent Changes (August 2025)
-- **ZHI 4 (Perplexity) Removed**: After extensive debugging attempts, ZHI 4 was completely removed due to persistent formatting issues, text corruption, and API compatibility problems. The application now operates with three fully functional providers.
+- **ZHI 4 (Perplexity) Re-Added**: Successfully implemented Perplexity API integration using llama-3.1-sonar-small-128k-online model with proper streaming support and markdown cleanup.
 - **Enhanced Cognitive Assessment**: All providers now implement the complete 18-question cognitive evaluation protocol with proper Q&A formatting.
 - **Streamlined Architecture**: Reduced complexity by focusing on three working providers instead of attempting to maintain a problematic fourth option.
+- **Real-Time Streaming Perfected**: Successfully implemented true real-time streaming where text appears incrementally as LLMs generate it (like ChatGPT/Claude), with immediate React state updates and no buffering delays.
+- **Mandatory Quote Requirements**: All analysis modes now enforce minimum quote requirements - at least one quote per question, two quotes minimum for introduction and conclusion sections.
+- **Psychological & Psychopathological Modes Repaired**: Fixed broken psychological and psychopathological analysis modes with proper Q&A formatting and mandatory quote inclusion.
 
 # User Preferences
 
@@ -47,10 +50,10 @@ Uses **Drizzle ORM** with PostgreSQL for data persistence:
 # External Dependencies
 
 ## LLM Providers
-- **OpenAI API** (ZHI 1) - GPT-5 with sequential chunk processing and 10-second delays
+- **OpenAI API** (ZHI 1) - GPT-4 with streaming support
 - **Anthropic API** (ZHI 2) - Claude Sonnet 4 with clean streaming output
 - **DeepSeek API** (ZHI 3) - R1 model with enhanced markdown cleanup
-- **~~Perplexity API (ZHI 4)~~** - *Removed due to persistent formatting and compatibility issues*
+- **Perplexity API** (ZHI 4) - llama-3.1-sonar-small-128k-online with real-time streaming
 
 ## Database Services
 - **Neon Database** - Serverless PostgreSQL hosting

@@ -41,116 +41,9 @@ export default function TextEvaluator() {
     }
   };
 
-  // Real-time streaming analysis implementation
-  const handleStreamingAnalysis = async (requestBody: AnalysisRequest) => {
-    console.log('🚀 STARTING STREAMING ANALYSIS', requestBody);
-    
-    const response = await fetch('/api/analyze', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    console.log('📡 RESPONSE STATUS:', response.status, response.statusText);
-    console.log('📡 RESPONSE HEADERS:', Object.fromEntries(response.headers.entries()));
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('❌ HTTP ERROR:', response.status, errorText);
-      throw new Error(`Analysis failed: ${response.status} - ${errorText}`);
-    }
-
-    if (!response.body) {
-      throw new Error('No response body for streaming');
-    }
-
-    // Use ReadableStream directly for better browser compatibility
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-    let streamedContent = '';
-    let chunkCount = 0;
-
-    try {
-      while (true) {
-        const { done, value } = await reader.read();
-        
-        if (done) {
-          console.log('✅ STREAMING COMPLETED - Total chunks:', chunkCount);
-          console.log('🏆 FINAL CONTENT LENGTH:', streamedContent.length);
-          if (streamedContent.length === 0) {
-            console.error('❌ NO CONTENT RECEIVED DESPITE COMPLETED STREAM');
-            setAnalysisResult('❌ Error: No analysis content received from server');
-          }
-          break;
-        }
-
-        // Decode chunk
-        const chunk = decoder.decode(value, { stream: true });
-        buffer += chunk;
-        
-        // Process complete lines
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || ''; // Keep incomplete line in buffer
-
-        for (const line of lines) {
-          if (line.trim() === '') continue; // Skip empty lines
-          
-          if (line.startsWith('data: ')) {
-            try {
-              const jsonData = line.slice(6).trim();
-              if (jsonData === '') continue; // Skip empty data
-              
-              const data = JSON.parse(jsonData);
-              chunkCount++;
-              
-              console.log(`📦 CHUNK ${chunkCount}:`, {
-                status: data.status,
-                contentLength: data.content?.length || 0,
-                contentPreview: data.content?.substring(0, 30) || 'empty'
-              });
-
-              if (data.status === 'starting') {
-                streamedContent = '';
-                setAnalysisResult('');
-                setIsAnalyzing(true);
-              } 
-              else if (data.status === 'streaming') {
-                // True real-time streaming - append each character immediately
-                setAnalysisResult(prev => prev + data.content);
-              } 
-              else if (data.status === 'completed') {
-                setIsAnalyzing(false);
-                return;
-              } 
-              else if (data.status === 'error') {
-                throw new Error(`Analysis error: ${data.content}`);
-              }
-            } catch (parseError) {
-              console.error('❌ JSON Parse Error:', parseError, 'Line:', line);
-            }
-          }
-        }
-      }
-    } finally {
-      reader.releaseLock();
-    }
-  };
-
   const handleAnalyze = async () => {
-    console.log('🎯 ANALYZE BUTTON CLICKED - Text length:', text.length);
+    if (!text.trim()) return;
     
-    if (!text.trim()) {
-      console.error('❌ NO TEXT PROVIDED');
-      setAnalysisResult('❌ Error: Please enter some text to analyze before clicking the Analyze button.');
-      return;
-    }
-    
-    console.log('✅ STARTING ANALYSIS PROCESS');
     setIsAnalyzing(true);
     setAnalysisResult("");
     
@@ -174,14 +67,54 @@ export default function TextEvaluator() {
         ...(context.trim() && { context: context.trim() })
       };
 
-      console.log('📤 SENDING REQUEST:', requestBody);
-      await handleStreamingAnalysis(requestBody);
-      console.log('✅ ANALYSIS COMPLETED SUCCESSFULLY');
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Analysis failed');
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('Failed to get response stream');
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              if (data.status === 'streaming' || data.status === 'completed') {
+                setAnalysisResult(data.content);
+              }
+              if (data.status === 'error') {
+                throw new Error(data.content);
+              }
+            } catch (e) {
+              // Skip malformed JSON
+            }
+          }
+        }
+      }
     } catch (error) {
-      console.error('❌ ANALYSIS ERROR:', error);
+      console.error('Analysis error:', error);
       setAnalysisResult(`Analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
-      console.log('🔄 RESETTING ANALYZING STATE');
       setIsAnalyzing(false);
     }
   };
@@ -285,7 +218,50 @@ export default function TextEvaluator() {
         critique: critique.trim()
       };
 
-      await handleStreamingAnalysis(requestBody);
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Re-analysis failed');
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('Failed to get response stream');
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              if (data.status === 'streaming' || data.status === 'completed') {
+                setAnalysisResult(data.content);
+              }
+              if (data.status === 'error') {
+                throw new Error(data.content);
+              }
+            } catch (e) {
+              // Skip malformed JSON
+            }
+          }
+        }
+      }
     } catch (error) {
       console.error('Re-analysis error:', error);
       setAnalysisResult(`Re-analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -296,12 +272,82 @@ export default function TextEvaluator() {
 
   const handleAnalyzeChunks = async () => {
     setShowChunkModal(false);
-    await handleAnalyze();
+    
+    // Start analysis immediately with selected chunks
+    if (!text.trim() || !currentFile?.chunks || selectedChunks.length === 0) return;
+    
+    setIsAnalyzing(true);
+    setAnalysisResult("");
+    
+    try {
+      // Get selected chunk contents
+      const selectedChunkContents = currentFile.chunks
+        .filter(chunk => selectedChunks.includes(chunk.id))
+        .map(chunk => chunk.content);
+
+      const requestBody: AnalysisRequest = {
+        text: text,
+        mode: analysisMode,
+        provider: llmProvider,
+        chunks: selectedChunkContents,
+        ...(context.trim() && { context: context.trim() })
+      };
+
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Analysis failed');
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('Failed to get response stream');
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              if (data.status === 'streaming' || data.status === 'completed') {
+                setAnalysisResult(data.content);
+              }
+              if (data.status === 'error') {
+                throw new Error(data.content);
+              }
+            } catch (e) {
+              // Skip malformed JSON
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Analysis error:', error);
+      setAnalysisResult(`Analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header 
+    <div className="h-screen flex flex-col bg-background">
+      <Header
         analysisMode={analysisMode}
         llmProvider={llmProvider}
         onAnalysisModeChange={setAnalysisMode}
@@ -313,15 +359,15 @@ export default function TextEvaluator() {
         hasResults={!!analysisResult}
       />
       
-      <div className="flex h-[calc(100vh-64px)]">
+      <main className="flex-1 flex">
         <TextInput
           text={text}
           setText={setText}
-          context={context}
-          setContext={setContext}
           wordCount={wordCount}
           charCount={charCount}
           onFileProcessed={handleFileProcessed}
+          context={context}
+          setContext={setContext}
         />
         
         <AnalysisResults
@@ -332,7 +378,7 @@ export default function TextEvaluator() {
           onExport={handleExportTxt}
           onReanalyze={handleReanalyze}
         />
-      </div>
+      </main>
 
       {showChunkModal && currentFile?.chunks && (
         <ChunkSelector
@@ -341,7 +387,6 @@ export default function TextEvaluator() {
           onSelectionChange={handleChunkSelection}
           onAnalyze={handleAnalyzeChunks}
           onCancel={() => setShowChunkModal(false)}
-
         />
       )}
     </div>

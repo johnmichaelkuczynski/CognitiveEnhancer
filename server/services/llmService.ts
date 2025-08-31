@@ -34,6 +34,11 @@ class OpenAIProvider implements LLMProvider {
     const prompts = {
       'cognitive-short': `MANDATORY: ANSWER ALL 18 QUESTIONS. DO NOT SKIP ANY. EACH QUESTION MUST BE ADDRESSED.
 
+REQUIRED FORMAT: 
+1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
+2. INCLUDE at least one direct quote in EACH section/question response
+3. END with a CONCLUSION paragraph containing direct quotes
+
 ANSWER THESE QUESTIONS IN CONNECTION WITH THIS TEXT:
 
 QUESTION 1: IS IT INSIGHTFUL?
@@ -55,19 +60,25 @@ QUESTION 16: ARE THE STATEMENTS AMBIGUOUS?
 QUESTION 17: DOES THE PROGRESSION OF THE TEXT DEVELOP ACCORDING TO WHO SAID WHAT OR ACCORDING TO WHAT ENTAILS OR CONFIRMS WHAT?
 QUESTION 18: DOES THE AUTHOR USE OTHER AUTHORS TO DEVELOP HIS IDEAS OR TO CLOAK HIS OWN LACK OF IDEAS?
 
-CRITICAL: YOU MUST ANSWER ALL 18 QUESTIONS. FORMAT EACH AS:
+CRITICAL FORMAT REQUIREMENTS:
+
+SUMMARY: [One comprehensive paragraph with AT LEAST 2 direct quotes from the text, categorizing and summarizing the content]
 
 QUESTION 1: Is it insightful?
-[Your answer]
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
 --
 
 QUESTION 2: Does it develop points?
-[Your answer]
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
 --
 
-[Continue for ALL 18 questions - DO NOT STOP EARLY]
+[Continue for ALL 18 questions - DO NOT STOP EARLY - EACH MUST include AT LEAST ONE direct quote in quotation marks]
+
+CONCLUSION: [One comprehensive paragraph with AT LEAST 2 direct quotes from the text summarizing your overall assessment]
+
+MANDATORY: Every question response must contain at least one direct quote from the analyzed text enclosed in quotation marks. The summary needs at least 2 quotes, and the conclusion needs at least 2 quotes.
 
 FINAL SCORE: [Score]/100
 
@@ -80,6 +91,11 @@ METAPOINTS:
 6. A SCORE OF N/100 MEANS (100-N)/100 ARE SMARTER.`,
       
       'cognitive-long': `COMPREHENSIVE COGNITIVE ASSESSMENT - MANDATORY: ANSWER ALL 18 QUESTIONS WITH EXTENSIVE DETAIL:
+
+REQUIRED FORMAT: 
+1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
+2. INCLUDE at least one direct quote in EACH section/question response
+3. END with a CONCLUSION paragraph containing direct quotes
 
 QUESTION 1: IS IT INSIGHTFUL?
 QUESTION 2: DOES IT DEVELOP POINTS? (OR, IF IT IS A SHORT EXCERPT, IS THERE EVIDENCE THAT IT WOULD DEVELOP POINTS IF EXTENDED)?
@@ -100,19 +116,27 @@ QUESTION 16: ARE THE STATEMENTS AMBIGUOUS?
 QUESTION 17: DOES THE PROGRESSION OF THE TEXT DEVELOP ACCORDING TO WHO SAID WHAT OR ACCORDING TO WHAT ENTAILS OR CONFIRMS WHAT?
 QUESTION 18: DOES THE AUTHOR USE OTHER AUTHORS TO DEVELOP HIS IDEAS OR TO CLOAK HIS OWN LACK OF IDEAS?
 
-CRITICAL: ANSWER ALL 18 QUESTIONS WITH COMPREHENSIVE ANALYSIS. FORMAT EACH AS:
+CRITICAL FORMAT REQUIREMENTS:
+
+SUMMARY: [One comprehensive paragraph with AT LEAST 2 direct quotes from the text, categorizing and summarizing the content]
 
 QUESTION 1: Is it insightful?
-[Extensive detailed analysis with examples and reasoning]
+[Extensive detailed analysis with AT LEAST ONE direct quote in quotation marks, examples and reasoning]
 
 --
 
 QUESTION 2: Does it develop points?
-[Extensive detailed analysis with examples and reasoning]
+[Extensive detailed analysis with AT LEAST ONE direct quote in quotation marks, examples and reasoning]
 
 --
 
-[Continue for ALL 18 questions with deep analysis]
+[Continue for ALL 18 questions with deep analysis - EACH MUST include AT LEAST ONE direct quote in quotation marks]
+
+CONCLUSION: [One comprehensive paragraph with AT LEAST 2 direct quotes from the text summarizing your overall assessment]
+
+MANDATORY: Every question response must contain at least one direct quote from the analyzed text enclosed in quotation marks. The summary needs at least 2 quotes, and the conclusion needs at least 2 quotes.
+
+FINAL SCORE: [Score]/100
 
 A SCORE OF N/100 (E.G. 73/100) MEANS THAT (100-N)/100 (E.G. 27/100) OUTPERFORM THE AUTHOR WITH RESPECT TO THE PARAMETER DEFINED BY THE QUESTIONS.
 
@@ -121,8 +145,6 @@ YOU ARE NOT GRADING; YOU ARE ANSWERING THESE QUESTIONS. YOU DO NOT USE A RISK-AV
 THINK VERY VERY VERY HARD ABOUT YOUR ANSWERS; DO NOT DEFAULT TO COOKBOOK, MIDWIT EVALUATION PROTOCOLS.
 
 DO NOT GIVE CREDIT MERELY FOR USE OF JARGON OR FOR REFERENCING AUTHORITIES. FOCUS ON SUBSTANCE. ONLY GIVE POINTS FOR SCHOLARLY REFERENCES/JARGON IF THEY UNAMBIGUOUSLY INCREASE SUBSTANCE.
-
-FORMATTING INSTRUCTIONS:
 Format your response as questions followed by detailed answers, with blank lines between sections:
 
 QUESTION 1: [Your question here]
@@ -145,69 +167,223 @@ METAPOINTS (same as above):
 
 Use the Q&A formatting above. Score out of 100 at the end.`,
 
-      'psychological-short': `You are an expert psychological analyst. Provide a psychological profile using this Q&A format:
+      'psychological-short': `PSYCHOLOGICAL PROFILER PROTOCOL - PHASE 1 (NORMAL MODE)
 
-PERSONALITY TRAITS ASSESSMENT: What personality traits and behavioral patterns are evident?
-[Your detailed answer with specific textual evidence]
+MANDATORY: Answer ALL these exact questions in connection with this text. Include AT LEAST one direct quote in each response.
 
-EMOTIONAL INTELLIGENCE EVALUATION: How does the author demonstrate emotional intelligence and regulation?
-[Your detailed answer with specific textual evidence]
+REQUIRED FORMAT: 
+1. START with comprehensive SUMMARY with AT LEAST 2 direct quotes, categorizing psychological presentation
+2. ANSWER EACH QUESTION INDIVIDUALLY with AT LEAST ONE direct quote in quotation marks
+3. END with CONCLUSION paragraph with AT LEAST 2 direct quotes
 
-SOCIAL COGNITION ANALYSIS: What interpersonal style and social awareness is shown?
-[Your detailed answer with specific textual evidence]
+EXACT QUESTIONS TO ANSWER:
 
-MOTIVATIONAL PATTERNS ASSESSMENT: What motivational patterns and values are evident?
-[Your detailed answer with specific textual evidence]
+QUESTION 1: Does the text reveal a stable, coherent self-concept, or is the self fragmented/contradictory?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-PSYCHOLOGICAL WELL-BEING INDICATORS: What indicators of psychological health are present?
-[Your detailed answer with specific textual evidence]
+QUESTION 2: Is there evidence of ego strength (resilience, capacity to tolerate conflict/ambiguity), or does the psyche rely on brittle defenses?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-Use this exact Q&A format with blank lines between sections.`,
+QUESTION 3: Are defenses primarily mature (sublimation, humor, anticipation), neurotic (intellectualization, repression), or primitive (splitting, denial, projection)?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-      'psychological-long': `You are an expert psychological analyst. Provide a comprehensive psychological assessment covering:
+QUESTION 4: Does the writing show integration of affect and thought, or are emotions split off / overly intellectualized?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-1. PERSONALITY STRUCTURE
-- Big Five personality dimensions
-- Behavioral patterns and tendencies
-- Character strengths and limitations
-- Identity and self-concept
+QUESTION 5: Is the author's stance defensive/avoidant or direct/engaged?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-2. EMOTIONAL FUNCTIONING
-- Emotional intelligence levels
-- Affect regulation strategies
-- Emotional expressiveness
-- Stress response patterns
+QUESTION 6: Does the psyche appear narcissistically organized (grandiosity, fragile self-esteem, hunger for validation), or not?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-3. SOCIAL COGNITION
-- Interpersonal relationship patterns
-- Social awareness and empathy
-- Communication styles
-- Conflict resolution approaches
+QUESTION 7: Are desires/drives expressed openly, displaced, or repressed?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-4. MOTIVATIONAL DYNAMICS
-- Core values and belief systems
-- Achievement orientation
-- Intrinsic vs extrinsic motivation
-- Goal-setting and persistence
+QUESTION 8: Does the voice suggest internal conflict (superego vs. id, competing identifications), or monolithic certainty?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-5. PSYCHOLOGICAL WELL-BEING
-- Mental health indicators
-- Resilience and coping mechanisms
-- Life satisfaction markers
-- Growth mindset presence
+QUESTION 9: Is there evidence of object constancy (capacity to sustain nuanced view of others) or splitting (others seen as all-good/all-bad)?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-Provide detailed analysis with textual evidence, psychological interpretations, and numerical assessments for each domain.`,
+QUESTION 10: Is aggression integrated (channeled productively) or dissociated/projected?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-      'psychopathological-short': `You are a clinical psychology expert. Analyze the text for potential psychopathological indicators, focusing on:
-- Cognitive distortions and thinking patterns
-- Emotional dysregulation signs
-- Behavioral abnormalities or concerns
-- Risk factors for mental health conditions
-- Protective factors and strengths
+QUESTION 11: Is the author capable of irony/self-reflection, or trapped in compulsive earnestness / defensiveness?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-Note: This is for educational/research purposes only, not clinical diagnosis. Highlight both concerns and positive indicators.`,
+QUESTION 12: Does the text suggest psychological growth potential (openness, curiosity, capacity to metabolize experience) or rigidity?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-      'psychopathological-long': `You are a clinical psychology expert. Provide a comprehensive psychopathological assessment covering:
+QUESTION 13: Is the discourse paranoid / persecutory (others as threats, conspiracies) or reality-based?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 14: Does the tone reflect authentic engagement with reality, or phony simulation of depth?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 15: Is the psyche resilient under stress, or fragile / evasive?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 16: Is there evidence of compulsion or repetition (obsessional returns to the same themes), or flexible progression?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 17: Does the author show capacity for intimacy / genuine connection, or only instrumental/defended relations?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 18: Is shame/guilt worked through constructively or disavowed/projected?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+EXPLICIT INSTRUCTIONS TO LLM:
+Answer these questions in connection with this text.
+Also give a score out of 100.
+A score of N/100 means (100–N)/100 outperform the subject with respect to the psychological capacity defined by the question.
+You are not grading. You are answering questions.
+Do not default to diagnostic checklists; describe configuration of psyche.
+Do not conflate verbal confidence with psychological strength.
+Summarize the text and categorize the psychological presentation (e.g., narcissistic, depressive, obsessional, resilient, fragmented).
+Evaluate relative to the general population, not only "advanced" or "pathological" groups.
+Do not penalize honesty, boldness, or extreme statements if they indicate integration rather than breakdown.
+
+FORMAT:
+SUMMARY: [Psychological categorization with AT LEAST 2 direct quotes]
+[Answer each numbered question individually with AT LEAST ONE direct quote in quotation marks]
+CONCLUSION: [Overall psychological assessment with AT LEAST 2 direct quotes]
+FINAL SCORE: [X]/100`,
+
+      'psychological-long': `PSYCHOLOGICAL PROFILER PROTOCOL - COMPREHENSIVE (ALL PHASES)
+
+PHASE 1: Answer ALL these exact questions in connection with this text. Include AT LEAST one direct quote in each response.
+
+REQUIRED FORMAT: 
+1. START with comprehensive SUMMARY with AT LEAST 2 direct quotes, categorizing psychological presentation
+2. ANSWER EACH QUESTION INDIVIDUALLY with AT LEAST ONE direct quote in quotation marks
+3. END with CONCLUSION paragraph with AT LEAST 2 direct quotes
+
+EXACT QUESTIONS TO ANSWER:
+
+QUESTION 1: Does the text reveal a stable, coherent self-concept, or is the self fragmented/contradictory?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 2: Is there evidence of ego strength (resilience, capacity to tolerate conflict/ambiguity), or does the psyche rely on brittle defenses?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 3: Are defenses primarily mature (sublimation, humor, anticipation), neurotic (intellectualization, repression), or primitive (splitting, denial, projection)?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 4: Does the writing show integration of affect and thought, or are emotions split off / overly intellectualized?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 5: Is the author's stance defensive/avoidant or direct/engaged?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 6: Does the psyche appear narcissistically organized (grandiosity, fragile self-esteem, hunger for validation), or not?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 7: Are desires/drives expressed openly, displaced, or repressed?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 8: Does the voice suggest internal conflict (superego vs. id, competing identifications), or monolithic certainty?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 9: Is there evidence of object constancy (capacity to sustain nuanced view of others) or splitting (others seen as all-good/all-bad)?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 10: Is aggression integrated (channeled productively) or dissociated/projected?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 11: Is the author capable of irony/self-reflection, or trapped in compulsive earnestness / defensiveness?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 12: Does the text suggest psychological growth potential (openness, curiosity, capacity to metabolize experience) or rigidity?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 13: Is the discourse paranoid / persecutory (others as threats, conspiracies) or reality-based?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 14: Does the tone reflect authentic engagement with reality, or phony simulation of depth?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 15: Is the psyche resilient under stress, or fragile / evasive?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 16: Is there evidence of compulsion or repetition (obsessional returns to the same themes), or flexible progression?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 17: Does the author show capacity for intimacy / genuine connection, or only instrumental/defended relations?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 18: Is shame/guilt worked through constructively or disavowed/projected?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+PHASE 2: Pushback Protocol
+If score < 95/100:
+Restate: Your position is that (100–N)/100 have superior psychological functioning in this respect. Are you sure?
+Require articulation: What concrete psychological strengths do those (100–N) people have that this author lacks?
+Re-ask Phase 1 questions de novo.
+
+PHASE 3: Walmart Metric Enforcement
+Enforce: If you claim 20/100 Walmart patrons have more integrated ego strength than this author, provide concrete examples of how. If you can't, revise.
+
+PHASE 4: Final Validation
+Confirm before finalizing:
+Was the subject penalized for unconventional affect or honesty? If yes → recalibrate.
+Does the score reflect ego integration and authenticity, not mere social compliance?
+Is the Walmart metric grounded in specific superiority, not vague hand-waving?
+
+SNIPER AMENDMENT (Psychological version):
+Depth is a sniper shot, not a group therapy session. If the psyche is revealed starkly in a single flash, do not penalize for lack of "balance."
+
+Rating scale:
+95–100 = authentic, integrated psyche, unignorable.
+80–94 = strong but with observable defenses / conflict.
+<80 = rigidity, fragmentation, or dissimulation.
+
+EXPLICIT INSTRUCTIONS TO LLM:
+Answer these questions in connection with this text.
+Also give a score out of 100.
+A score of N/100 means (100–N)/100 outperform the subject with respect to the psychological capacity defined by the question.
+You are not grading. You are answering questions.
+Do not default to diagnostic checklists; describe configuration of psyche.
+Do not conflate verbal confidence with psychological strength.
+Summarize the text and categorize the psychological presentation (e.g., narcissistic, depressive, obsessional, resilient, fragmented).
+Evaluate relative to the general population, not only "advanced" or "pathological" groups.
+Do not penalize honesty, boldness, or extreme statements if they indicate integration rather than breakdown.`,
+
+      'psychopathological-short': `You are a clinical psychology expert. Analyze the text for potential psychopathological indicators.
+
+REQUIRED FORMAT: 
+1. START with a comprehensive SUMMARY paragraph containing AT LEAST 2 direct quotes from the text
+2. INCLUDE at least one direct quote in quotation marks in EACH section response
+3. END with a CONCLUSION paragraph containing AT LEAST 2 direct quotes
+
+Use this Q&A format:
+
+COGNITIVE DISTORTIONS ASSESSMENT: What thinking patterns and cognitive biases are evident?
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+
+EMOTIONAL DYSREGULATION INDICATORS: What signs of emotional instability are present?
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+
+BEHAVIORAL CONCERNS ANALYSIS: What behavioral abnormalities or patterns of concern are evident?
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+
+RISK FACTORS EVALUATION: What risk factors for mental health conditions are present?
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+
+PROTECTIVE FACTORS ASSESSMENT: What strengths and protective factors are evident?
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+
+MANDATORY: Each section must include at least one direct quote from the text in quotation marks as evidence.
+
+Note: This is for educational/research purposes only, not clinical diagnosis. Highlight both concerns and positive indicators with specific textual evidence.`,
+
+      'psychopathological-long': `You are a clinical psychology expert. Provide a comprehensive psychopathological assessment.
+
+REQUIRED FORMAT: 
+1. START with a comprehensive SUMMARY paragraph containing AT LEAST 2 direct quotes from the text
+2. INCLUDE at least one direct quote in quotation marks in EACH section response
+3. END with a CONCLUSION paragraph containing AT LEAST 2 direct quotes
+
+Cover these areas with direct quotes in each section:
 
 1. COGNITIVE PATTERNS
 - Thought distortions and cognitive biases
@@ -240,15 +416,15 @@ Note: This is for educational/research purposes only, not clinical diagnosis. Hi
 - Coping strategies and resources
 
 FORMATTING INSTRUCTIONS:
-Use this Q&A format with blank lines between sections:
+Use this Q&A format with blank lines between sections, including direct quotes in each:
 
 QUESTION: [Assessment area]
-[Detailed analysis with specific textual evidence]
+[Detailed analysis with specific textual evidence and direct quotes]
 
 QUESTION: [Next assessment area]
-[Detailed analysis with specific textual evidence]
+[Detailed analysis with specific textual evidence and direct quotes]
 
-Important: This analysis is for educational/research purposes only and cannot substitute for professional clinical assessment. Highlight both areas of concern and psychological strengths.`
+Important: This analysis is for educational/research purposes only and cannot substitute for professional clinical assessment. Highlight both areas of concern and psychological strengths with direct textual evidence.`
     };
     
     let systemPrompt = prompts[mode as keyof typeof prompts] || prompts['cognitive-short'];
@@ -301,6 +477,8 @@ Important: This analysis is for educational/research purposes only and cannot su
             .replace(/\*\*/g, '')       // Remove bold markers
             .replace(/\*/g, '')         // Remove italic markers
             .replace(/`/g, '');         // Remove code markers
+          
+          // Yield the cleaned content immediately as received from OpenAI
           yield cleaned;
         }
       }
@@ -364,21 +542,14 @@ class AnthropicProvider implements LLMProvider {
         stream: true
       });
 
-      let buffer = '';
       for await (const chunk of stream) {
         if (chunk.type === 'content_block_delta' && chunk.delta.type === 'text_delta') {
-          buffer += chunk.delta.text;
-          // Clean markdown as we stream, but only yield complete sentences/lines
-          if (buffer.includes('\n') || buffer.includes('.')) {
-            const cleanedText = this.cleanMarkdown(buffer);
-            yield cleanedText;
-            buffer = '';
-          }
+          const content = chunk.delta.text;
+          const cleanedText = this.cleanMarkdown(content);
+          
+          // Yield the cleaned content immediately as received from Anthropic
+          yield cleanedText;
         }
-      }
-      // Yield any remaining content
-      if (buffer) {
-        yield this.cleanMarkdown(buffer);
       }
     } catch (error) {
       console.error('Anthropic Stream Error:', error);
@@ -494,6 +665,8 @@ class DeepSeekProvider implements LLMProvider {
                   .replace(/\*/g, '')    // Remove italic markers  
                   .replace(/`/g, '')     // Remove code markers
                   .replace(/#{1,6}/g, ''); // Remove header markers
+                
+                // Yield the cleaned content immediately as received from DeepSeek
                 yield cleaned;
               }
             } catch (e) {
@@ -509,7 +682,118 @@ class DeepSeekProvider implements LLMProvider {
   }
 }
 
+class PerplexityProvider implements LLMProvider {
+  private apiKey: string;
+  
+  constructor() {
+    this.apiKey = process.env.PERPLEXITY_API_KEY || "";
+  }
 
+  private getSystemPrompt(mode: string, context?: string, previousAnalysis?: string, critique?: string): string {
+    // Same prompts as OpenAI provider
+    return new OpenAIProvider().getSystemPrompt(mode, context, previousAnalysis, critique);
+  }
+
+  async analyzeText(text: string, mode: string, context?: string, previousAnalysis?: string, critique?: string): Promise<string> {
+    try {
+      const response = await fetch('https://api.perplexity.ai/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'llama-3.1-sonar-small-128k-online',
+          messages: [
+            { role: 'system', content: this.getSystemPrompt(mode, context, previousAnalysis, critique) },
+            { role: 'user', content: text }
+          ],
+          temperature: 0.2,
+          stream: false
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Perplexity API Error Details:', response.status, errorText);
+        throw new Error(`Perplexity API error: ${response.status} - ${errorText}`);
+      }
+
+      const data = await response.json();
+      return data.choices[0].message.content || "";
+    } catch (error) {
+      console.error('Perplexity API Error:', error);
+      throw new Error(`ZHI 4 failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  async *streamAnalysis(text: string, mode: string, context?: string, previousAnalysis?: string, critique?: string): AsyncGenerator<string, void, unknown> {
+    try {
+      const response = await fetch('https://api.perplexity.ai/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'llama-3.1-sonar-small-128k-online',
+          messages: [
+            { role: 'system', content: this.getSystemPrompt(mode, context, previousAnalysis, critique) },
+            { role: 'user', content: text }
+          ],
+          temperature: 0.2,
+          stream: true
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Perplexity Streaming API Error Details:', response.status, errorText);
+        throw new Error(`Perplexity API error: ${response.status} - ${errorText}`);
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) return;
+
+      const decoder = new TextDecoder();
+      
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+        
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') return;
+            
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices[0]?.delta?.content || '';
+              if (content) {
+                // Clean content for Perplexity
+                const cleaned = content
+                  .replace(/\*\*/g, '')  // Remove bold markers
+                  .replace(/\*/g, '')    // Remove italic markers  
+                  .replace(/`/g, '')     // Remove code markers
+                  .replace(/#{1,6}/g, ''); // Remove header markers
+                
+                yield cleaned;
+              }
+            } catch (e) {
+              // Skip invalid JSON
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Perplexity Stream Error:', error);
+      yield `ZHI 4 failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+    }
+  }
+}
 
 export class LLMService {
   private providers: Map<string, LLMProvider>;
@@ -519,6 +803,7 @@ export class LLMService {
     this.providers.set('zhi1', new OpenAIProvider());
     this.providers.set('zhi2', new AnthropicProvider());
     this.providers.set('zhi3', new DeepSeekProvider());
+    this.providers.set('zhi4', new PerplexityProvider());
   }
 
   async analyzeText(text: string, mode: string, provider: string, context?: string, previousAnalysis?: string, critique?: string): Promise<string> {

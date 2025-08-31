@@ -26,7 +26,8 @@ const analysisModeLabels = {
 const llmProviderLabels = {
   "zhi1": "ZHI 1",
   "zhi2": "ZHI 2", 
-  "zhi3": "ZHI 3"
+  "zhi3": "ZHI 3",
+  "zhi4": "ZHI 4"
 };
 
 export default function Header({
