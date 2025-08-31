@@ -78,7 +78,12 @@ export default function TextEvaluator() {
             if (data.status === 'starting') {
               setAnalysisResult('');
             } else if (data.status === 'streaming') {
-              setAnalysisResult(prev => prev + data.content);
+              console.log('Streaming chunk:', data.content);
+              setAnalysisResult(prev => {
+                const newResult = prev + data.content;
+                console.log('Updated result length:', newResult.length);
+                return newResult;
+              });
             } else if (data.status === 'completed') {
               setAnalysisResult(data.content);
             } else if (data.status === 'error') {
