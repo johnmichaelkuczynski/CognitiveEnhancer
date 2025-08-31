@@ -594,14 +594,15 @@ class PerplexityProvider implements LLMProvider {
             { role: 'system', content: this.getSystemPrompt(mode, context, previousAnalysis, critique) },
             { role: 'user', content: text }
           ],
-          max_tokens: 1500,
           temperature: 0.2,
           stream: false
         })
       });
 
       if (!response.ok) {
-        throw new Error(`Perplexity API error: ${response.status}`);
+        const errorText = await response.text();
+        console.error('Perplexity API Error Details:', response.status, errorText);
+        throw new Error(`Perplexity API error: ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
@@ -626,14 +627,15 @@ class PerplexityProvider implements LLMProvider {
             { role: 'system', content: this.getSystemPrompt(mode, context, previousAnalysis, critique) },
             { role: 'user', content: text }
           ],
-          max_tokens: 1500,
           temperature: 0.2,
           stream: true
         })
       });
 
       if (!response.ok) {
-        throw new Error(`Perplexity API error: ${response.status}`);
+        const errorText = await response.text();
+        console.error('Perplexity Streaming API Error Details:', response.status, errorText);
+        throw new Error(`Perplexity API error: ${response.status} - ${errorText}`);
       }
 
       const reader = response.body?.getReader();
