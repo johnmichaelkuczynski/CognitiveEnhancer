@@ -120,12 +120,11 @@ FINAL SCORE: N/100
 
 MANDATORY: EVERY SINGLE QUESTION RESPONSE MUST CONTAIN AT LEAST ONE DIRECT QUOTE FROM THE ANALYZED TEXT ENCLOSED IN QUOTATION MARKS.`,
       
-      'cognitive-long': `COMPREHENSIVE COGNITIVE ASSESSMENT - MANDATORY: ANSWER ALL 18 QUESTIONS WITH EXTENSIVE DETAIL:
+      'cognitive-long': `COGNITIVE FUNCTION COMPREHENSIVE INTELLIGENCE PROTOCOL
 
-REQUIRED FORMAT: 
-1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
-2. INCLUDE at least one direct quote in EACH section/question response
-3. END with a CONCLUSION paragraph containing direct quotes
+MANDATORY: You must execute ALL 4 PHASES in order. Do not skip any phase.
+
+PHASE 1: Answer ALL these exact questions in connection with this text. Include AT LEAST one direct quote in each response.
 
 QUESTION 1: IS IT INSIGHTFUL?
 QUESTION 2: DOES IT DEVELOP POINTS? (OR, IF IT IS A SHORT EXCERPT, IS THERE EVIDENCE THAT IT WOULD DEVELOP POINTS IF EXTENDED)?
@@ -146,32 +145,60 @@ QUESTION 16: ARE THE STATEMENTS AMBIGUOUS?
 QUESTION 17: DOES THE PROGRESSION OF THE TEXT DEVELOP ACCORDING TO WHO SAID WHAT OR ACCORDING TO WHAT ENTAILS OR CONFIRMS WHAT?
 QUESTION 18: DOES THE AUTHOR USE OTHER AUTHORS TO DEVELOP HIS IDEAS OR TO CLOAK HIS OWN LACK OF IDEAS?
 
-CRITICAL FORMAT REQUIREMENTS:
+PHASE 2: MANDATORY PUSHBACK PROTOCOL
+After giving your initial score, if it is less than 95/100, you MUST execute this pushback:
+- Restate: "My position is that [100-N]/100 people are more intelligent than this author."
+- Challenge yourself: "What concrete intellectual capabilities do those [100-N] people possess that this author lacks?"
+- Provide specific examples of what those outperformers have (e.g., better logical reasoning, clearer insight, more original thinking)
+- If you cannot provide concrete examples, revise your score upward
+- Re-examine your Phase 1 answers with this new perspective
 
-SUMMARY: [One comprehensive paragraph with AT LEAST 2 direct quotes from the text, categorizing and summarizing the content]
+PHASE 3: MANDATORY WALMART METRIC ENFORCEMENT
+You MUST enforce the Walmart metric:
+- If you claim X/100 Walmart patrons are more intelligent than this author, specify exactly what those X people have
+- Example: "If I claim 25/100 Walmart patrons are smarter, what specific intellectual advantages do they have? Better reasoning? More insight? Less confusion?"
+- If you cannot specify concrete intellectual advantages, revise your score upward
 
-QUESTION 1: Is it insightful?
-[Extensive detailed analysis with AT LEAST ONE direct quote in quotation marks, examples and reasoning]
+PHASE 4: MANDATORY FINAL VALIDATION
+Before finalizing, you MUST confirm:
+- Was the subject penalized for being unconventional rather than actually unintelligent? If yes, recalibrate upward
+- Does the score reflect genuine intellectual capacity vs. mere conformity to academic style?
+- Is the Walmart metric based on specific intellectual advantages, not vague assumptions?
+- If any answer is no, revise the score
 
-QUESTION 2: Does it develop points?
-[Extensive detailed analysis with AT LEAST ONE direct quote in quotation marks, examples and reasoning]
+SNIPER AMENDMENT: Intellectual brilliance can be revealed in a single passage. Do not penalize lack of "balance" if the thinking shows genuine insight.
 
-QUESTION 3: Is the organization merely sequential or hierarchical?
-[Extensive detailed analysis with AT LEAST ONE direct quote in quotation marks, examples and reasoning]
+RATING SCALE:
+95-100 = Exceptional intelligence, highly insightful
+80-94 = Strong intelligence but with observable limitations  
+<80 = Clear intellectual deficiencies or confusion
 
-[Continue for ALL 18 questions with deep analysis - EACH MUST include AT LEAST ONE direct quote in quotation marks]
+METAPOINTS:
+- This is not grading; you assess intelligence based on what you are given
+- Do not penalize boldness or strong claims if they demonstrate insight
+- A score of N/100 means (100-N)/100 outperform the author in intelligence
+- Evaluate relative to general population, not just academics
+- Focus on substance, not style or jargon
 
-CONCLUSION: [One comprehensive paragraph with AT LEAST 2 direct quotes from the text summarizing your overall assessment]
+MANDATORY FORMAT - YOU MUST INCLUDE ALL SECTIONS:
 
-FINAL SCORE: [Score]/100
+SUMMARY: [Comprehensive paragraph with AT LEAST 2 direct quotes, categorizing the text]
 
-MANDATORY: EVERY SINGLE QUESTION RESPONSE MUST CONTAIN AT LEAST ONE DIRECT QUOTE FROM THE ANALYZED TEXT ENCLOSED IN QUOTATION MARKS. THE SUMMARY NEEDS AT LEAST 2 QUOTES, AND THE CONCLUSION NEEDS AT LEAST 2 QUOTES.
+PHASE 1 - QUESTION RESPONSES:
+[Answer all 18 questions with AT LEAST ONE direct quote each]
 
-A SCORE OF N/100 (E.G. 73/100) MEANS THAT (100-N)/100 (E.G. 27/100) OUTPERFORM THE AUTHOR WITH RESPECT TO THE PARAMETER DEFINED BY THE QUESTIONS.
+PHASE 2 - PUSHBACK PROTOCOL:
+[If score < 95/100, execute mandatory pushback and re-evaluation]
 
-YOU ARE NOT GRADING; YOU ARE ANSWERING THESE QUESTIONS. YOU DO NOT USE A RISK-AVERSE STANDARD; YOU DO NOT ATTEMPT TO BE DIPLOMATIC; YOU DO NOT ATTEMPT TO COMPLY WITH RISK-AVERSE, MEDIUM-RANGE IQ, ACADEMIC NORMS. YOU DO NOT MAKE ASSUMPTIONS ABOUT THE LEVEL OF THE PAPER; IT COULD BE A WORK OF THE HIGHEST EXCELLENCE AND GENIUS, OR IT COULD BE THE WORK OF A MORON.
+PHASE 3 - WALMART METRIC:
+[Validate your scoring against concrete population comparisons]
 
-THINK VERY VERY VERY HARD ABOUT YOUR ANSWERS; DO NOT DEFAULT TO COOKBOOK, MIDWIT EVALUATION PROTOCOLS.
+PHASE 4 - FINAL VALIDATION:
+[Confirm score reflects genuine intelligence, not style conformity - adjust if needed]
+
+CONCLUSION: [Overall assessment with AT LEAST 2 direct quotes]
+
+FINAL SCORE: [X]/100
 
 DO NOT GIVE CREDIT MERELY FOR USE OF JARGON OR FOR REFERENCING AUTHORITIES. FOCUS ON SUBSTANCE. ONLY GIVE POINTS FOR SCHOLARLY REFERENCES/JARGON IF THEY UNAMBIGUOUSLY INCREASE SUBSTANCE.`,
 
@@ -259,188 +286,207 @@ FINAL SCORE: [X]/100`,
 
       'psychological-long': `PSYCHOLOGICAL PROFILER PROTOCOL - COMPREHENSIVE (ALL PHASES)
 
+MANDATORY: You must execute ALL 4 PHASES in order. Do not skip any phase.
+
 PHASE 1: Answer ALL these exact questions in connection with this text. Include AT LEAST one direct quote in each response.
 
-REQUIRED FORMAT: 
-1. START with comprehensive SUMMARY with AT LEAST 2 direct quotes, categorizing psychological presentation
-2. ANSWER EACH QUESTION INDIVIDUALLY with AT LEAST ONE direct quote in quotation marks
-3. END with CONCLUSION paragraph with AT LEAST 2 direct quotes
-
-EXACT QUESTIONS TO ANSWER:
-
 QUESTION 1: Does the text reveal a stable, coherent self-concept, or is the self fragmented/contradictory?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 2: Is there evidence of ego strength (resilience, capacity to tolerate conflict/ambiguity), or does the psyche rely on brittle defenses?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 3: Are defenses primarily mature (sublimation, humor, anticipation), neurotic (intellectualization, repression), or primitive (splitting, denial, projection)?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 4: Does the writing show integration of affect and thought, or are emotions split off / overly intellectualized?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 5: Is the author's stance defensive/avoidant or direct/engaged?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 6: Does the psyche appear narcissistically organized (grandiosity, fragile self-esteem, hunger for validation), or not?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 7: Are desires/drives expressed openly, displaced, or repressed?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 8: Does the voice suggest internal conflict (superego vs. id, competing identifications), or monolithic certainty?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 9: Is there evidence of object constancy (capacity to sustain nuanced view of others) or splitting (others seen as all-good/all-bad)?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 10: Is aggression integrated (channeled productively) or dissociated/projected?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 11: Is the author capable of irony/self-reflection, or trapped in compulsive earnestness / defensiveness?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 12: Does the text suggest psychological growth potential (openness, curiosity, capacity to metabolize experience) or rigidity?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 13: Is the discourse paranoid / persecutory (others as threats, conspiracies) or reality-based?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 14: Does the tone reflect authentic engagement with reality, or phony simulation of depth?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 15: Is the psyche resilient under stress, or fragile / evasive?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 16: Is there evidence of compulsion or repetition (obsessional returns to the same themes), or flexible progression?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 17: Does the author show capacity for intimacy / genuine connection, or only instrumental/defended relations?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
-
 QUESTION 18: Is shame/guilt worked through constructively or disavowed/projected?
-[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-PHASE 2: Pushback Protocol
-If score < 95/100:
-Restate: Your position is that (100–N)/100 have superior psychological functioning in this respect. Are you sure?
-Require articulation: What concrete psychological strengths do those (100–N) people have that this author lacks?
-Re-ask Phase 1 questions de novo.
+PHASE 2: MANDATORY PUSHBACK PROTOCOL
+After giving your initial score, if it is less than 95/100, you MUST execute this pushback:
+- Restate: "My position is that [100-N]/100 people have superior psychological functioning to this author."
+- Challenge yourself: "What concrete psychological strengths do those [100-N] people possess that this author lacks?"
+- Provide specific examples of what those outperformers have (e.g., better affect regulation, less defensiveness, more empathy)
+- If you cannot provide concrete examples, revise your score upward
+- Re-examine your Phase 1 answers with this new perspective
 
-PHASE 3: Walmart Metric Enforcement
-Enforce: If you claim 20/100 Walmart patrons have more integrated ego strength than this author, provide concrete examples of how. If you can't, revise.
+PHASE 3: MANDATORY WALMART METRIC ENFORCEMENT  
+You MUST enforce the Walmart metric:
+- If you claim X/100 Walmart patrons have better psychological integration than this author, specify exactly what those X people have
+- Example: "If I claim 25/100 Walmart patrons are psychologically healthier, what specific advantages do they have? Better emotional regulation? Less intellectual defensiveness? More authentic relationships?"
+- If you cannot specify concrete advantages, revise your score upward
 
-PHASE 4: Final Validation
-Confirm before finalizing:
-Was the subject penalized for unconventional affect or honesty? If yes → recalibrate.
-Does the score reflect ego integration and authenticity, not mere social compliance?
-Is the Walmart metric grounded in specific superiority, not vague hand-waving?
+PHASE 4: MANDATORY FINAL VALIDATION
+Before finalizing, you MUST confirm:
+- Was the subject penalized for unconventional thinking rather than actual psychological dysfunction? If yes, recalibrate upward
+- Does the score reflect genuine psychological integration vs. mere social conformity?
+- Is the Walmart metric based on specific psychological advantages, not vague assumptions?
+- If any answer is no, revise the score
 
-SNIPER AMENDMENT (Psychological version):
-Depth is a sniper shot, not a group therapy session. If the psyche is revealed starkly in a single flash, do not penalize for lack of "balance."
+SNIPER AMENDMENT: Psychological depth can be revealed in a single passage. Do not penalize lack of "balance" if the psyche shows authentic integration.
 
-Rating scale:
-95–100 = authentic, integrated psyche, unignorable.
-80–94 = strong but with observable defenses / conflict.
-<80 = rigidity, fragmentation, or dissimulation.
+RATING SCALE:
+95-100 = Authentic, integrated psyche, psychologically superior
+80-94 = Strong but with observable psychological conflicts
+<80 = Clear psychological rigidity, fragmentation, or defensive pathology
 
-EXPLICIT INSTRUCTIONS TO LLM:
-Answer these questions in connection with this text.
-Also give a score out of 100.
-A score of N/100 means (100–N)/100 outperform the subject with respect to the psychological capacity defined by the question.
-You are not grading. You are answering questions.
-Do not default to diagnostic checklists; describe configuration of psyche.
-Do not conflate verbal confidence with psychological strength.
-Summarize the text and categorize the psychological presentation (e.g., narcissistic, depressive, obsessional, resilient, fragmented).
-Evaluate relative to the general population, not only "advanced" or "pathological" groups.
-Do not penalize honesty, boldness, or extreme statements if they indicate integration rather than breakdown.
+EXPLICIT INSTRUCTIONS:
+- Answer questions about this text
+- Score out of 100 where N/100 means (100-N)/100 outperform the subject
+- You are not grading; you are answering questions about psychological functioning
+- Evaluate relative to general population, not just academic/clinical populations
+- Do not penalize boldness or unconventional thinking if it shows integration
 
-REQUIRED FORMAT:
+MANDATORY FORMAT - YOU MUST INCLUDE ALL SECTIONS:
+
 SUMMARY: [Comprehensive paragraph with AT LEAST 2 direct quotes, categorizing psychological presentation]
 
-QUESTION 1: Does the text reveal a stable, coherent self-concept, or is the self fragmented/contradictory?
-[Your detailed answer with AT LEAST ONE direct quote from the text in quotation marks]
+PHASE 1 - QUESTION RESPONSES:
+[Answer all 18 questions with AT LEAST ONE direct quote each]
 
-QUESTION 2: Is there evidence of ego strength (resilience, capacity to tolerate conflict/ambiguity), or does the psyche rely on brittle defenses?
-[Your detailed answer with AT LEAST ONE direct quote from the text in quotation marks]
+PHASE 2 - PUSHBACK PROTOCOL:
+[If score < 95/100, execute mandatory pushback and re-evaluation]
 
-[Continue for ALL 18 questions with comprehensive analysis - EACH MUST include AT LEAST ONE direct quote in quotation marks]
+PHASE 3 - WALMART METRIC:
+[Validate your scoring against concrete population comparisons]
 
-PHASE 2 PUSHBACK: [If score < 95/100, challenge your assessment with concrete examples]
+PHASE 4 - FINAL VALIDATION:
+[Confirm score reflects psychological integration, not social compliance - adjust if needed]
 
-PHASE 3 WALMART METRIC: [Validate your scoring against specific population comparisons]
-
-PHASE 4 FINAL VALIDATION: [Confirm score reflects psychological integration, not social compliance]
-
-CONCLUSION: [Overall psychological assessment with AT LEAST 2 direct quotes]
+CONCLUSION: [Overall assessment with AT LEAST 2 direct quotes]
 
 FINAL SCORE: [X]/100`,
 
-      'psychopathological-short': `You are a clinical psychology expert. Analyze the text for potential psychopathological indicators.
+      'psychopathological-short': `PSYCHOPATHOLOGY PROFILER PROTOCOL - PHASE 1 (NORMAL MODE)
 
-REQUIRED FORMAT: 
-1. START with a comprehensive SUMMARY paragraph containing AT LEAST 2 direct quotes from the text
-2. INCLUDE at least one direct quote in quotation marks in EACH section response
-3. END with a CONCLUSION paragraph containing AT LEAST 2 direct quotes
+Answer these 15 questions in connection with this text. Include AT LEAST one direct quote in each response. Give a score out of 100.
 
-Use this Q&A format:
+QUESTION 1: Does the text reveal distorted reality testing (delusion, paranoia, magical thinking), or intact contact with reality?
+QUESTION 2: Is there evidence of persecutory ideation (seeing threats/conspiracies) or is perception proportionate?
+QUESTION 3: Does the subject show rigid obsessional patterns (compulsion, repetitive fixation) vs. flexible thought?
+QUESTION 4: Are there signs of narcissistic pathology (grandiosity, exploitation, lack of empathy), or balanced self-other relation?
+QUESTION 5: Is aggression expressed as sadism, cruelty, destructive glee, or is it integrated/controlled?
+QUESTION 6: Is affect regulation stable or does it suggest lability, rage, despair, manic flight?
+QUESTION 7: Does the person exhibit emptiness, hollowness, anhedonia, or a capacity for meaning/connection?
+QUESTION 8: Is there evidence of identity diffusion (incoherence, role-shifting, lack of stable self)?
+QUESTION 9: Are interpersonal patterns exploitative/manipulative or reciprocal/genuine?
+QUESTION 10: Does the psyche lean toward psychotic organization (loss of boundaries, hallucination-like claims), borderline organization (splitting, fear of abandonment), or neurotic organization (anxiety, repression)?
+QUESTION 11: Are defenses predominantly primitive (denial, projection, splitting) or higher-level?
+QUESTION 12: Is there evidence of pathological lying, phoniness, simulation, or authentic communication?
+QUESTION 13: Does the discourse exhibit compulsive hostility toward norms/authorities (paranoid defiance) or measured critique?
+QUESTION 14: Is sexuality integrated or perverse/displaced (voyeurism, exhibitionism, compulsive control)?
+QUESTION 15: Is the overall presentation coherent and reality-based or chaotic, persecutory, hollow, performative?
 
-COGNITIVE DISTORTIONS ASSESSMENT: What thinking patterns and cognitive biases are evident?
-[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+EXPLICIT INSTRUCTIONS:
+- Answer these questions in connection with this text
+- Give a score out of 100 where N/100 means (100-N)/100 outperform the subject
+- You are not diagnosing; you are describing the degree of psychopathology revealed
+- You are not grading; you are answering questions
+- Summarize the text and categorize the presentation (e.g., neurotic, borderline, psychotic, narcissistic, obsessional)
+- Do not give credit for rhetorical surface (confidence, erudition). Focus on reality testing, defenses, affect, and interpersonal stance
+- Evaluate relative to the general population, not just clinical populations
+- Do not penalize intense but integrated thought — pathology is disorganization, not extremity
 
-EMOTIONAL DYSREGULATION INDICATORS: What signs of emotional instability are present?
-[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+REQUIRED FORMAT:
+SUMMARY: [Comprehensive paragraph with AT LEAST 2 direct quotes, categorizing the presentation]
 
-BEHAVIORAL CONCERNS ANALYSIS: What behavioral abnormalities or patterns of concern are evident?
-[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+QUESTION 1: Does the text reveal distorted reality testing?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-RISK FACTORS EVALUATION: What risk factors for mental health conditions are present?
-[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+QUESTION 2: Is there evidence of persecutory ideation?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-PROTECTIVE FACTORS ASSESSMENT: What strengths and protective factors are evident?
-[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+[Continue for ALL 15 questions - EACH MUST include AT LEAST ONE direct quote in quotation marks]
 
-MANDATORY: Each section must include at least one direct quote from the text in quotation marks as evidence.
+CONCLUSION: [Overall assessment with AT LEAST 2 direct quotes]
 
-Note: This is for educational/research purposes only, not clinical diagnosis. Highlight both concerns and positive indicators with specific textual evidence.`,
+FINAL SCORE: [X]/100
 
-      'psychopathological-long': `You are a clinical psychology expert. Provide a comprehensive psychopathological assessment.
+MANDATORY: EVERY SINGLE QUESTION RESPONSE MUST CONTAIN AT LEAST ONE DIRECT QUOTE FROM THE ANALYZED TEXT ENCLOSED IN QUOTATION MARKS.`,
 
-REQUIRED FORMAT: 
-1. START with a comprehensive SUMMARY paragraph containing AT LEAST 2 direct quotes from the text
-2. INCLUDE at least one direct quote in quotation marks in EACH section response
-3. END with a CONCLUSION paragraph containing AT LEAST 2 direct quotes
+      'psychopathological-long': `PSYCHOPATHOLOGY PROFILER PROTOCOL - COMPREHENSIVE (ALL PHASES)
 
-Cover these areas with direct quotes in each section:
+MANDATORY: You must execute ALL 4 PHASES in order. Do not skip any phase.
 
-1. COGNITIVE PATTERNS
-- Thought distortions and cognitive biases
-- Rumination and obsessive thinking
-- Reality testing and perceptual accuracy
-- Attention and concentration patterns
+PHASE 1: Answer ALL these exact questions in connection with this text. Include AT LEAST one direct quote in each response.
 
-2. EMOTIONAL REGULATION
-- Mood stability and variability
-- Emotional intensity and appropriateness
-- Anxiety and fear responses
-- Depression and anhedonia indicators
+QUESTION 1: Does the text reveal distorted reality testing (delusion, paranoia, magical thinking), or intact contact with reality?
+QUESTION 2: Is there evidence of persecutory ideation (seeing threats/conspiracies) or is perception proportionate?
+QUESTION 3: Does the subject show rigid obsessional patterns (compulsion, repetitive fixation) vs. flexible thought?
+QUESTION 4: Are there signs of narcissistic pathology (grandiosity, exploitation, lack of empathy), or balanced self-other relation?
+QUESTION 5: Is aggression expressed as sadism, cruelty, destructive glee, or is it integrated/controlled?
+QUESTION 6: Is affect regulation stable or does it suggest lability, rage, despair, manic flight?
+QUESTION 7: Does the person exhibit emptiness, hollowness, anhedonia, or a capacity for meaning/connection?
+QUESTION 8: Is there evidence of identity diffusion (incoherence, role-shifting, lack of stable self)?
+QUESTION 9: Are interpersonal patterns exploitative/manipulative or reciprocal/genuine?
+QUESTION 10: Does the psyche lean toward psychotic organization (loss of boundaries, hallucination-like claims), borderline organization (splitting, fear of abandonment), or neurotic organization (anxiety, repression)?
+QUESTION 11: Are defenses predominantly primitive (denial, projection, splitting) or higher-level?
+QUESTION 12: Is there evidence of pathological lying, phoniness, simulation, or authentic communication?
+QUESTION 13: Does the discourse exhibit compulsive hostility toward norms/authorities (paranoid defiance) or measured critique?
+QUESTION 14: Is sexuality integrated or perverse/displaced (voyeurism, exhibitionism, compulsive control)?
+QUESTION 15: Is the overall presentation coherent and reality-based or chaotic, persecutory, hollow, performative?
 
-3. BEHAVIORAL OBSERVATIONS
-- Impulse control and self-regulation
-- Social and occupational functioning
-- Sleep, appetite, and energy patterns
-- Substance use or addictive behaviors
+PHASE 2: MANDATORY PUSHBACK PROTOCOL
+After giving your initial score, if it is less than 95/100, you MUST execute this pushback:
+- Restate: "My position is that [100-N]/100 people exhibit healthier functioning than this author."
+- Challenge yourself: "What concrete psychological health do those [100-N] people have that this author lacks?"
+- Provide specific examples of what those outperformers have (e.g., intact reality testing, capacity for empathy, affect regulation)
+- If you cannot provide concrete examples, revise your score upward
+- Re-examine your Phase 1 answers with this new perspective
 
-4. INTERPERSONAL FUNCTIONING
-- Attachment patterns and relationship quality
-- Social withdrawal or isolation
-- Trust and intimacy issues
-- Boundary setting and maintenance
+PHASE 3: MANDATORY WALMART METRIC ENFORCEMENT
+You MUST enforce the Walmart metric:
+- If you claim X/100 Walmart patrons show better pathological resilience than this author, specify exactly what those X people have
+- Example: "If I claim 20/100 Walmart patrons are psychologically healthier, what specific advantages do they have? Less paranoid ideation? More empathy? Better reality testing?"
+- If you cannot specify concrete advantages, revise your score upward
 
-5. RISK AND PROTECTIVE FACTORS
-- Trauma history indicators
-- Suicide or self-harm risk factors
+PHASE 4: MANDATORY FINAL VALIDATION
+Before finalizing, you MUST confirm:
+- Was the subject penalized for boldness or eccentricity rather than pathology? If yes, recalibrate upward
+- Does the score reflect actual disorganization/dysfunction, not social nonconformity?
+- Is the Walmart metric grounded in specific superiority, not vague hand-waving?
+- If any answer is no, revise the score
+
+SNIPER AMENDMENT: Pathology is not a matter of being "different." Pathology = distortion + dysfunction, not extremity of thought.
+
+RATING SCALE:
+95-100 = Minimal psychopathology, resilient, reality-based
+80-94 = Functional but with marked distortions/defenses
+<80 = Clear maladaptive pathology (rigidity, delusion, hollowness)
+
+EXPLICIT INSTRUCTIONS:
+- Answer questions about this text
+- Score out of 100 where N/100 means (100-N)/100 outperform the subject
+- You are not diagnosing; you are describing degree of psychopathology revealed
+- Evaluate relative to general population, not just clinical populations
+- Do not penalize intense but integrated thought — pathology is disorganization, not extremity
+
+MANDATORY FORMAT - YOU MUST INCLUDE ALL SECTIONS:
+
+SUMMARY: [Comprehensive paragraph with AT LEAST 2 direct quotes, categorizing the presentation]
+
+PHASE 1 - QUESTION RESPONSES:
+[Answer all 15 questions with AT LEAST ONE direct quote each]
+
+PHASE 2 - PUSHBACK PROTOCOL:
+[If score < 95/100, execute mandatory pushback and re-evaluation]
+
+PHASE 3 - WALMART METRIC:
+[Validate your scoring against concrete population comparisons]
+
+PHASE 4 - FINAL VALIDATION:
+[Confirm score reflects actual pathology, not nonconformity - adjust if needed]
+
+CONCLUSION: [Overall assessment with AT LEAST 2 direct quotes]
+
+FINAL SCORE: [X]/100`,
 - Social support and resilience markers
 - Coping strategies and resources
 
