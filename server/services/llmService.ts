@@ -568,7 +568,116 @@ class DeepSeekProvider implements LLMProvider {
   }
 }
 
+class PerplexityProvider implements LLMProvider {
+  private apiKey: string;
+  
+  constructor() {
+    this.apiKey = process.env.PERPLEXITY_API_KEY || "";
+  }
 
+  private getSystemPrompt(mode: string, context?: string, previousAnalysis?: string, critique?: string): string {
+    // Same prompts as OpenAI provider
+    return new OpenAIProvider().getSystemPrompt(mode, context, previousAnalysis, critique);
+  }
+
+  async analyzeText(text: string, mode: string, context?: string, previousAnalysis?: string, critique?: string): Promise<string> {
+    try {
+      const response = await fetch('https://api.perplexity.ai/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'llama-3.1-sonar-small-128k-online',
+          messages: [
+            { role: 'system', content: this.getSystemPrompt(mode, context, previousAnalysis, critique) },
+            { role: 'user', content: text }
+          ],
+          max_tokens: 1500,
+          temperature: 0.2,
+          stream: false
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Perplexity API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.choices[0].message.content || "";
+    } catch (error) {
+      console.error('Perplexity API Error:', error);
+      throw new Error(`ZHI 4 failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
+  async *streamAnalysis(text: string, mode: string, context?: string, previousAnalysis?: string, critique?: string): AsyncGenerator<string, void, unknown> {
+    try {
+      const response = await fetch('https://api.perplexity.ai/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'llama-3.1-sonar-small-128k-online',
+          messages: [
+            { role: 'system', content: this.getSystemPrompt(mode, context, previousAnalysis, critique) },
+            { role: 'user', content: text }
+          ],
+          max_tokens: 1500,
+          temperature: 0.2,
+          stream: true
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Perplexity API error: ${response.status}`);
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) return;
+
+      const decoder = new TextDecoder();
+      
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+        
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            if (data === '[DONE]') return;
+            
+            try {
+              const parsed = JSON.parse(data);
+              const content = parsed.choices[0]?.delta?.content || '';
+              if (content) {
+                // Clean content for Perplexity
+                const cleaned = content
+                  .replace(/\*\*/g, '')  // Remove bold markers
+                  .replace(/\*/g, '')    // Remove italic markers  
+                  .replace(/`/g, '')     // Remove code markers
+                  .replace(/#{1,6}/g, ''); // Remove header markers
+                
+                yield cleaned;
+              }
+            } catch (e) {
+              // Skip invalid JSON
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Perplexity Stream Error:', error);
+      yield `ZHI 4 failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+    }
+  }
+}
 
 export class LLMService {
   private providers: Map<string, LLMProvider>;
@@ -578,6 +687,7 @@ export class LLMService {
     this.providers.set('zhi1', new OpenAIProvider());
     this.providers.set('zhi2', new AnthropicProvider());
     this.providers.set('zhi3', new DeepSeekProvider());
+    this.providers.set('zhi4', new PerplexityProvider());
   }
 
   async analyzeText(text: string, mode: string, provider: string, context?: string, previousAnalysis?: string, critique?: string): Promise<string> {
