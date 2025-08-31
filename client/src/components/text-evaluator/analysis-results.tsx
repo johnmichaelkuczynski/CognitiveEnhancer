@@ -54,7 +54,7 @@ export default function AnalysisResults({
           </div>
         )}
         
-        {(showResults || isAnalyzing) && (
+        {(result || isAnalyzing) && (
           <div className="p-4" data-testid="analysis-content">
             <div 
               className="prose prose-sm max-w-none whitespace-pre-wrap font-mono text-sm leading-relaxed"
@@ -67,7 +67,7 @@ export default function AnalysisResults({
             >
               {result}
               {isAnalyzing && (
-                <span className="inline-block w-2 h-5 bg-green-400 animate-pulse ml-1">|</span>
+                <span className="inline-block w-1 h-4 bg-blue-500 animate-pulse ml-1">▎</span>
               )}
             </div>
           </div>

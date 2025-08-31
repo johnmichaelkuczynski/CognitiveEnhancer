@@ -118,31 +118,13 @@ export default function TextEvaluator() {
                 streamedContent = '';
                 setAnalysisResult('');
                 setIsAnalyzing(true);
-                // Show analysis area immediately
-                const element = document.querySelector('[data-testid="analysis-text"]');
-                if (element) {
-                  element.textContent = '';
-                  element.parentElement?.parentElement?.style.setProperty('display', 'block');
-                }
-                console.log('STREAMING STARTED');
               } 
               else if (data.status === 'streaming') {
-                streamedContent += data.content;
-                
-                // Immediate DOM update - bypass React completely
-                const element = document.querySelector('[data-testid="analysis-text"]');
-                if (element) {
-                  element.textContent = streamedContent;
-                  // Force scroll to bottom to follow streaming
-                  element.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                }
-                
-                console.log(`LIVE: "${data.content}"`);
+                // True real-time streaming - append each character immediately
+                setAnalysisResult(prev => prev + data.content);
               } 
               else if (data.status === 'completed') {
-                setAnalysisResult(streamedContent);
                 setIsAnalyzing(false);
-                console.log('STREAMING COMPLETE');
                 return;
               } 
               else if (data.status === 'error') {
