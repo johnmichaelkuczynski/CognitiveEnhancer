@@ -6,6 +6,9 @@ Cognitive Enhancer is a psychological and cognitive analysis application that ev
 - **ZHI 4 (Perplexity) Removed**: After extensive debugging attempts, ZHI 4 was completely removed due to persistent formatting issues, text corruption, and API compatibility problems. The application now operates with three fully functional providers.
 - **Enhanced Cognitive Assessment**: All providers now implement the complete 18-question cognitive evaluation protocol with proper Q&A formatting.
 - **Streamlined Architecture**: Reduced complexity by focusing on three working providers instead of attempting to maintain a problematic fourth option.
+- **Real-Time Streaming Fixed**: Successfully implemented proper streaming with immediate React updates, TypeScript error resolution, and visual cursor animation.
+- **Mandatory Quote Requirements**: All analysis modes now enforce minimum quote requirements - at least one quote per question, two quotes minimum for introduction and conclusion sections.
+- **Psychological & Psychopathological Modes Repaired**: Fixed broken psychological and psychopathological analysis modes with proper Q&A formatting and mandatory quote inclusion.
 
 # User Preferences
 

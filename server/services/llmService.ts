@@ -62,21 +62,23 @@ QUESTION 18: DOES THE AUTHOR USE OTHER AUTHORS TO DEVELOP HIS IDEAS OR TO CLOAK 
 
 CRITICAL FORMAT REQUIREMENTS:
 
-SUMMARY: [One comprehensive paragraph with multiple direct quotes from the text, categorizing and summarizing the content]
+SUMMARY: [One comprehensive paragraph with AT LEAST 2 direct quotes from the text, categorizing and summarizing the content]
 
 QUESTION 1: Is it insightful?
-[Your answer with at least one direct quote]
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
 --
 
 QUESTION 2: Does it develop points?
-[Your answer with at least one direct quote]
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
 --
 
-[Continue for ALL 18 questions - DO NOT STOP EARLY - EACH with direct quotes]
+[Continue for ALL 18 questions - DO NOT STOP EARLY - EACH MUST include AT LEAST ONE direct quote in quotation marks]
 
-CONCLUSION: [One comprehensive paragraph with direct quotes summarizing your overall assessment]
+CONCLUSION: [One comprehensive paragraph with AT LEAST 2 direct quotes from the text summarizing your overall assessment]
+
+MANDATORY: Every question response must contain at least one direct quote from the analyzed text enclosed in quotation marks. The summary needs at least 2 quotes, and the conclusion needs at least 2 quotes.
 
 FINAL SCORE: [Score]/100
 
@@ -116,21 +118,23 @@ QUESTION 18: DOES THE AUTHOR USE OTHER AUTHORS TO DEVELOP HIS IDEAS OR TO CLOAK 
 
 CRITICAL FORMAT REQUIREMENTS:
 
-SUMMARY: [One comprehensive paragraph with multiple direct quotes from the text, categorizing and summarizing the content]
+SUMMARY: [One comprehensive paragraph with AT LEAST 2 direct quotes from the text, categorizing and summarizing the content]
 
 QUESTION 1: Is it insightful?
-[Extensive detailed analysis with direct quotes, examples and reasoning]
+[Extensive detailed analysis with AT LEAST ONE direct quote in quotation marks, examples and reasoning]
 
 --
 
 QUESTION 2: Does it develop points?
-[Extensive detailed analysis with direct quotes, examples and reasoning]
+[Extensive detailed analysis with AT LEAST ONE direct quote in quotation marks, examples and reasoning]
 
 --
 
-[Continue for ALL 18 questions with deep analysis and direct quotes]
+[Continue for ALL 18 questions with deep analysis - EACH MUST include AT LEAST ONE direct quote in quotation marks]
 
-CONCLUSION: [One comprehensive paragraph with direct quotes summarizing your overall assessment]
+CONCLUSION: [One comprehensive paragraph with AT LEAST 2 direct quotes from the text summarizing your overall assessment]
+
+MANDATORY: Every question response must contain at least one direct quote from the analyzed text enclosed in quotation marks. The summary needs at least 2 quotes, and the conclusion needs at least 2 quotes.
 
 FINAL SCORE: [Score]/100
 
@@ -166,35 +170,35 @@ Use the Q&A formatting above. Score out of 100 at the end.`,
       'psychological-short': `You are an expert psychological analyst. Analyze the text for psychological characteristics.
 
 REQUIRED FORMAT: 
-1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
-2. INCLUDE at least one direct quote in EACH section response
-3. END with a CONCLUSION paragraph containing direct quotes
+1. START with a comprehensive SUMMARY paragraph containing AT LEAST 2 direct quotes from the text
+2. INCLUDE at least one direct quote in quotation marks in EACH section response
+3. END with a CONCLUSION paragraph containing AT LEAST 2 direct quotes
 
 Use this Q&A format:
 
 PERSONALITY TRAITS ASSESSMENT: What personality traits and behavioral patterns are evident?
-[Your detailed answer with specific textual evidence and direct quotes]
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
 
 EMOTIONAL INTELLIGENCE EVALUATION: How does the author demonstrate emotional intelligence and regulation?
-[Your detailed answer with specific textual evidence and direct quotes]
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
 
 SOCIAL COGNITION ANALYSIS: What interpersonal style and social awareness is shown?
-[Your detailed answer with specific textual evidence and direct quotes]
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
 
 MOTIVATIONAL PATTERNS ASSESSMENT: What motivational patterns and values are evident?
-[Your detailed answer with specific textual evidence and direct quotes]
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
 
 PSYCHOLOGICAL WELL-BEING INDICATORS: What indicators of psychological health are present?
-[Your detailed answer with specific textual evidence and direct quotes]
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
 
-Each section must include direct quotes from the text as evidence.`,
+MANDATORY: Each section must include at least one direct quote from the text in quotation marks as evidence.`,
 
       'psychological-long': `You are an expert psychological analyst. Provide a comprehensive psychological assessment.
 
 REQUIRED FORMAT: 
-1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
-2. INCLUDE at least one direct quote in EACH section response
-3. END with a CONCLUSION paragraph containing direct quotes
+1. START with a comprehensive SUMMARY paragraph containing AT LEAST 2 direct quotes from the text
+2. INCLUDE at least one direct quote in quotation marks in EACH section response
+3. END with a CONCLUSION paragraph containing AT LEAST 2 direct quotes
 
 Cover these areas with direct quotes in each section:
 
@@ -233,25 +237,37 @@ Each section must include specific textual evidence with direct quotes from the 
       'psychopathological-short': `You are a clinical psychology expert. Analyze the text for potential psychopathological indicators.
 
 REQUIRED FORMAT: 
-1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
-2. INCLUDE at least one direct quote in EACH section response
-3. END with a CONCLUSION paragraph containing direct quotes
+1. START with a comprehensive SUMMARY paragraph containing AT LEAST 2 direct quotes from the text
+2. INCLUDE at least one direct quote in quotation marks in EACH section response
+3. END with a CONCLUSION paragraph containing AT LEAST 2 direct quotes
 
-Focus on these areas with direct quotes in each:
-- Cognitive distortions and thinking patterns
-- Emotional dysregulation signs
-- Behavioral abnormalities or concerns
-- Risk factors for mental health conditions
-- Protective factors and strengths
+Use this Q&A format:
+
+COGNITIVE DISTORTIONS ASSESSMENT: What thinking patterns and cognitive biases are evident?
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+
+EMOTIONAL DYSREGULATION INDICATORS: What signs of emotional instability are present?
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+
+BEHAVIORAL CONCERNS ANALYSIS: What behavioral abnormalities or patterns of concern are evident?
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+
+RISK FACTORS EVALUATION: What risk factors for mental health conditions are present?
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+
+PROTECTIVE FACTORS ASSESSMENT: What strengths and protective factors are evident?
+[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+
+MANDATORY: Each section must include at least one direct quote from the text in quotation marks as evidence.
 
 Note: This is for educational/research purposes only, not clinical diagnosis. Highlight both concerns and positive indicators with specific textual evidence.`,
 
       'psychopathological-long': `You are a clinical psychology expert. Provide a comprehensive psychopathological assessment.
 
 REQUIRED FORMAT: 
-1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
-2. INCLUDE at least one direct quote in EACH section response
-3. END with a CONCLUSION paragraph containing direct quotes
+1. START with a comprehensive SUMMARY paragraph containing AT LEAST 2 direct quotes from the text
+2. INCLUDE at least one direct quote in quotation marks in EACH section response
+3. END with a CONCLUSION paragraph containing AT LEAST 2 direct quotes
 
 Cover these areas with direct quotes in each section:
 
