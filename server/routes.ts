@@ -114,8 +114,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
               // Force immediate flush for real-time streaming
               if ((res as any).flush) (res as any).flush();
               
-              // Character-level streaming delay
-              await new Promise(resolve => setTimeout(resolve, 50));
+              // Fast character streaming - 30ms for immediate visible effect
+              await new Promise(resolve => setTimeout(resolve, 30));
             }
             
             // Wait 10 seconds between chunks (except for last chunk)
@@ -124,8 +124,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           }
         } else {
-          // Normal processing for other providers
+          // Character-by-character streaming for immediate visibility
+          console.log(`🎬 Starting character streaming for ${provider}`);
+          let charCount = 0;
           for await (const streamChunk of llmService.streamAnalysis(analysisText, mode, provider, context, previousAnalysis, critique)) {
+            charCount++;
             fullContent += streamChunk;
             const streamEvent = `data: ${JSON.stringify({ 
               id: analysisId, 
@@ -139,8 +142,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
             // Force immediate flush for real-time streaming
             if ((res as any).flush) (res as any).flush();
             
-            // Character-level streaming delay  
-            await new Promise(resolve => setTimeout(resolve, 50));
+            if (charCount === 1) {
+              console.log(`✅ FIRST CHARACTER SENT: "${streamChunk}"`);
+            }
+            
+            // Fast character streaming - 30ms for immediate visible effect
+            await new Promise(resolve => setTimeout(resolve, 30));
           }
         }
 
