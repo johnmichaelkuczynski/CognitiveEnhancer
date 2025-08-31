@@ -122,7 +122,13 @@ export default function TextEvaluator() {
               } 
               else if (data.status === 'streaming') {
                 streamedContent += data.content;
-                setAnalysisResult(streamedContent);
+                
+                // Force immediate DOM update for true word-by-word streaming
+                const element = document.querySelector('[data-testid="analysis-text"]');
+                if (element) {
+                  element.textContent = streamedContent;
+                }
+                
                 console.log(`STREAM: "${data.content}"`);
               } 
               else if (data.status === 'completed') {
