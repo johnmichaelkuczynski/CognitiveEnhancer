@@ -364,10 +364,8 @@ Important: This analysis is for educational/research purposes only and cannot su
             .replace(/\*/g, '')         // Remove italic markers
             .replace(/`/g, '');         // Remove code markers
           
-          // Break into smaller chunks for true character-by-character streaming
-          for (let i = 0; i < cleaned.length; i++) {
-            yield cleaned[i];
-          }
+          // Yield the cleaned content immediately as received from OpenAI
+          yield cleaned;
         }
       }
     } catch (error) {
@@ -435,10 +433,8 @@ class AnthropicProvider implements LLMProvider {
           const content = chunk.delta.text;
           const cleanedText = this.cleanMarkdown(content);
           
-          // Break into individual characters for true streaming
-          for (let i = 0; i < cleanedText.length; i++) {
-            yield cleanedText[i];
-          }
+          // Yield the cleaned content immediately as received from Anthropic
+          yield cleanedText;
         }
       }
     } catch (error) {
@@ -556,10 +552,8 @@ class DeepSeekProvider implements LLMProvider {
                   .replace(/`/g, '')     // Remove code markers
                   .replace(/#{1,6}/g, ''); // Remove header markers
                 
-                // Break into individual characters for true streaming
-                for (let i = 0; i < cleaned.length; i++) {
-                  yield cleaned[i];
-                }
+                // Yield the cleaned content immediately as received from DeepSeek
+                yield cleaned;
               }
             } catch (e) {
               // Skip invalid JSON

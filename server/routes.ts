@@ -146,8 +146,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
               console.log(`✅ FIRST CHARACTER SENT: "${streamChunk}"`);
             }
             
-            // Fast character streaming - 30ms for immediate visible effect
-            await new Promise(resolve => setTimeout(resolve, 30));
+            // Immediate streaming - no artificial delay
+            // await new Promise(resolve => setTimeout(resolve, 30));
           }
         }
 
