@@ -41,57 +41,6 @@ export default function TextEvaluator() {
     }
   };
 
-  // Utility function to handle streaming analysis
-  const handleStreamingAnalysis = async (requestBody: AnalysisRequest) => {
-    const response = await fetch('/api/analyze', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    });
-
-    if (!response.ok) {
-      throw new Error('Analysis failed');
-    }
-
-    const reader = response.body?.getReader();
-    if (!reader) {
-      throw new Error('Failed to get response stream');
-    }
-
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
-
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          try {
-            const data = JSON.parse(line.slice(6));
-            if (data.status === 'starting') {
-              setAnalysisResult('');
-            } else if (data.status === 'streaming') {
-              setAnalysisResult(prev => prev + data.content);
-            } else if (data.status === 'completed') {
-              setAnalysisResult(data.content);
-            } else if (data.status === 'error') {
-              throw new Error(data.content);
-            }
-          } catch (e) {
-            // Skip malformed JSON
-          }
-        }
-      }
-    }
-  };
-
   const handleAnalyze = async () => {
     if (!text.trim()) return;
     
@@ -118,7 +67,50 @@ export default function TextEvaluator() {
         ...(context.trim() && { context: context.trim() })
       };
 
-      await handleStreamingAnalysis(requestBody);
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Analysis failed');
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('Failed to get response stream');
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              if (data.status === 'streaming' || data.status === 'completed') {
+                setAnalysisResult(data.content);
+              }
+              if (data.status === 'error') {
+                throw new Error(data.content);
+              }
+            } catch (e) {
+              // Skip malformed JSON
+            }
+          }
+        }
+      }
     } catch (error) {
       console.error('Analysis error:', error);
       setAnalysisResult(`Analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -226,7 +218,50 @@ export default function TextEvaluator() {
         critique: critique.trim()
       };
 
-      await handleStreamingAnalysis(requestBody);
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Re-analysis failed');
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('Failed to get response stream');
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              if (data.status === 'streaming' || data.status === 'completed') {
+                setAnalysisResult(data.content);
+              }
+              if (data.status === 'error') {
+                throw new Error(data.content);
+              }
+            } catch (e) {
+              // Skip malformed JSON
+            }
+          }
+        }
+      }
     } catch (error) {
       console.error('Re-analysis error:', error);
       setAnalysisResult(`Re-analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -237,12 +272,82 @@ export default function TextEvaluator() {
 
   const handleAnalyzeChunks = async () => {
     setShowChunkModal(false);
-    await handleAnalyze();
+    
+    // Start analysis immediately with selected chunks
+    if (!text.trim() || !currentFile?.chunks || selectedChunks.length === 0) return;
+    
+    setIsAnalyzing(true);
+    setAnalysisResult("");
+    
+    try {
+      // Get selected chunk contents
+      const selectedChunkContents = currentFile.chunks
+        .filter(chunk => selectedChunks.includes(chunk.id))
+        .map(chunk => chunk.content);
+
+      const requestBody: AnalysisRequest = {
+        text: text,
+        mode: analysisMode,
+        provider: llmProvider,
+        chunks: selectedChunkContents,
+        ...(context.trim() && { context: context.trim() })
+      };
+
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Analysis failed');
+      }
+
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('Failed to get response stream');
+      }
+
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              if (data.status === 'streaming' || data.status === 'completed') {
+                setAnalysisResult(data.content);
+              }
+              if (data.status === 'error') {
+                throw new Error(data.content);
+              }
+            } catch (e) {
+              // Skip malformed JSON
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Analysis error:', error);
+      setAnalysisResult(`Analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header 
+    <div className="h-screen flex flex-col bg-background">
+      <Header
         analysisMode={analysisMode}
         llmProvider={llmProvider}
         onAnalysisModeChange={setAnalysisMode}
@@ -254,15 +359,15 @@ export default function TextEvaluator() {
         hasResults={!!analysisResult}
       />
       
-      <div className="flex h-[calc(100vh-64px)]">
+      <main className="flex-1 flex">
         <TextInput
           text={text}
           setText={setText}
-          context={context}
-          setContext={setContext}
           wordCount={wordCount}
           charCount={charCount}
           onFileProcessed={handleFileProcessed}
+          context={context}
+          setContext={setContext}
         />
         
         <AnalysisResults
@@ -273,7 +378,7 @@ export default function TextEvaluator() {
           onExport={handleExportTxt}
           onReanalyze={handleReanalyze}
         />
-      </div>
+      </main>
 
       {showChunkModal && currentFile?.chunks && (
         <ChunkSelector
@@ -282,7 +387,6 @@ export default function TextEvaluator() {
           onSelectionChange={handleChunkSelection}
           onAnalyze={handleAnalyzeChunks}
           onCancel={() => setShowChunkModal(false)}
-
         />
       )}
     </div>

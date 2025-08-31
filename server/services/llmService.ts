@@ -34,6 +34,11 @@ class OpenAIProvider implements LLMProvider {
     const prompts = {
       'cognitive-short': `MANDATORY: ANSWER ALL 18 QUESTIONS. DO NOT SKIP ANY. EACH QUESTION MUST BE ADDRESSED.
 
+REQUIRED FORMAT: 
+1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
+2. INCLUDE at least one direct quote in EACH section/question response
+3. END with a CONCLUSION paragraph containing direct quotes
+
 ANSWER THESE QUESTIONS IN CONNECTION WITH THIS TEXT:
 
 QUESTION 1: IS IT INSIGHTFUL?
@@ -55,19 +60,23 @@ QUESTION 16: ARE THE STATEMENTS AMBIGUOUS?
 QUESTION 17: DOES THE PROGRESSION OF THE TEXT DEVELOP ACCORDING TO WHO SAID WHAT OR ACCORDING TO WHAT ENTAILS OR CONFIRMS WHAT?
 QUESTION 18: DOES THE AUTHOR USE OTHER AUTHORS TO DEVELOP HIS IDEAS OR TO CLOAK HIS OWN LACK OF IDEAS?
 
-CRITICAL: YOU MUST ANSWER ALL 18 QUESTIONS. FORMAT EACH AS:
+CRITICAL FORMAT REQUIREMENTS:
+
+SUMMARY: [One comprehensive paragraph with multiple direct quotes from the text, categorizing and summarizing the content]
 
 QUESTION 1: Is it insightful?
-[Your answer]
+[Your answer with at least one direct quote]
 
 --
 
 QUESTION 2: Does it develop points?
-[Your answer]
+[Your answer with at least one direct quote]
 
 --
 
-[Continue for ALL 18 questions - DO NOT STOP EARLY]
+[Continue for ALL 18 questions - DO NOT STOP EARLY - EACH with direct quotes]
+
+CONCLUSION: [One comprehensive paragraph with direct quotes summarizing your overall assessment]
 
 FINAL SCORE: [Score]/100
 
@@ -80,6 +89,11 @@ METAPOINTS:
 6. A SCORE OF N/100 MEANS (100-N)/100 ARE SMARTER.`,
       
       'cognitive-long': `COMPREHENSIVE COGNITIVE ASSESSMENT - MANDATORY: ANSWER ALL 18 QUESTIONS WITH EXTENSIVE DETAIL:
+
+REQUIRED FORMAT: 
+1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
+2. INCLUDE at least one direct quote in EACH section/question response
+3. END with a CONCLUSION paragraph containing direct quotes
 
 QUESTION 1: IS IT INSIGHTFUL?
 QUESTION 2: DOES IT DEVELOP POINTS? (OR, IF IT IS A SHORT EXCERPT, IS THERE EVIDENCE THAT IT WOULD DEVELOP POINTS IF EXTENDED)?
@@ -100,19 +114,25 @@ QUESTION 16: ARE THE STATEMENTS AMBIGUOUS?
 QUESTION 17: DOES THE PROGRESSION OF THE TEXT DEVELOP ACCORDING TO WHO SAID WHAT OR ACCORDING TO WHAT ENTAILS OR CONFIRMS WHAT?
 QUESTION 18: DOES THE AUTHOR USE OTHER AUTHORS TO DEVELOP HIS IDEAS OR TO CLOAK HIS OWN LACK OF IDEAS?
 
-CRITICAL: ANSWER ALL 18 QUESTIONS WITH COMPREHENSIVE ANALYSIS. FORMAT EACH AS:
+CRITICAL FORMAT REQUIREMENTS:
+
+SUMMARY: [One comprehensive paragraph with multiple direct quotes from the text, categorizing and summarizing the content]
 
 QUESTION 1: Is it insightful?
-[Extensive detailed analysis with examples and reasoning]
+[Extensive detailed analysis with direct quotes, examples and reasoning]
 
 --
 
 QUESTION 2: Does it develop points?
-[Extensive detailed analysis with examples and reasoning]
+[Extensive detailed analysis with direct quotes, examples and reasoning]
 
 --
 
-[Continue for ALL 18 questions with deep analysis]
+[Continue for ALL 18 questions with deep analysis and direct quotes]
+
+CONCLUSION: [One comprehensive paragraph with direct quotes summarizing your overall assessment]
+
+FINAL SCORE: [Score]/100
 
 A SCORE OF N/100 (E.G. 73/100) MEANS THAT (100-N)/100 (E.G. 27/100) OUTPERFORM THE AUTHOR WITH RESPECT TO THE PARAMETER DEFINED BY THE QUESTIONS.
 
@@ -121,8 +141,6 @@ YOU ARE NOT GRADING; YOU ARE ANSWERING THESE QUESTIONS. YOU DO NOT USE A RISK-AV
 THINK VERY VERY VERY HARD ABOUT YOUR ANSWERS; DO NOT DEFAULT TO COOKBOOK, MIDWIT EVALUATION PROTOCOLS.
 
 DO NOT GIVE CREDIT MERELY FOR USE OF JARGON OR FOR REFERENCING AUTHORITIES. FOCUS ON SUBSTANCE. ONLY GIVE POINTS FOR SCHOLARLY REFERENCES/JARGON IF THEY UNAMBIGUOUSLY INCREASE SUBSTANCE.
-
-FORMATTING INSTRUCTIONS:
 Format your response as questions followed by detailed answers, with blank lines between sections:
 
 QUESTION 1: [Your question here]
@@ -145,26 +163,40 @@ METAPOINTS (same as above):
 
 Use the Q&A formatting above. Score out of 100 at the end.`,
 
-      'psychological-short': `You are an expert psychological analyst. Provide a psychological profile using this Q&A format:
+      'psychological-short': `You are an expert psychological analyst. Analyze the text for psychological characteristics.
+
+REQUIRED FORMAT: 
+1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
+2. INCLUDE at least one direct quote in EACH section response
+3. END with a CONCLUSION paragraph containing direct quotes
+
+Use this Q&A format:
 
 PERSONALITY TRAITS ASSESSMENT: What personality traits and behavioral patterns are evident?
-[Your detailed answer with specific textual evidence]
+[Your detailed answer with specific textual evidence and direct quotes]
 
 EMOTIONAL INTELLIGENCE EVALUATION: How does the author demonstrate emotional intelligence and regulation?
-[Your detailed answer with specific textual evidence]
+[Your detailed answer with specific textual evidence and direct quotes]
 
 SOCIAL COGNITION ANALYSIS: What interpersonal style and social awareness is shown?
-[Your detailed answer with specific textual evidence]
+[Your detailed answer with specific textual evidence and direct quotes]
 
 MOTIVATIONAL PATTERNS ASSESSMENT: What motivational patterns and values are evident?
-[Your detailed answer with specific textual evidence]
+[Your detailed answer with specific textual evidence and direct quotes]
 
 PSYCHOLOGICAL WELL-BEING INDICATORS: What indicators of psychological health are present?
-[Your detailed answer with specific textual evidence]
+[Your detailed answer with specific textual evidence and direct quotes]
 
-Use this exact Q&A format with blank lines between sections.`,
+Each section must include direct quotes from the text as evidence.`,
 
-      'psychological-long': `You are an expert psychological analyst. Provide a comprehensive psychological assessment covering:
+      'psychological-long': `You are an expert psychological analyst. Provide a comprehensive psychological assessment.
+
+REQUIRED FORMAT: 
+1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
+2. INCLUDE at least one direct quote in EACH section response
+3. END with a CONCLUSION paragraph containing direct quotes
+
+Cover these areas with direct quotes in each section:
 
 1. PERSONALITY STRUCTURE
 - Big Five personality dimensions
@@ -196,18 +228,32 @@ Use this exact Q&A format with blank lines between sections.`,
 - Life satisfaction markers
 - Growth mindset presence
 
-Provide detailed analysis with textual evidence, psychological interpretations, and numerical assessments for each domain.`,
+Each section must include specific textual evidence with direct quotes from the analyzed text.`,
 
-      'psychopathological-short': `You are a clinical psychology expert. Analyze the text for potential psychopathological indicators, focusing on:
+      'psychopathological-short': `You are a clinical psychology expert. Analyze the text for potential psychopathological indicators.
+
+REQUIRED FORMAT: 
+1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
+2. INCLUDE at least one direct quote in EACH section response
+3. END with a CONCLUSION paragraph containing direct quotes
+
+Focus on these areas with direct quotes in each:
 - Cognitive distortions and thinking patterns
 - Emotional dysregulation signs
 - Behavioral abnormalities or concerns
 - Risk factors for mental health conditions
 - Protective factors and strengths
 
-Note: This is for educational/research purposes only, not clinical diagnosis. Highlight both concerns and positive indicators.`,
+Note: This is for educational/research purposes only, not clinical diagnosis. Highlight both concerns and positive indicators with specific textual evidence.`,
 
-      'psychopathological-long': `You are a clinical psychology expert. Provide a comprehensive psychopathological assessment covering:
+      'psychopathological-long': `You are a clinical psychology expert. Provide a comprehensive psychopathological assessment.
+
+REQUIRED FORMAT: 
+1. START with a comprehensive SUMMARY paragraph containing multiple direct quotes from the text
+2. INCLUDE at least one direct quote in EACH section response
+3. END with a CONCLUSION paragraph containing direct quotes
+
+Cover these areas with direct quotes in each section:
 
 1. COGNITIVE PATTERNS
 - Thought distortions and cognitive biases
@@ -240,15 +286,15 @@ Note: This is for educational/research purposes only, not clinical diagnosis. Hi
 - Coping strategies and resources
 
 FORMATTING INSTRUCTIONS:
-Use this Q&A format with blank lines between sections:
+Use this Q&A format with blank lines between sections, including direct quotes in each:
 
 QUESTION: [Assessment area]
-[Detailed analysis with specific textual evidence]
+[Detailed analysis with specific textual evidence and direct quotes]
 
 QUESTION: [Next assessment area]
-[Detailed analysis with specific textual evidence]
+[Detailed analysis with specific textual evidence and direct quotes]
 
-Important: This analysis is for educational/research purposes only and cannot substitute for professional clinical assessment. Highlight both areas of concern and psychological strengths.`
+Important: This analysis is for educational/research purposes only and cannot substitute for professional clinical assessment. Highlight both areas of concern and psychological strengths with direct textual evidence.`
     };
     
     let systemPrompt = prompts[mode as keyof typeof prompts] || prompts['cognitive-short'];
