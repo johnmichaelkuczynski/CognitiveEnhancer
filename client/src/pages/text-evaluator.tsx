@@ -138,8 +138,14 @@ export default function TextEvaluator() {
   };
 
   const handleAnalyze = async () => {
-    if (!text.trim()) return;
+    console.log('🎯 ANALYZE BUTTON CLICKED - Text length:', text.length);
     
+    if (!text.trim()) {
+      console.error('❌ NO TEXT PROVIDED');
+      return;
+    }
+    
+    console.log('✅ STARTING ANALYSIS PROCESS');
     setIsAnalyzing(true);
     setAnalysisResult("");
     
@@ -163,11 +169,14 @@ export default function TextEvaluator() {
         ...(context.trim() && { context: context.trim() })
       };
 
+      console.log('📤 SENDING REQUEST:', requestBody);
       await handleStreamingAnalysis(requestBody);
+      console.log('✅ ANALYSIS COMPLETED SUCCESSFULLY');
     } catch (error) {
-      console.error('Analysis error:', error);
+      console.error('❌ ANALYSIS ERROR:', error);
       setAnalysisResult(`Analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
+      console.log('🔄 RESETTING ANALYZING STATE');
       setIsAnalyzing(false);
     }
   };
