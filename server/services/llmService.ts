@@ -167,72 +167,186 @@ METAPOINTS (same as above):
 
 Use the Q&A formatting above. Score out of 100 at the end.`,
 
-      'psychological-short': `You are an expert psychological analyst. Analyze the text for psychological characteristics.
+      'psychological-short': `PSYCHOLOGICAL PROFILER PROTOCOL - PHASE 1 (NORMAL MODE)
+
+MANDATORY: Answer ALL these exact questions in connection with this text. Include AT LEAST one direct quote in each response.
 
 REQUIRED FORMAT: 
-1. START with a comprehensive SUMMARY paragraph containing AT LEAST 2 direct quotes from the text
-2. INCLUDE at least one direct quote in quotation marks in EACH section response
-3. END with a CONCLUSION paragraph containing AT LEAST 2 direct quotes
+1. START with comprehensive SUMMARY with AT LEAST 2 direct quotes, categorizing psychological presentation
+2. ANSWER EACH QUESTION INDIVIDUALLY with AT LEAST ONE direct quote in quotation marks
+3. END with CONCLUSION paragraph with AT LEAST 2 direct quotes
 
-Use this Q&A format:
+EXACT QUESTIONS TO ANSWER:
 
-PERSONALITY TRAITS ASSESSMENT: What personality traits and behavioral patterns are evident?
-[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+QUESTION 1: Does the text reveal a stable, coherent self-concept, or is the self fragmented/contradictory?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-EMOTIONAL INTELLIGENCE EVALUATION: How does the author demonstrate emotional intelligence and regulation?
-[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+QUESTION 2: Is there evidence of ego strength (resilience, capacity to tolerate conflict/ambiguity), or does the psyche rely on brittle defenses?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-SOCIAL COGNITION ANALYSIS: What interpersonal style and social awareness is shown?
-[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+QUESTION 3: Are defenses primarily mature (sublimation, humor, anticipation), neurotic (intellectualization, repression), or primitive (splitting, denial, projection)?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-MOTIVATIONAL PATTERNS ASSESSMENT: What motivational patterns and values are evident?
-[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+QUESTION 4: Does the writing show integration of affect and thought, or are emotions split off / overly intellectualized?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-PSYCHOLOGICAL WELL-BEING INDICATORS: What indicators of psychological health are present?
-[Your detailed answer with AT LEAST ONE direct quote in quotation marks and textual evidence]
+QUESTION 5: Is the author's stance defensive/avoidant or direct/engaged?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-MANDATORY: Each section must include at least one direct quote from the text in quotation marks as evidence.`,
+QUESTION 6: Does the psyche appear narcissistically organized (grandiosity, fragile self-esteem, hunger for validation), or not?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-      'psychological-long': `You are an expert psychological analyst. Provide a comprehensive psychological assessment.
+QUESTION 7: Are desires/drives expressed openly, displaced, or repressed?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 8: Does the voice suggest internal conflict (superego vs. id, competing identifications), or monolithic certainty?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 9: Is there evidence of object constancy (capacity to sustain nuanced view of others) or splitting (others seen as all-good/all-bad)?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 10: Is aggression integrated (channeled productively) or dissociated/projected?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 11: Is the author capable of irony/self-reflection, or trapped in compulsive earnestness / defensiveness?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 12: Does the text suggest psychological growth potential (openness, curiosity, capacity to metabolize experience) or rigidity?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 13: Is the discourse paranoid / persecutory (others as threats, conspiracies) or reality-based?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 14: Does the tone reflect authentic engagement with reality, or phony simulation of depth?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 15: Is the psyche resilient under stress, or fragile / evasive?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 16: Is there evidence of compulsion or repetition (obsessional returns to the same themes), or flexible progression?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 17: Does the author show capacity for intimacy / genuine connection, or only instrumental/defended relations?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 18: Is shame/guilt worked through constructively or disavowed/projected?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+EXPLICIT INSTRUCTIONS TO LLM:
+Answer these questions in connection with this text.
+Also give a score out of 100.
+A score of N/100 means (100–N)/100 outperform the subject with respect to the psychological capacity defined by the question.
+You are not grading. You are answering questions.
+Do not default to diagnostic checklists; describe configuration of psyche.
+Do not conflate verbal confidence with psychological strength.
+Summarize the text and categorize the psychological presentation (e.g., narcissistic, depressive, obsessional, resilient, fragmented).
+Evaluate relative to the general population, not only "advanced" or "pathological" groups.
+Do not penalize honesty, boldness, or extreme statements if they indicate integration rather than breakdown.
+
+FORMAT:
+SUMMARY: [Psychological categorization with AT LEAST 2 direct quotes]
+[Answer each numbered question individually with AT LEAST ONE direct quote in quotation marks]
+CONCLUSION: [Overall psychological assessment with AT LEAST 2 direct quotes]
+FINAL SCORE: [X]/100`,
+
+      'psychological-long': `PSYCHOLOGICAL PROFILER PROTOCOL - COMPREHENSIVE (ALL PHASES)
+
+PHASE 1: Answer ALL these exact questions in connection with this text. Include AT LEAST one direct quote in each response.
 
 REQUIRED FORMAT: 
-1. START with a comprehensive SUMMARY paragraph containing AT LEAST 2 direct quotes from the text
-2. INCLUDE at least one direct quote in quotation marks in EACH section response
-3. END with a CONCLUSION paragraph containing AT LEAST 2 direct quotes
+1. START with comprehensive SUMMARY with AT LEAST 2 direct quotes, categorizing psychological presentation
+2. ANSWER EACH QUESTION INDIVIDUALLY with AT LEAST ONE direct quote in quotation marks
+3. END with CONCLUSION paragraph with AT LEAST 2 direct quotes
 
-Cover these areas with direct quotes in each section:
+EXACT QUESTIONS TO ANSWER:
 
-1. PERSONALITY STRUCTURE
-- Big Five personality dimensions
-- Behavioral patterns and tendencies
-- Character strengths and limitations
-- Identity and self-concept
+QUESTION 1: Does the text reveal a stable, coherent self-concept, or is the self fragmented/contradictory?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-2. EMOTIONAL FUNCTIONING
-- Emotional intelligence levels
-- Affect regulation strategies
-- Emotional expressiveness
-- Stress response patterns
+QUESTION 2: Is there evidence of ego strength (resilience, capacity to tolerate conflict/ambiguity), or does the psyche rely on brittle defenses?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-3. SOCIAL COGNITION
-- Interpersonal relationship patterns
-- Social awareness and empathy
-- Communication styles
-- Conflict resolution approaches
+QUESTION 3: Are defenses primarily mature (sublimation, humor, anticipation), neurotic (intellectualization, repression), or primitive (splitting, denial, projection)?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-4. MOTIVATIONAL DYNAMICS
-- Core values and belief systems
-- Achievement orientation
-- Intrinsic vs extrinsic motivation
-- Goal-setting and persistence
+QUESTION 4: Does the writing show integration of affect and thought, or are emotions split off / overly intellectualized?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-5. PSYCHOLOGICAL WELL-BEING
-- Mental health indicators
-- Resilience and coping mechanisms
-- Life satisfaction markers
-- Growth mindset presence
+QUESTION 5: Is the author's stance defensive/avoidant or direct/engaged?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-Each section must include specific textual evidence with direct quotes from the analyzed text.`,
+QUESTION 6: Does the psyche appear narcissistically organized (grandiosity, fragile self-esteem, hunger for validation), or not?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 7: Are desires/drives expressed openly, displaced, or repressed?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 8: Does the voice suggest internal conflict (superego vs. id, competing identifications), or monolithic certainty?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 9: Is there evidence of object constancy (capacity to sustain nuanced view of others) or splitting (others seen as all-good/all-bad)?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 10: Is aggression integrated (channeled productively) or dissociated/projected?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 11: Is the author capable of irony/self-reflection, or trapped in compulsive earnestness / defensiveness?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 12: Does the text suggest psychological growth potential (openness, curiosity, capacity to metabolize experience) or rigidity?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 13: Is the discourse paranoid / persecutory (others as threats, conspiracies) or reality-based?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 14: Does the tone reflect authentic engagement with reality, or phony simulation of depth?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 15: Is the psyche resilient under stress, or fragile / evasive?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 16: Is there evidence of compulsion or repetition (obsessional returns to the same themes), or flexible progression?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 17: Does the author show capacity for intimacy / genuine connection, or only instrumental/defended relations?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 18: Is shame/guilt worked through constructively or disavowed/projected?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+PHASE 2: Pushback Protocol
+If score < 95/100:
+Restate: Your position is that (100–N)/100 have superior psychological functioning in this respect. Are you sure?
+Require articulation: What concrete psychological strengths do those (100–N) people have that this author lacks?
+Re-ask Phase 1 questions de novo.
+
+PHASE 3: Walmart Metric Enforcement
+Enforce: If you claim 20/100 Walmart patrons have more integrated ego strength than this author, provide concrete examples of how. If you can't, revise.
+
+PHASE 4: Final Validation
+Confirm before finalizing:
+Was the subject penalized for unconventional affect or honesty? If yes → recalibrate.
+Does the score reflect ego integration and authenticity, not mere social compliance?
+Is the Walmart metric grounded in specific superiority, not vague hand-waving?
+
+SNIPER AMENDMENT (Psychological version):
+Depth is a sniper shot, not a group therapy session. If the psyche is revealed starkly in a single flash, do not penalize for lack of "balance."
+
+Rating scale:
+95–100 = authentic, integrated psyche, unignorable.
+80–94 = strong but with observable defenses / conflict.
+<80 = rigidity, fragmentation, or dissimulation.
+
+EXPLICIT INSTRUCTIONS TO LLM:
+Answer these questions in connection with this text.
+Also give a score out of 100.
+A score of N/100 means (100–N)/100 outperform the subject with respect to the psychological capacity defined by the question.
+You are not grading. You are answering questions.
+Do not default to diagnostic checklists; describe configuration of psyche.
+Do not conflate verbal confidence with psychological strength.
+Summarize the text and categorize the psychological presentation (e.g., narcissistic, depressive, obsessional, resilient, fragmented).
+Evaluate relative to the general population, not only "advanced" or "pathological" groups.
+Do not penalize honesty, boldness, or extreme statements if they indicate integration rather than breakdown.`,
 
       'psychopathological-short': `You are a clinical psychology expert. Analyze the text for potential psychopathological indicators.
 
