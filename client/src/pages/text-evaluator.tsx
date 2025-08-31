@@ -121,17 +121,9 @@ export default function TextEvaluator() {
               } 
               else if (data.status === 'streaming') {
                 streamedContent += data.content;
-                // Force immediate update with React 18 flushSync for visible streaming
-                import('react-dom').then(ReactDOM => {
-                  if (ReactDOM.flushSync) {
-                    ReactDOM.flushSync(() => {
-                      setAnalysisResult(streamedContent);
-                    });
-                  } else {
-                    setAnalysisResult(streamedContent);
-                  }
-                });
-                console.log(`📝 UPDATED DISPLAY - Total length: ${streamedContent.length}`);
+                // Immediate React state update for real-time streaming
+                setAnalysisResult(streamedContent);
+                console.log(`📝 STREAMED: "${data.content}" - Total: ${streamedContent.length}`);
               } 
               else if (data.status === 'completed') {
                 setAnalysisResult(data.content);
