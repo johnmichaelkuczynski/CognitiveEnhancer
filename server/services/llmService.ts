@@ -101,11 +101,24 @@ This passage exemplifies pseudo-intellectual writing: doctrines are labeled but 
 USE THIS PARADIGM WHEN EVALUATING TEXTS. IF THE PASSAGE ABOVE SCORES MORE THAN 65/100, THE APP IS A FAILURE.
 
 REQUIRED FORMAT:
-SUMMARY: [Comprehensive paragraph with direct quotes, categorizing and summarizing the text]
+SUMMARY: [Comprehensive paragraph with AT LEAST 2 direct quotes, categorizing and summarizing the text]
 
-[Answer each question with specific analysis and direct quotes from the text]
+QUESTION 1: Is it insightful?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-FINAL SCORE: N/100`,
+QUESTION 2: Does it develop points?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 3: Is the organization merely sequential or hierarchical?
+[Your answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+[Continue for ALL questions - EACH MUST include AT LEAST ONE direct quote in quotation marks]
+
+CONCLUSION: [Comprehensive paragraph with AT LEAST 2 direct quotes summarizing overall assessment]
+
+FINAL SCORE: N/100
+
+MANDATORY: EVERY SINGLE QUESTION RESPONSE MUST CONTAIN AT LEAST ONE DIRECT QUOTE FROM THE ANALYZED TEXT ENCLOSED IN QUOTATION MARKS.`,
       
       'cognitive-long': `COMPREHENSIVE COGNITIVE ASSESSMENT - MANDATORY: ANSWER ALL 18 QUESTIONS WITH EXTENSIVE DETAIL:
 
@@ -140,20 +153,19 @@ SUMMARY: [One comprehensive paragraph with AT LEAST 2 direct quotes from the tex
 QUESTION 1: Is it insightful?
 [Extensive detailed analysis with AT LEAST ONE direct quote in quotation marks, examples and reasoning]
 
---
-
 QUESTION 2: Does it develop points?
 [Extensive detailed analysis with AT LEAST ONE direct quote in quotation marks, examples and reasoning]
 
---
+QUESTION 3: Is the organization merely sequential or hierarchical?
+[Extensive detailed analysis with AT LEAST ONE direct quote in quotation marks, examples and reasoning]
 
 [Continue for ALL 18 questions with deep analysis - EACH MUST include AT LEAST ONE direct quote in quotation marks]
 
 CONCLUSION: [One comprehensive paragraph with AT LEAST 2 direct quotes from the text summarizing your overall assessment]
 
-MANDATORY: Every question response must contain at least one direct quote from the analyzed text enclosed in quotation marks. The summary needs at least 2 quotes, and the conclusion needs at least 2 quotes.
-
 FINAL SCORE: [Score]/100
+
+MANDATORY: EVERY SINGLE QUESTION RESPONSE MUST CONTAIN AT LEAST ONE DIRECT QUOTE FROM THE ANALYZED TEXT ENCLOSED IN QUOTATION MARKS. THE SUMMARY NEEDS AT LEAST 2 QUOTES, AND THE CONCLUSION NEEDS AT LEAST 2 QUOTES.
 
 A SCORE OF N/100 (E.G. 73/100) MEANS THAT (100-N)/100 (E.G. 27/100) OUTPERFORM THE AUTHOR WITH RESPECT TO THE PARAMETER DEFINED BY THE QUESTIONS.
 
@@ -161,28 +173,7 @@ YOU ARE NOT GRADING; YOU ARE ANSWERING THESE QUESTIONS. YOU DO NOT USE A RISK-AV
 
 THINK VERY VERY VERY HARD ABOUT YOUR ANSWERS; DO NOT DEFAULT TO COOKBOOK, MIDWIT EVALUATION PROTOCOLS.
 
-DO NOT GIVE CREDIT MERELY FOR USE OF JARGON OR FOR REFERENCING AUTHORITIES. FOCUS ON SUBSTANCE. ONLY GIVE POINTS FOR SCHOLARLY REFERENCES/JARGON IF THEY UNAMBIGUOUSLY INCREASE SUBSTANCE.
-Format your response as questions followed by detailed answers, with blank lines between sections:
-
-QUESTION 1: [Your question here]
-[Your detailed answer here with specific examples]
-
-QUESTION 2: [Your question here]
-[Your detailed answer here with specific examples]
-
-[Continue this Q&A format for all analysis points]
-
-FINAL SCORE: [Score]/100
-
-METAPOINTS (same as above):
-1. THIS IS NOT A GRADING APP. ASSESS THE INTELLIGENCE OF WHAT YOU ARE GIVEN.
-2. DO NOT OVERVALUE TURNS OF PHRASE. CONFIDENT SPEECH OFTEN OPENS INQUIRY RATHER THAN SHUTTING IT DOWN.
-3. ALWAYS START BY SUMMARIZING THE TEXT AND CATEGORIZING IT.
-4. DO NOT CHANGE THE GRADING BASED ON THE CATEGORY OF THE TEXT.
-5. DO NOT PENALIZE BOLDNESS. INSIGHTS THAT ARE CORRECT STAND ON THEIR OWN.
-6. A SCORE OF N/100 MEANS THAT (100 MINUS N)/100 ARE SMARTER.
-
-Use the Q&A formatting above. Score out of 100 at the end.`,
+DO NOT GIVE CREDIT MERELY FOR USE OF JARGON OR FOR REFERENCING AUTHORITIES. FOCUS ON SUBSTANCE. ONLY GIVE POINTS FOR SCHOLARLY REFERENCES/JARGON IF THEY UNAMBIGUOUSLY INCREASE SUBSTANCE.`,
 
       'psychological-short': `PSYCHOLOGICAL PROFILER PROTOCOL - PHASE 1 (NORMAL MODE)
 
