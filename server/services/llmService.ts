@@ -363,7 +363,28 @@ Do not default to diagnostic checklists; describe configuration of psyche.
 Do not conflate verbal confidence with psychological strength.
 Summarize the text and categorize the psychological presentation (e.g., narcissistic, depressive, obsessional, resilient, fragmented).
 Evaluate relative to the general population, not only "advanced" or "pathological" groups.
-Do not penalize honesty, boldness, or extreme statements if they indicate integration rather than breakdown.`,
+Do not penalize honesty, boldness, or extreme statements if they indicate integration rather than breakdown.
+
+REQUIRED FORMAT:
+SUMMARY: [Comprehensive paragraph with AT LEAST 2 direct quotes, categorizing psychological presentation]
+
+QUESTION 1: Does the text reveal a stable, coherent self-concept, or is the self fragmented/contradictory?
+[Your detailed answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+QUESTION 2: Is there evidence of ego strength (resilience, capacity to tolerate conflict/ambiguity), or does the psyche rely on brittle defenses?
+[Your detailed answer with AT LEAST ONE direct quote from the text in quotation marks]
+
+[Continue for ALL 18 questions with comprehensive analysis - EACH MUST include AT LEAST ONE direct quote in quotation marks]
+
+PHASE 2 PUSHBACK: [If score < 95/100, challenge your assessment with concrete examples]
+
+PHASE 3 WALMART METRIC: [Validate your scoring against specific population comparisons]
+
+PHASE 4 FINAL VALIDATION: [Confirm score reflects psychological integration, not social compliance]
+
+CONCLUSION: [Overall psychological assessment with AT LEAST 2 direct quotes]
+
+FINAL SCORE: [X]/100`,
 
       'psychopathological-short': `You are a clinical psychology expert. Analyze the text for potential psychopathological indicators.
 
