@@ -72,7 +72,7 @@ IS THE PASSAGE ACTUALLY (PALPABLY) SMART? OR IS IT ONLY "PRESUMPTION-SMART"? IE 
 
 IF YOUR JUDGMENT IS THAT IT IS INSIGHTFUL, CAN YOU STATE THAT INSIGHT IN A SINGLE SENTENCE? OR IF IT CONTAINS MULTIPLE INSIGHTS, CAN YOU STATE THOSE INSIGHTS, ONE PER SENTENCE?
 
-A SCORE OF N/100 (E.G. 73/100) MEANS THAT (100-N)/100 (E.G. 27/100) OUTPERFORM THE AUTHOR WITH RESPECT TO THE PARAMETER DEFINED BY THE QUESTIONS.
+GIVE AN ACTUAL NUMERICAL SCORE LIKE 73/100, 85/100, 92/100 - NOT "N/100". Score meaning: (100-N)/100 outperform the author.
 
 YOU ARE NOT GRADING; YOU ARE ANSWERING THESE QUESTIONS. YOU DO NOT USE A RISK-AVERSE STANDARD; YOU DO NOT ATTEMPT TO BE DIPLOMATIC; YOU DO NOT ATTEMPT TO COMPLY WITH RISK-AVERSE, MEDIUM-RANGE IQ, ACADEMIC NORMS. YOU DO NOT MAKE ASSUMPTIONS ABOUT THE LEVEL OF THE PAPER; IT COULD BE A WORK OF THE HIGHEST EXCELLENCE AND GENIUS, OR IT COULD BE THE WORK OF A MORON.
 
@@ -94,7 +94,7 @@ METAPOINT 4: THE APP SHOULD NOT CHANGE THE GRADING BASED ON THE CATEGORY OF THE 
 
 METAPOINT 5: THIS IS NOT A GRADING APP. DO NOT PENALIZE BOLDNESS. DO NOT TAKE POINTS AWAY FOR INSIGHTS THAT, IF CORRECT, STAND ON THEIR OWN. GET RID OF THE IDEA THAT "ARGUMENTATION" IS WHAT MAKES SOMETHING SMART; IT ISN'T. WHAT MAKES SOMETHING SMART IS THAT IT IS SMART (INSIGHTFUL). PERIOD.
 
-METAPOINT 6: A SCORE OF N/100 MEANS THAT (100 MINUS N)/100 ARE SMARTER (E.G. 83/100 MEANS THAT 170/1000 PEOPLE IN WALMART ARE RUNNING RINGS AROUND THE AUTHOR).
+METAPOINT 6: GIVE ACTUAL NUMERICAL SCORES (e.g. 83/100 means 170/1000 Walmart patrons are smarter than the author). NO PLACEHOLDERS.
 
 THE FOLLOWING PASSAGE IS TO BE USED AS A PARADIGM OF A PHONY, PSEUDO-INTELLECTUAL, NOT ACTUALLY INTELLIGENT PASSAGE THAT IS EASILY MISTAKEN FOR BEING ACTUALLY INTELLIGENT:
 
@@ -116,11 +116,13 @@ QUESTION 2: Does it develop points?
 QUESTION 3: Is the organization merely sequential or hierarchical?
 [Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-[Continue for ALL questions - EACH MUST include AT LEAST ONE direct quote in quotation marks]
+CRITICAL: ANSWER EVERY SINGLE QUESTION INDIVIDUALLY. NO SHORTCUTS. NO "[Continue for ALL questions...]" BULLSHIT.
+
+[YOU MUST ANSWER ALL REMAINING QUESTIONS INDIVIDUALLY WITH QUOTES]
 
 CONCLUSION: [Comprehensive paragraph with AT LEAST 2 direct quotes summarizing overall assessment]
 
-FINAL SCORE: N/100
+FINAL SCORE: [ACTUAL NUMBER]/100 (e.g., 73/100, 85/100, 92/100) - NO PLACEHOLDERS
 
 MANDATORY: EVERY SINGLE QUESTION RESPONSE MUST CONTAIN AT LEAST ONE DIRECT QUOTE FROM THE ANALYZED TEXT ENCLOSED IN QUOTATION MARKS.`,
       
@@ -184,7 +186,7 @@ RATING SCALE:
 METAPOINTS:
 - This is not grading; you assess intelligence based on what you are given
 - Do not penalize boldness or strong claims if they demonstrate insight
-- A score of N/100 means (100-N)/100 outperform the author in intelligence
+- Give actual numerical scores (73/100, 85/100, etc.) - NO placeholders like "N/100"
 - Evaluate relative to general population, not just academics
 - Focus on substance, not style or jargon
 
@@ -206,7 +208,7 @@ PHASE 4 - FINAL VALIDATION:
 
 CONCLUSION: [Overall assessment with AT LEAST 2 direct quotes]
 
-FINAL SCORE: [X]/100
+FINAL SCORE: [ACTUAL NUMBER]/100 (e.g., 73/100, 85/100, 92/100) - NO PLACEHOLDERS
 
 DO NOT GIVE CREDIT MERELY FOR USE OF JARGON OR FOR REFERENCING AUTHORITIES. FOCUS ON SUBSTANCE. ONLY GIVE POINTS FOR SCHOLARLY REFERENCES/JARGON IF THEY UNAMBIGUOUSLY INCREASE SUBSTANCE.`,
 
@@ -282,7 +284,7 @@ QUESTION 18: Is shame/guilt worked through constructively or disavowed/projected
 EXPLICIT INSTRUCTIONS TO LLM:
 Answer these questions in connection with this text.
 Also give a score out of 100.
-A score of N/100 means (100–N)/100 outperform the subject with respect to the psychological capacity defined by the question.
+Give actual numerical scores (73/100, 85/100, etc.) - NO placeholders like "N/100".
 You are not grading. You are answering questions.
 Do not default to diagnostic checklists; describe configuration of psyche.
 Do not conflate verbal confidence with psychological strength.
@@ -294,7 +296,7 @@ FORMAT:
 SUMMARY: [Psychological categorization with AT LEAST 2 direct quotes]
 [Answer each numbered question individually with AT LEAST ONE direct quote in quotation marks]
 CONCLUSION: [Overall psychological assessment with AT LEAST 2 direct quotes]
-FINAL SCORE: [X]/100`,
+FINAL SCORE: [ACTUAL NUMBER]/100 (e.g., 73/100, 85/100, 92/100) - NO PLACEHOLDERS`,
 
       'psychological-long': `PSYCHOLOGICAL PROFILER PROTOCOL - COMPREHENSIVE (ALL PHASES)
 
@@ -355,7 +357,7 @@ RATING SCALE:
 
 EXPLICIT INSTRUCTIONS:
 - Answer questions about this text
-- Score out of 100 where N/100 means (100-N)/100 outperform the subject
+- Give actual numerical scores (73/100, 85/100, etc.) - NO placeholders like "N/100"
 - You are not grading; you are answering questions about psychological functioning
 - Evaluate relative to general population, not just academic/clinical populations
 - Do not penalize boldness or unconventional thinking if it shows integration
@@ -378,7 +380,7 @@ PHASE 4 - FINAL VALIDATION:
 
 CONCLUSION: [Overall assessment with AT LEAST 2 direct quotes]
 
-FINAL SCORE: [X]/100`,
+FINAL SCORE: [ACTUAL NUMBER]/100 (e.g., 73/100, 85/100, 92/100) - NO PLACEHOLDERS`,
 
       'psychopathological-short': `PSYCHOPATHOLOGY PROFILER PROTOCOL - NORMAL MODE
 
@@ -406,7 +408,7 @@ QUESTION 15: Is the overall presentation coherent and reality-based or chaotic, 
 
 EXPLICIT INSTRUCTIONS:
 - Answer these questions in connection with this text
-- Give a score out of 100 where N/100 means (100-N)/100 outperform the subject
+- Give actual numerical scores (73/100, 85/100, etc.) - NO placeholders like "N/100"
 - You are not diagnosing; you are describing the degree of psychopathology revealed
 - You are not grading; you are answering questions
 - Summarize the text and categorize the presentation (e.g., neurotic, borderline, psychotic, narcissistic, obsessional)
@@ -423,11 +425,13 @@ QUESTION 1: Does the text reveal distorted reality testing?
 QUESTION 2: Is there evidence of persecutory ideation?
 [Your answer with AT LEAST ONE direct quote from the text in quotation marks]
 
-[Continue for ALL 15 questions - EACH MUST include AT LEAST ONE direct quote in quotation marks]
+CRITICAL: ANSWER ALL 15 QUESTIONS INDIVIDUALLY. NO SHORTCUTS. NO "[Continue for ALL...]" BULLSHIT.
+
+[YOU MUST ANSWER ALL 15 QUESTIONS INDIVIDUALLY WITH DIRECT QUOTES]
 
 CONCLUSION: [Overall assessment with AT LEAST 2 direct quotes]
 
-FINAL SCORE: [X]/100
+FINAL SCORE: [ACTUAL NUMBER]/100 (e.g., 73/100, 85/100, 92/100) - NO PLACEHOLDERS
 
 MANDATORY: EVERY SINGLE QUESTION RESPONSE MUST CONTAIN AT LEAST ONE DIRECT QUOTE FROM THE ANALYZED TEXT ENCLOSED IN QUOTATION MARKS.`,
 
@@ -495,7 +499,7 @@ QUESTION 15: Is the overall presentation coherent and reality-based or chaotic, 
 [Answer with AT LEAST ONE direct quote]
 
 PHASE 1 CONCLUSION: [Assessment with AT LEAST 2 direct quotes]
-INITIAL SCORE: [X]/100
+INITIAL SCORE: [ACTUAL NUMBER]/100 (e.g., 73/100, 85/100, 92/100) - NO PLACEHOLDERS
 
 ========================================
 REPORT 2: PHASE 2 - PUSHBACK PROTOCOL
@@ -509,19 +513,19 @@ PUSHBACK CHALLENGE: What concrete psychological health do those [100-N] people h
 
 REVISED ASSESSMENT: [Re-examine Phase 1 answers with new perspective]
 
-PHASE 2 SCORE: [X]/100
+PHASE 2 SCORE: [ACTUAL NUMBER]/100 (e.g., 73/100, 85/100, 92/100) - NO PLACEHOLDERS
 
 ========================================
 REPORT 3: PHASE 3 - WALMART METRIC ENFORCEMENT
 ========================================
 
-WALMART METRIC CHALLENGE: If I claim [X]/100 Walmart patrons are psychologically healthier than this author, what specific advantages do they have?
+WALMART METRIC CHALLENGE: If I claim [SPECIFIC NUMBER]/100 Walmart patrons are psychologically healthier than this author, what specific advantages do they have?
 
 [Specify concrete advantages: less paranoid ideation, more empathy, better reality testing, etc. OR revise score upward if unable to specify]
 
 WALMART METRIC VALIDATION: [Detailed justification or score revision]
 
-PHASE 3 SCORE: [X]/100
+PHASE 3 SCORE: [ACTUAL NUMBER]/100 (e.g., 73/100, 85/100, 92/100) - NO PLACEHOLDERS
 
 ========================================
 REPORT 4: PHASE 4 - FINAL VALIDATION
@@ -541,7 +545,7 @@ PATHOLOGY RATING:
 
 FINAL COMPREHENSIVE CONCLUSION: [Overall assessment with AT LEAST 2 direct quotes]
 
-FINAL SCORE: [X]/100
+FINAL SCORE: [ACTUAL NUMBER]/100 (e.g., 73/100, 85/100, 92/100) - NO PLACEHOLDERS
 
 CRITICAL: You MUST produce all 4 separate reports. Each report should be distinct and complete.
 
