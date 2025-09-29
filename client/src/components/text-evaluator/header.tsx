@@ -48,6 +48,14 @@ export default function Header({
       </h1>
       
       <div className="flex items-center space-x-3">
+        <a 
+          href="mailto:contact@zhisystems.ai" 
+          className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+          data-testid="contact-link"
+        >
+          CONTACT US
+        </a>
+        
         <Select value={analysisMode} onValueChange={onAnalysisModeChange} data-testid="select-analysis-mode">
           <SelectTrigger className="w-[180px]">
             <SelectValue />
