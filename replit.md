@@ -6,6 +6,8 @@ Cognitive Enhancer is a psychological and cognitive analysis application that ev
 - **CRITICAL FIX - Command Interpretation Issue**: Fixed all protocols to analyze text containing instructions/commands instead of following them. LLMs now treat ALL input as text to be analyzed, not instructions to execute.
 - **CRITICAL FIX - Pure Clinical Analysis**: Removed all conversational language and sympathy from protocols. System now operates as a pure clinical instrument without addressing users personally or showing "understanding."
 - **CRITICAL FIX - Psychopathological 4-Phase Structure**: Implemented proper 4-phase long analysis producing 4 separate, distinct reports (Phase 1: Initial Assessment, Phase 2: Pushback Protocol, Phase 3: Walmart Metric, Phase 4: Final Validation).
+- **CRITICAL FIX - Placeholder Score Elimination**: Removed all placeholder scores (N/100, [X]/100) and lazy shortcuts. System now demands actual numerical scores (73/100, 85/100, etc.) and complete individual answers to every question.
+- **CRITICAL FIX - Complete Analysis Enforcement**: Eliminated all "[Continue for ALL questions...]" and "[Evaluate rest of...]" shortcuts. Every question must be answered individually with direct quotes.
 - **Never Refuse Analysis Protocol**: All modes now have explicit "NEVER REFUSE" directives ensuring analysis of any submitted text regardless of content.
 - **ZHI 4 (Perplexity) Re-Added**: Successfully implemented Perplexity API integration using llama-3.1-sonar-small-128k-online model with proper streaming support and markdown cleanup.
 - **Enhanced Cognitive Assessment**: All providers now implement the complete 18-question cognitive evaluation protocol with proper Q&A formatting.
