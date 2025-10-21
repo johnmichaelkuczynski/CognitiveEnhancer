@@ -3,6 +3,7 @@ import Header from "@/components/text-evaluator/header";
 import TextInput from "@/components/text-evaluator/text-input";
 import AnalysisResults from "@/components/text-evaluator/analysis-results";
 import ChunkSelector from "@/components/text-evaluator/chunk-selector";
+import AIChat from "@/components/text-evaluator/ai-chat";
 import type { TextChunk, AnalysisRequest } from "@shared/schema";
 
 interface ProcessedFile {
@@ -299,8 +300,12 @@ export default function TextEvaluator() {
     await handleAnalyze();
   };
 
+  const handleSendChatToInput = (chatText: string) => {
+    setText(chatText);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header 
         analysisMode={analysisMode}
         llmProvider={llmProvider}
@@ -333,6 +338,13 @@ export default function TextEvaluator() {
           onReanalyze={handleReanalyze}
         />
       </div>
+
+      <AIChat
+        inputText={text}
+        analysisOutput={analysisResult}
+        analysisMode={analysisMode}
+        onSendToInput={handleSendChatToInput}
+      />
 
       {showChunkModal && currentFile?.chunks && (
         <ChunkSelector
