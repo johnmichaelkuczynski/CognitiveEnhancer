@@ -44,7 +44,7 @@ export default function Header({
   return (
     <header className="bg-white border-b border-border h-16 flex items-center justify-between px-6">
       <h1 className="text-xl font-semibold text-foreground" data-testid="app-title">
-        Cognitive Enhancer
+        TEXT EVALUATOR
       </h1>
       
       <div className="flex items-center space-x-3">
