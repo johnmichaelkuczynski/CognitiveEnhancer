@@ -946,4 +946,46 @@ export class LLMService {
     }
     yield* llmProvider.streamAnalysis(text, mode, context, previousAnalysis, critique);
   }
+
+  async *streamChat(message: string, context?: { inputText?: string; analysisOutput?: string; analysisMode?: string }): AsyncGenerator<string, void, unknown> {
+    try {
+      const client = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY || ""
+      });
+
+      let systemPrompt = "You are a helpful AI assistant. Answer any questions the user asks.";
+      
+      if (context && (context.inputText || context.analysisOutput)) {
+        systemPrompt = `You are a helpful AI assistant. The user is working with a text analysis application.
+
+${context.inputText ? `INPUT TEXT:
+${context.inputText}
+
+` : ''}${context.analysisOutput ? `ANALYSIS OUTPUT${context.analysisMode ? ` (${context.analysisMode})` : ''}:
+${context.analysisOutput}
+
+` : ''}You have access to this context for reference, but you should answer whatever the user asks - don't restrict yourself to only discussing the analysis. Be helpful and conversational.`;
+      }
+
+      const stream = await client.chat.completions.create({
+        model: DEFAULT_OPENAI_MODEL,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: message }
+        ],
+        stream: true,
+        max_completion_tokens: 2000
+      });
+
+      for await (const chunk of stream) {
+        const content = chunk.choices[0]?.delta?.content;
+        if (content) {
+          yield content;
+        }
+      }
+    } catch (error) {
+      console.error('Chat Stream Error:', error);
+      yield `Chat failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+    }
+  }
 }

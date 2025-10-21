@@ -42,3 +42,14 @@ export interface AnalysisResponse {
   mode: string;
   provider: string;
 }
+
+export const chatMessageSchema = z.object({
+  message: z.string().min(1),
+  context: z.object({
+    inputText: z.string().optional(),
+    analysisOutput: z.string().optional(),
+    analysisMode: z.string().optional()
+  }).optional()
+});
+
+export type ChatMessage = z.infer<typeof chatMessageSchema>;

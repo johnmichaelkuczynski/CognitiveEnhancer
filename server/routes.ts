@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import multer from 'multer';
 import { LLMService } from './services/llmService';
 import { FileProcessor } from './services/fileProcessor';
-import { analysisRequestSchema, fileUploadSchema } from '@shared/schema';
+import { analysisRequestSchema, fileUploadSchema, chatMessageSchema } from '@shared/schema';
 import { randomUUID } from 'crypto';
 
 const upload = multer({
@@ -194,6 +194,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.send(content);
     } catch (error) {
       res.status(500).json({ error: 'Download failed' });
+    }
+  });
+
+  // AI Chat endpoint with streaming
+  app.post('/api/chat', async (req: Request, res: Response) => {
+    try {
+      const validatedData = chatMessageSchema.parse(req.body);
+      const { message, context } = validatedData;
+
+      res.writeHead(200, {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Connection': 'keep-alive',
+        'Access-Control-Allow-Origin': '*',
+        'X-Accel-Buffering': 'no'
+      });
+
+      res.write(': keep-alive\n\n');
+
+      const chatId = randomUUID();
+      
+      res.write(`data: ${JSON.stringify({ 
+        id: chatId, 
+        status: 'starting', 
+        content: '' 
+      })}\n\n`);
+
+      try {
+        const stream = llmService.streamChat(message, context);
+        
+        for await (const chunk of stream) {
+          res.write(`data: ${JSON.stringify({ 
+            id: chatId, 
+            status: 'streaming', 
+            content: chunk 
+          })}\n\n`);
+        }
+
+        res.write(`data: ${JSON.stringify({ 
+          id: chatId, 
+          status: 'completed', 
+          content: '' 
+        })}\n\n`);
+      } catch (error) {
+        console.error('Chat error:', error);
+        res.write(`data: ${JSON.stringify({ 
+          id: chatId, 
+          status: 'error', 
+          content: `Chat failed: ${error instanceof Error ? error.message : 'Unknown error'}` 
+        })}\n\n`);
+      }
+
+      res.end();
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('parse')) {
+        res.status(400).json({ error: 'Invalid request data' });
+      } else {
+        res.status(500).json({ error: 'Chat failed' });
+      }
     }
   });
 
