@@ -239,10 +239,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
         })}\n\n`);
       } catch (error) {
         console.error('Chat error:', error);
+        
+        // Sanitize error message to prevent API key exposure
+        let errorMessage = 'Chat service temporarily unavailable. Please try again.';
+        if (error instanceof Error) {
+          if (error.message.includes('API key') || error.message.includes('401')) {
+            errorMessage = 'Chat service authentication error. Please contact support.';
+          } else if (error.message.includes('rate limit')) {
+            errorMessage = 'Rate limit exceeded. Please wait a moment and try again.';
+          } else if (error.message.includes('timeout')) {
+            errorMessage = 'Request timed out. Please try again.';
+          }
+        }
+        
         res.write(`data: ${JSON.stringify({ 
           id: chatId, 
           status: 'error', 
-          content: `Chat failed: ${error instanceof Error ? error.message : 'Unknown error'}` 
+          content: errorMessage 
         })}\n\n`);
       }
 

@@ -985,7 +985,8 @@ ${context.analysisOutput}
       }
     } catch (error) {
       console.error('Chat Stream Error:', error);
-      yield `Chat failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      // Don't yield error - throw it so the route handler can sanitize it
+      throw error;
     }
   }
 }
