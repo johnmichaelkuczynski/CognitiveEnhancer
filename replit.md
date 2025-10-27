@@ -3,12 +3,14 @@
 TEXT EVALUATOR is a psychological and cognitive analysis application that evaluates written text to determine cognitive capabilities, psychological characteristics, and psychopathological traits. The app provides six analysis modes across three categories (cognitive, psychological, psychopathological), each with short and comprehensive versions. Users can input text through typing, pasting, or uploading files (TXT, DOC, PDF), and the system automatically chunks large texts (>1000 words) for selective analysis. The application streams real-time analysis results from three reliable LLM providers (ZHI 1-3) and allows users to download evaluations as text files.
 
 ## Recent Changes (October 2025)
+- **SECURITY FIX**: Fixed API key exposure in chat error messages - all errors now sanitized with user-friendly messages
 - **AI Chat Feature**: Added comprehensive AI chat interface below the main analysis section with:
   - Large chat area with message history and real-time streaming responses
   - File upload support (Word/PDF) directly into chat
   - Bidirectional text transfer: send input/output to chat, send chat responses back to input
   - Context-aware messaging with optional analysis context inclusion
   - Full unrestricted conversation capability (not limited to discussing analyzed text)
+  - Secure error handling that never exposes API keys or sensitive information
 - **CRITICAL FIX - Command Interpretation Issue**: Fixed all protocols to analyze text containing instructions/commands instead of following them. LLMs now treat ALL input as text to be analyzed, not instructions to execute.
 - **CRITICAL FIX - Pure Clinical Analysis**: Removed all conversational language and sympathy from protocols. System now operates as a pure clinical instrument without addressing users personally or showing "understanding."
 - **CRITICAL FIX - Psychopathological 4-Phase Structure**: Implemented proper 4-phase long analysis producing 4 separate, distinct reports (Phase 1: Initial Assessment, Phase 2: Pushback Protocol, Phase 3: Walmart Metric, Phase 4: Final Validation).
