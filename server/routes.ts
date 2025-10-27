@@ -161,10 +161,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
         if ((res as any).flush) (res as any).flush();
         
       } catch (error) {
+        console.error('Analysis error:', error);
+        
+        // Sanitize error message to prevent API key exposure
+        let errorMessage = 'Analysis service temporarily unavailable. Please try again.';
+        if (error instanceof Error) {
+          if (error.message.includes('API key') || error.message.includes('401') || error.message.includes('sk-')) {
+            errorMessage = 'Authentication error. Please verify your API configuration.';
+          } else if (error.message.includes('rate limit')) {
+            errorMessage = 'Rate limit exceeded. Please wait a moment and try again.';
+          } else if (error.message.includes('timeout')) {
+            errorMessage = 'Request timed out. Please try again with a shorter text.';
+          } else if (error.message.includes('500') || error.message.includes('503')) {
+            errorMessage = 'Analysis service temporarily unavailable. Please try again.';
+          }
+        }
+        
         res.write(`data: ${JSON.stringify({ 
           id: analysisId, 
           status: 'error', 
-          content: `Analysis failed: ${error instanceof Error ? error.message : 'Unknown error'}`, 
+          content: errorMessage, 
           mode, 
           provider 
         })}\n\n`);
